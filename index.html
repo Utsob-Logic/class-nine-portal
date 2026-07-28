@@ -1,749 +1,1086 @@
-<style>
-    * {
-        box-sizing: border-box;
-    }
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <title>Naricha Moshuria High School - ক্লাস ৯ পোর্টাল</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-    body {
-        margin: 0;
-        font-family: 'Poppins', sans-serif;
-        background: #070b12;
-        background-image: 
-            radial-gradient(at 0% 0%, rgba(0, 255, 204, 0.15) 0px, transparent 50%),
-            radial-gradient(at 100% 100%, rgba(0, 102, 255, 0.15) 0px, transparent 50%);
-        background-attachment: fixed;
-        display: flex;
-        min-height: 100vh;
-        color: #fff;
-        overflow-x: hidden;
-    }
-
-    /* বাম পাশের সাইডবার বা মেনু বার (অ্যানিমেটেড গ্লাস ইফেক্ট) */
-    .sidebar {
-        width: 290px;
-        background: rgba(11, 19, 26, 0.85);
-        backdrop-filter: blur(15px);
-        border-right: 1px solid rgba(255, 255, 255, 0.08);
-        height: 100vh;
-        position: fixed;
-        overflow-y: auto;
-        padding-top: 15px;
-        box-shadow: 10px 0 30px rgba(0,0,0,0.5);
-        left: 0;
-        top: 0;
-        z-index: 100;
-        transition: transform 0.3s ease;
-    }
-
-    .school-brand {
-        text-align: center;
-        font-size: 15px;
-        font-weight: 700;
-        color: #ffffff;
-        background: linear-gradient(135deg, rgba(0, 255, 204, 0.2), rgba(0, 102, 255, 0.2));
-        padding: 15px 10px;
-        margin-bottom: 15px;
-        border-bottom: 2px solid #00ffcc;
-        letter-spacing: 0.5px;
-        line-height: 1.4;
-        text-shadow: 0 0 10px rgba(0,255,204,0.4);
-    }
-
-    .home-btn-container {
-        padding: 0 15px;
-        margin-bottom: 15px;
-    }
-
-    .home-btn {
-        width: 100%;
-        background: linear-gradient(135deg, #00ffcc, #00bfff);
-        color: #0b131a;
-        border: none;
-        padding: 12px;
-        font-size: 15px;
-        font-weight: 700;
-        border-radius: 10px;
-        cursor: pointer;
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        box-shadow: 0 4px 20px rgba(0, 255, 204, 0.4);
-        text-align: center;
-    }
-
-    .home-btn:hover {
-        transform: scale(1.03) translateY(-2px);
-        box-shadow: 0 6px 25px rgba(0, 255, 204, 0.7);
-    }
-
-    .sidebar h2 {
-        text-align: center;
-        font-size: 13px;
-        margin-bottom: 15px;
-        color: #00ffcc;
-        text-transform: uppercase;
-        letter-spacing: 1.5px;
-    }
-
-    .sidebar ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        padding-bottom: 20px;
-    }
-
-    .sidebar ul li button {
-        width: 100%;
-        background: none;
-        border: none;
-        text-align: left;
-        display: block;
-        color: #b0c4de;
-        padding: 11px 20px;
-        font-size: 13.5px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        border-left: 4px solid transparent;
-        position: relative;
-    }
-
-    .sidebar ul li button::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 0;
-        height: 100%;
-        width: 0;
-        background: linear-gradient(90deg, rgba(0,255,204,0.15), transparent);
-        transition: width 0.3s ease;
-        z-index: -1;
-    }
-
-    .sidebar ul li button:hover::before, .sidebar ul li button.active::before {
-        width: 100%;
-    }
-
-    .sidebar ul li button:hover, .sidebar ul li button.active {
-        color: #00ffcc;
-        border-left: 4px solid #00ffcc;
-        padding-left: 25px;
-        text-shadow: 0 0 10px rgba(0, 255, 204, 0.6);
-    }
-
-    /* মোবাইল মেনু টগল বাটন */
-    .menu-toggle {
-        display: none;
-        position: fixed;
-        top: 15px;
-        left: 15px;
-        z-index: 1001;
-        background: #00ffcc;
-        color: #0b131a;
-        border: none;
-        padding: 10px 14px;
-        font-size: 18px;
-        border-radius: 8px;
-        cursor: pointer;
-        box-shadow: 0 4px 15px rgba(0,255,204,0.4);
-    }
-
-    /* ডান পাশের মূল কন্টেন্ট এরিয়া */
-    .main-content {
-        margin-left: 290px;
-        padding: 40px;
-        width: calc(100% - 290px);
-        animation: slideInRight 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .card {
-        background: rgba(255, 255, 255, 0.03);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        padding: 35px;
-        border-radius: 16px;
-        box-shadow: 0 15px 35px rgba(0,0,0,0.4);
-        margin-bottom: 25px;
-        animation: fadeIn 0.5s ease-in-out;
-        transition: transform 0.3s ease, border-color 0.3s ease;
-    }
-
-    .card:hover {
-        border-color: rgba(0, 255, 204, 0.3);
-    }
-
-    .portal-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
-        margin-top: 20px;
-    }
-
-    .portal-box {
-        background: linear-gradient(135deg, rgba(0, 255, 204, 0.05), rgba(0, 102, 255, 0.05));
-        border: 1px solid rgba(0, 255, 204, 0.2);
-        padding: 24px;
-        border-radius: 12px;
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        position: relative;
-        overflow: hidden;
-    }
-
-    .portal-box::after {
-        content: '';
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: radial-gradient(circle, rgba(0,255,204,0.1) 0%, transparent 70%);
-        opacity: 0;
-        transition: opacity 0.4s ease;
-    }
-
-    .portal-box:hover::after {
-        opacity: 1;
-    }
-
-    .portal-box:hover {
-        transform: translateY(-6px) scale(1.01);
-        border-color: #00ffcc;
-        box-shadow: 0 10px 25px rgba(0, 255, 204, 0.25);
-    }
-
-    .portal-box h3 {
-        color: #00ffcc;
-        margin-top: 0;
-        font-size: 18px;
-        border-bottom: 1px solid rgba(0, 255, 204, 0.3);
-        padding-bottom: 8px;
-        margin-bottom: 12px;
-    }
-
-    .grid-container {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
-        margin-bottom: 25px;
-    }
-
-    .small-card {
-        background: rgba(255, 255, 255, 0.03);
-        backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.07);
-        padding: 24px;
-        border-radius: 14px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        margin-bottom: 20px;
-        transition: transform 0.3s ease;
-    }
-
-    .small-card:hover {
-        transform: translateY(-3px);
-    }
-
-    h1 {
-        color: #00ffcc;
-        margin-top: 0;
-        font-size: 28px;
-        font-weight: 700;
-        text-shadow: 0 0 20px rgba(0,255,204,0.3);
-    }
-
-    h2 {
-        color: #00ffcc;
-        font-size: 18px;
-        margin-top: 0;
-        border-bottom: 1px solid rgba(0, 255, 204, 0.3);
-        padding-bottom: 8px;
-        margin-bottom: 15px;
-        font-weight: 600;
-    }
-
-    p, li {
-        color: #cfd8dc;
-        font-size: 0.95em;
-        line-height: 1.7;
-    }
-
-    .item-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-
-    .item-list li {
-        background: rgba(0, 255, 204, 0.02);
-        border-left: 3px solid #00ffcc;
-        padding: 12px 15px;
-        margin-bottom: 10px;
-        border-radius: 0 8px 8px 0;
-        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    .item-list li:hover {
-        background: rgba(0, 255, 204, 0.07);
-        transform: translateX(6px);
-        border-left-color: #00bfff;
-    }
-
-    .subject-view {
-        display: none;
-    }
-
-    /* কাস্টম স্ক্রলবার */
-    .sidebar::-webkit-scrollbar {
-        width: 5px;
-    }
-    .sidebar::-webkit-scrollbar-thumb {
-        background: rgba(0,255,204,0.3);
-        border-radius: 10px;
-    }
-    .sidebar::-webkit-scrollbar-thumb:hover {
-        background: #00ffcc;
-    }
-
-    /* অ্যানিমেশন কি-ফ্রেম */
-    @keyframes fadeIn {
-        from { 
-            opacity: 0; 
-            transform: translateY(20px) scale(0.98); 
+        * {
+            box-sizing: border-box;
         }
-        to { 
-            opacity: 1; 
-            transform: translateY(0) scale(1); 
-        }
-    }
 
-    @keyframes slideInRight {
-        from {
-            opacity: 0;
-            transform: translateX(30px);
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: #070b12;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(0, 255, 204, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(0, 102, 255, 0.15) 0px, transparent 50%);
+            background-attachment: fixed;
+            display: flex;
+            min-height: 100vh;
+            color: #fff;
+            overflow-x: hidden;
         }
-        to {
-            opacity: 1;
-            transform: translateX(0);
-        }
-    }
 
-    /* রেসপন্সিভ ডিজাইন (মোবাইল ফ্রেন্ডলি করার জন্য আপডেট করা হলো) */
-    @media(max-width: 900px) {
-        .menu-toggle {
-            display: block;
-        }
+        /* বাম পাশের সাইডবার বা মেনু বার (অ্যানিমেটেড গ্লাস ইফেক্ট) */
         .sidebar {
-            transform: translateX(-100%);
-            width: 280px;
+            width: 290px;
+            background: rgba(11, 19, 26, 0.85);
+            backdrop-filter: blur(15px);
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
             height: 100vh;
             position: fixed;
-            z-index: 1000;
+            overflow-y: auto;
+            padding-top: 15px;
+            box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+            left: 0;
+            top: 0;
+            z-index: 100;
         }
-        .sidebar.active {
-            transform: translateX(0);
+
+        .school-brand {
+            text-align: center;
+            font-size: 15px;
+            font-weight: 700;
+            color: #ffffff;
+            background: linear-gradient(135deg, rgba(0, 255, 204, 0.2), rgba(0, 102, 255, 0.2));
+            padding: 15px 10px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #00ffcc;
+            letter-spacing: 0.5px;
+            line-height: 1.4;
+            text-shadow: 0 0 10px rgba(0,255,204,0.4);
         }
-        .main-content {
-            margin-left: 0;
+
+        .home-btn-container {
+            padding: 0 15px;
+            margin-bottom: 15px;
+        }
+
+        .home-btn {
             width: 100%;
-            padding: 70px 15px 20px 15px;
+            background: linear-gradient(135deg, #00ffcc, #00bfff);
+            color: #0b131a;
+            border: none;
+            padding: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 20px rgba(0, 255, 204, 0.4);
+            text-align: center;
         }
-        .grid-container, .portal-grid {
-            grid-template-columns: 1fr;
+
+        .home-btn:hover {
+            transform: scale(1.03) translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0, 255, 204, 0.7);
         }
+
+        .sidebar h2 {
+            text-align: center;
+            font-size: 13px;
+            margin-bottom: 15px;
+            color: #00ffcc;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            padding-bottom: 20px;
+        }
+
+        .sidebar ul li button {
+            width: 100%;
+            background: none;
+            border: none;
+            text-align: left;
+            display: block;
+            color: #b0c4de;
+            padding: 11px 20px;
+            font-size: 13.5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+            position: relative;
+        }
+
+        .sidebar ul li button::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, rgba(0,255,204,0.15), transparent);
+            transition: width 0.3s ease;
+            z-index: -1;
+        }
+
+        .sidebar ul li button:hover::before, .sidebar ul li button.active::before {
+            width: 100%;
+        }
+
+        .sidebar ul li button:hover, .sidebar ul li button.active {
+            color: #00ffcc;
+            border-left: 4px solid #00ffcc;
+            padding-left: 25px;
+            text-shadow: 0 0 10px rgba(0, 255, 204, 0.6);
+        }
+
+        /* ডান পাশের মূল কন্টেন্ট এরিয়া */
+        .main-content {
+            margin-left: 290px;
+            padding: 40px;
+            width: calc(100% - 290px);
+            animation: slideInRight 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
         .card {
-            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 35px;
+            border-radius: 16px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            margin-bottom: 25px;
+            animation: fadeIn 0.5s ease-in-out;
+            transition: transform 0.3s ease, border-color 0.3s ease;
         }
+
+        .card:hover {
+            border-color: rgba(0, 255, 204, 0.3);
+        }
+
+        .portal-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .portal-box {
+            background: linear-gradient(135deg, rgba(0, 255, 204, 0.05), rgba(0, 102, 255, 0.05));
+            border: 1px solid rgba(0, 255, 204, 0.2);
+            padding: 24px;
+            border-radius: 12px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .portal-box::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0,255,204,0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .portal-box:hover::after {
+            opacity: 1;
+        }
+
+        .portal-box:hover {
+            transform: translateY(-6px) scale(1.01);
+            border-color: #00ffcc;
+            box-shadow: 0 10px 25px rgba(0, 255, 204, 0.25);
+        }
+
+        .portal-box h3 {
+            color: #00ffcc;
+            margin-top: 0;
+            font-size: 18px;
+            border-bottom: 1px solid rgba(0, 255, 204, 0.3);
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .small-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            padding: 24px;
+            border-radius: 14px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .small-card:hover {
+            transform: translateY(-3px);
+        }
+
+        h1 {
+            color: #00ffcc;
+            margin-top: 0;
+            font-size: 28px;
+            font-weight: 700;
+            text-shadow: 0 0 20px rgba(0,255,204,0.3);
+        }
+
+        h2 {
+            color: #00ffcc;
+            font-size: 18px;
+            margin-top: 0;
+            border-bottom: 1px solid rgba(0, 255, 204, 0.3);
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        p, li {
+            color: #cfd8dc;
+            font-size: 0.95em;
+            line-height: 1.7;
+        }
+
+        .item-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .item-list li {
+            background: rgba(0, 255, 204, 0.02);
+            border-left: 3px solid #00ffcc;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            border-radius: 0 8px 8px 0;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .item-list li:hover {
+            background: rgba(0, 255, 204, 0.07);
+            transform: translateX(6px);
+            border-left-color: #00bfff;
+        }
+
+        .subject-view {
+            display: none;
+        }
+
+        /* কাস্টম স্ক্রলবার */
+        .sidebar::-webkit-scrollbar {
+            width: 5px;
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(0,255,204,0.3);
+            border-radius: 10px;
+        }
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: #00ffcc;
+        }
+
+        /* অ্যানিমেশন কি-ফ্রেম */
+        @keyframes fadeIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(20px) scale(0.98); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0) scale(1); 
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* রেসপন্সিভ ডিজাইন */
+        @media(max-width: 900px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                padding: 15px;
+            }
+            .grid-container, .portal-grid {
+                grid-template-columns: 1fr;
+            }
+        }.grid-container, .portal-grid {
+        grid-template-columns: 1fr;
     }
-</style>
+}
 
-<!-- মোবাইল মেনু টগল বাটন -->
-<button class="menu-toggle" onclick="toggleMenu()">☰ মেনু</button>
+@media (max-width: 768px) {
+    .grid-container {
+        grid-template-columns: 1fr !important;
+    }
+    body {
+        flex-direction: column;
+        display: block;
+    }
+    .sidebar {
+        width: 100% !important;
+        height: auto !important;
+        position: relative !important;
+    }
+    .main-content {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding: 15px !important;
+    }
+    </style>
+</head>
+<body>
 
-<!-- বাম পাশের মেনু বার -->
-<div class="sidebar" id="sidebar">
-    <div class="school-brand">নারিচা মোশুরিয়া উচ্চ বিদ্যালয়</div>
-    
-    <div class="home-btn-container">
-        <button class="home-btn" onclick="showHome()">🏠 হোম পেজ</button>
+    <!-- বাম পাশের মেনু বার -->
+    <div class="sidebar">
+        <div class="school-brand">নারিচা মোশুরিয়া উচ্চ বিদ্যালয়</div>
+        
+        <div class="home-btn-container">
+            <button class="home-btn" onclick="showHome()">🏠 হোম পেজ</button>
+        </div>
+
+        <h2>ক্লাস ৯ সাবজেক্টসমূহ</h2>
+        <ul>
+            <li><button onclick="showSubject('bangla1')">বাংলা ১ম পত্র</button></li>
+            <li><button onclick="showSubject('bangla2')">বাংলা ২য় পত্র</button></li>
+            <li><button onclick="showSubject('english1')">ইংরেজি ১ম পত্র</button></li>
+            <li><button onclick="showSubject('english2')">ইংরেজি ২য় পত্র</button></li>
+            <li><button onclick="showSubject('math')">গণিত</button></li>
+            <li><button onclick="showSubject('islam')">ইসলাম শিক্ষা</button></li>
+            <li><button onclick="showSubject('ict')">আইসিটি</button></li>
+            <li><button onclick="showSubject('bgs')">বাংলাদেশের ইতিহাস ও বিশ্বসভ্যতা</button></li>
+            <li><button onclick="showSubject('economics')">অর্থনীতি</button></li>
+            <li><button onclick="showSubject('geography')">ভূগোল ও পরিবেশ</button></li>
+            <li><button onclick="showSubject('physics')">পদার্থবিজ্ঞান</button></li>
+            <li><button onclick="showSubject('biology')">জীববিজ্ঞান</button></li>
+            <li><button onclick="showSubject('chemistry')">রসায়ন</button></li>
+            <li><button onclick="showSubject('higher-math')">উচ্চতর গণিত</button></li>
+        </ul>
     </div>
 
-    <h2>ক্লাস ৯ সাবজেক্টসমূহ</h2>
-    <ul>
-        <li><button onclick="showSubject('bangla1')">বাংলা ১ম পত্র</button></li>
-        <li><button onclick="showSubject('bangla2')">বাংলা ২য় পত্র</button></li>
-        <li><button onclick="showSubject('english1')">ইংরেজি ১ম পত্র</button></li>
-        <li><button onclick="showSubject('english2')">ইংরেজি ২য় পত্র</button></li>
-        <li><button onclick="showSubject('math')">গণিত</button></li>
-        <li><button onclick="showSubject('islam')">ইসলাম শিক্ষা</button></li>
-        <li><button onclick="showSubject('ict')">আইসিটি</button></li>
-        <li><button onclick="showSubject('bgs')">বাংলাদেশের ইতিহাস ও বিশ্বসভ্যতা</button></li>
-        <li><button onclick="showSubject('economics')">অর্থনীতি</button></li>
-        <li><button onclick="showSubject('geography')">ভূগোল ও পরিবেশ</button></li>
-        <li><button onclick="showSubject('physics')">পদার্থবিজ্ঞান</button></li>
-        <li><button onclick="showSubject('biology')">জীববিজ্ঞান</button></li>
-        <li><button onclick="showSubject('chemistry')">রসায়ন</button></li>
-        <li><button onclick="showSubject('higher-math')">উচ্চতর গণিত</button></li>
-    </ul>
-</div>
-
-<!-- ডান পাশের মূল কন্টেন্ট এরিয়া -->
-<div class="main-content">
-    
-    <!-- মূল হোম ইন্টারফেস -->
-    <div id="home-view" class="subject-view card" style="display: block;">
-        <h1>নারিচা মোশুরিয়া উচ্চ বিদ্যালয় (Naricha Moshuria High School)</h1>
-        <p><strong>স্থাপিত:</strong> ১৯৬৭ সাল</p>
-        <p>এটি নবম শ্রেণীর শিক্ষার্থীদের জন্য তৈরি একটি অনলাইন শিক্ষামূলক প্ল্যাটফর্ম। এই ওয়েবসাইটের মাধ্যমে শিক্ষার্থীরা তাদের পাঠ্যক্রমের বিভিন্ন বিষয়ের প্রয়োজনীয় নোট, সিলেবাস, মানবণ্টন এবং শিক্ষামূলক উপকরণ খুব সহজেই পেয়ে যাবে। বামপাশের মেনু থেকে যেকোনো সাবজেক্ট বেছে নিয়ে তার বিস্তারিত দেখতে পারবি।</p>
+    <!-- ডান পাশের মূল কন্টেন্ট এরিয়া -->
+    <div class="main-content">
         
-        <div class="portal-grid">
-            <div class="portal-box">
-                <h3>👥 ক্লাস ক্যাপ্টেন প্যানেল</h3>
-                <p>নবম শ্রেণীর ক্লাস ক্যাপ্টেনদের তালিকা, দায়িত্ব এবং জরুরি ঘোষণাগুলো এখানে পরিচালনা করা হয়।</p>
-            </div>
-            <div class="portal-box">
-                <h3>📚 পাঠ্যসূচি ও সিলেবাস</h3>
-                <p>অর্ধ-বার্ষিক ও বার্ষিক পরীক্ষার সম্পূর্ণ সিলেবাস, মানবণ্টন এবং প্রয়োজনীয় বইয়ের তালিকা।</p>
-            </div>
-            <div class="portal-box">
-                <h3>📢 নোটিশ বোর্ড</h3>
-                <p>স্কুলের বিভিন্ন গুরুত্বপূর্ণ নোটিশ, পরীক্ষার রুটিন এবং ক্লাসের আপডেট এখানে জানানো হবে।</p>
-            </div>
-            <div class="portal-box">
-                <h3>🛠️ স্টাডি কর্নার</h3>
-                <p>বিভিন্ন বিষয়ের নোট, গুরুত্বপূর্ণ প্রশ্ন এবং অনুশীলনের জন্য স্পেশাল লার্নিং ম্যাটেরিয়াল।</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- ১. বাংলা ১ম পত্র -->
-    <div id="bangla1" class="subject-view card">
-        <h1>বাংলা প্রথম পত্র (পাঠ্যসূচি - ২০২৬)</h1>
-        
-        <div class="small-card">
-            <h2>পাঠ্য বইসমূহ</h2>
-            <ul class="item-list">
-                <li>১. বোর্ড বই</li>
-                <li>২. ভাষাবিকাশ বাংলা ব্যাকরণ ও নির্মিতি</li>
-                <li>৩. সৃজনশীল সহায়িকা বই</li>
-            </ul>
-        </div>
-
-        <div class="small-card">
-            <h2>পরীক্ষার মানবণ্টন (পূর্ণমান: ১০০ | সময়: ৩ ঘণ্টা)</h2>
-            <ul class="item-list">
-                <li>🔹 <strong>সৃজনশীল প্রশ্ন: ৫০ নম্বর</strong> (৮টি থেকে ৫টি প্রশ্নের উত্তর দিতে হবে, মান: $10 \times 5 = 50$)</li>
-                <li>🔹 <strong>বর্ণনামূলক প্রশ্ন: ২০ নম্বর</strong> (উপন্যাস/নাটক অংশ থেকে ৪টি থেকে ২টি, মান: $10 \times 2 = 20$)</li>
-                <li>🔹 <strong>বহুনির্বাচনি প্রশ্ন (MCQ): ৩০ নম্বর</strong> (৩০টি প্রশ্ন, সবগুলোর উত্তর দিতে হবে)</li>
-            </ul>
-        </div>
-
-        <div class="grid-container">
-            <div class="small-card" style="margin-bottom: 0;">
-                <h2>🌱 অর্ধ-বার্ষিক পরীক্ষা</h2>
-                <p>
-                    📖 <strong>গদ্য:</strong> প্রত্যপকার, ফুলের বিবাহ, সুভা, বই পড়া, অভাগীর স্বর্গ。<br><br>
-                    📜 <strong>কবিতা:</strong> বন্দনা, কপোতাক্ষ নদ, প্রাণ, অম্ববধূ, ঝর্ণার গান。<br><br>
-                    📚 <strong>সহপাঠ:</strong> উপন্যাস (১৯৭১) প্রথমাংশ ও নাটক (বহিপীর) প্রথমাংশ।
-                </p>
-            </div>
-
-            <div class="small-card" style="margin-bottom: 0;">
-                <h2>🌻 বার্ষিক পরীক্ষা</h2>
-                <p>
-                    📖 <strong>গদ্য:</strong> পল্লিসাহিত্য, আম-আঁটির ভেঁপু, নিরীহ বাঙালি, নিমগাছ, উপেক্ষিত শক্তির উদ্ঘাটন。<br><br>
-                    📜 <strong>কবিতা:</strong> জীবন বিনিময়, উমর ফারুক, সেইদিন এই মাঠ, যাব আমি তোমার দেশে, আমার দেশ。<br><br>
-                    📚 <strong>সহপাঠ:</strong> উপন্যাস (১৯৭১) শেষাংশ ও নাটক (বহিপীর) শেষাংশ।
-                </p>
+        <!-- মূল হোম ইন্টারফেস -->
+        <div id="home-view" class="subject-view card" style="display: block;">
+            <h1>নারিচা মোশুরিয়া উচ্চ বিদ্যালয় (Naricha Moshuria High School)</h1>
+            <p><strong>স্থাপিত:</strong> ১৯৬৭ সাল</p>
+            <p>এটি নবম শ্রেণীর শিক্ষার্থীদের জন্য তৈরি একটি অনলাইন শিক্ষামূলক প্ল্যাটফর্ম। এই ওয়েবসাইটের মাধ্যমে শিক্ষার্থীরা তাদের পাঠ্যক্রমের বিভিন্ন বিষয়ের প্রয়োজনীয় নোট, সিলেবাস, মানবণ্টন এবং শিক্ষামূলক উপকরণ খুব সহজেই পেয়ে যাবে। বামপাশের মেনু থেকে যেকোনো সাবজেক্ট বেছে নিয়ে তার বিস্তারিত দেখতে পারবি।</p>
+            
+            <div class="portal-grid">
+                <div class="portal-box">
+                    <h3>👥 ক্লাস ক্যাপ্টেন প্যানেল</h3>
+                    <p>নবম শ্রেণীর ক্লাস ক্যাপ্টেনদের তালিকা, দায়িত্ব এবং জরুরি ঘোষণাগুলো এখানে পরিচালনা করা হয়।</p>
+                </div>
+                <div class="portal-box">
+                    <h3>📚 পাঠ্যসূচি ও সিলেবাস</h3>
+                    <p>অর্ধ-বার্ষিক ও বার্ষিক পরীক্ষার সম্পূর্ণ সিলেবাস, মানবণ্টন এবং প্রয়োজনীয় বইয়ের তালিকা।</p>
+                </div>
+                <div class="portal-box">
+                    <h3>📢 নোটিশ বোর্ড</h3>
+                    <p>স্কুলের বিভিন্ন গুরুত্বপূর্ণ নোটিশ, পরীক্ষার রুটিন এবং ক্লাসের আপডেট এখানে জানানো হবে।</p>
+                </div>
+                <div class="portal-box">
+                    <h3>🛠️ স্টাডি কর্নার</h3>
+                    <p>বিভিন্ন বিষয়ের নোট, গুরুত্বপূর্ণ প্রশ্ন এবং অনুশীলনের জন্য স্পেশাল লার্নিং ম্যাটেরিয়াল।</p>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- ২. বাংলা ২য় পত্র -->
-    <div id="bangla2" class="subject-view card">
-        <h1>বাংলা দ্বিতীয় পত্র (ব্যাকরণ ও নির্মিতি - ২০২৬)</h1>
-        
-        <div class="small-card">
-            <h2>পরীক্ষার মানবণ্টন ও সিলেবাস কাঠামো</h2>
-            <ul class="item-list">
-                <li>🔹 <strong>ব্যাকরণ অংশ (৩০ নম্বর):</strong> ধ্বনি তত্ত্ব, রূপ তত্ত্ব, বাক্য তত্ত্ব, অর্থ তত্ত্ব, বাগধারা, প্রবাদ-প্রবচন, সমাস, উপসর্গ, অনুসর্গ, কারক, বিভক্তি, বচন, উক্তি পরিবর্তন ও বাচ্য পরিবর্তন।</li>
-                <li>🔹 <strong>অনুচ্ছেদ রচনা (১০ নম্বর):</strong> জাতীয় পতাকা, রূপসী বাংলা, গ্রিনহাউজ প্রতিক্রিয়া, শৃঙ্খলাবোধ, জাদুঘর, বইপড়া, সড়ক দুর্ঘটনা, শিশুশ্রম, বিশ্ববিদ্যালয়, মোবাইল ফোন ইত্যাদি।</li>
-                <li>🔹 <strong>সারমর্ম বা সারাংশ (১০ নম্বর):</strong> পাঠ্যবই ও বিভিন্ন গুরুত্বপূর্ণ প্রাবন্ধিক অংশ থেকে সারমর্ম ও সারাংশ অনুশীলন।</li>
-                <li>🔹 <strong>ভাব-সম্প্রসারণ (১০ নম্বর):</strong> নৈতিক ও সামাজিক মূল্যবোধসম্পন্ন বিভিন্ন প্রবাদ ও প্রবচনের ভাব-সম্প্রসারণ।</li>
-                <li>🔹 <strong>চিঠি বা দরখাস্ত (১০ নম্বর):</strong> প্রাতিষ্ঠানিক দরখাস্ত, মানপত্র, বৃক্ষরোপণ জনমত গঠন, প্রশংসাপত্র, শিক্ষা সফর, যানজট নিরসনকল্পে বা এডিস মশা নিধনের আবেদন।</li>
-                <li>🔹 <strong>প্রতিবেদন রচনা (১০ নম্বর):</strong> সাহিত্য ও সাংস্কৃতিক সপ্তাহ পালন, নিত্যপ্রয়োজনীয় দ্রব্যের দাম বৃদ্ধি, নৈতিক অবক্ষয় রোধ ও মাদকবিরোধী সচেতনতা।</li>
-                <li>🔹 <strong>প্রবন্ধ রচনা (২০ নম্বর):</strong> স্বদেশপ্রেম, সময়ানুবর্তিতা, অধ্যবসায়, শিষ্টাচার, মানবাধিকার, বিজ্ঞান শিক্ষার প্রয়োজনীয়তা ইত্যাদি।</li>
-            </ul>
-        </div>
-
-        <div class="grid-container">
-            <div class="small-card" style="margin-bottom: 0;">
-                <h2>🌱 অর্ধবার্ষিক পরীক্ষার সিলেবাস (বাংলা ২য়)</h2>
-                <p>
-                    <strong>ব্যাকরণ:</strong> ভাষা, ব্যাকরণ, ধ্বনি ও বর্ণ, সন্ধি, কারক ও বিভক্তি, বাচ্য, উক্তি, বাগধারা ও প্রবাদ-প্রবচন。<br><br>
-                    <strong>নির্মিতি:</strong> অনুচ্ছেদ (জাতীয় পতাকা, রূপসী বাংলা, শৃঙ্খলাবোধ), প্রতিবেদন (নিত্যপ্রয়োজনীয় দ্রব্যের দাম বৃদ্ধি), দরখাস্ত (যানজট নিরসন, এডিস মশা নিধন), সারাংশ ও ভাব-সম্প্রসারণ।
-                </p>
-            </div>
-
-            <div class="small-card" style="margin-bottom: 0;">
-                <h2>🌻 বার্ষিক পরীক্ষার সিলেবাস (বাংলা ২য়)</h2>
-                <p>
-                    <strong>ব্যাকরণ:</strong> সমাস, উপসর্গ, অনুসর্গ, বচন, ক্রিয়াকাল, যতিচিহ্ন ও শব্দজোড়。<br><br>
-                    <strong>নির্মিতি:</strong> অনুচ্ছেদ (বইপড়া, সড়ক দুর্ঘটনা, মোবাইল ফোন), প্রতিবেদন (মাদককে না বলুন), দরখাস্ত (শিক্ষা সফর, প্রশংসাপত্র), সারমর্ম ও প্রবন্ধ রচনা।
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <!-- ৩. ইংরেজি ১ম পত্র -->
-    <div id="english1" class="subject-view card">
-        <h1>English First Paper (Marks Distribution & Syllabus)</h1>
-        
-        <div class="small-card">
-            <h2>Exam Marks Distribution (Total Marks: 100 | Time : 3 hours)</h2>
-            <ul class="item-list">
-                <li>🔹 <strong>Part-A : Reading Test : Marks : 70</strong><br>
-                    (1) Multiple Choice Questions (MCQ) - $1 \times 7 = 7$<br>
-                    (2) Answering questions (open ended and close ended) - $2 \times 5 = 10$<br>
-                    (3) Gap Filling (without clues) - $1 \times 5 = 5$<br>
-                    (4) Information transfer - $1 \times 5 = 5$<br>
-                    (5) Writing Summary - 10<br>
-                    (6) Matching - $1 \times 8 = 8$<br>
-                    (7) Rearranging - $1 \times 10 = 10$<br>
-                    (8) Answer questions from poems in English For Today - $2 \times 5 = 10$<br>
-                    (9) Answer questions from stories in English For Today - $2 \times 5 = 10$
-                </li>
-                <li>🔹 <strong>Part-B (Writing Test) : Marks : 30</strong><br>
-                    (10) Completing Stories - 15<br>
-                    (11) Writing dialogues - 15
-                </li>
-            </ul>
-        </div>
-
-        <div class="grid-container">
-            <div class="small-card" style="margin-bottom: 0;">
-                <h2>🌱 Half Yearly Examination</h2>
-                <p>
-                    📖 <strong>Part-A : Reading Test (TextBook: Unit- 1 to 6)</strong><br><br>
-                    ✍️ <strong>Part-B : Writing Test</strong><br>
-                    <strong>Completing story:</strong><br>
-                    (a) One there was a small boy...<br>
-                    (b) A long time ago, the town of Hamelin faced with a great problem.<br>
-                    (c) One day a crow became very thirsty..<br>
-                    (d) Robert Bruce was the king of Scotland...<br><br>
-                    <strong>Dialogue Writing:</strong><br>
-                    (a) About The merits and demerits of using mobile phone at teenage.<br>
-                    (b) About the necessity of reading newspaper.<br>
-                    (c) About the benefits of physical exercise.<br>
-                    (d) About the importance of learning English.<br><br>
-                    📚 <strong>Model Questions :</strong> 1 To 27
-                </p>
-            </div>
-
-            <div class="small-card" style="margin-bottom: 0;">
-                <h2>🌻 Annual Examination</h2>
-                <p>
-                    📖 <strong>Part-A : Reading Test (TextBook: Unit- 7 to 12)</strong><br><br>
-                    ✍️ <strong>Part-B : Writing Test</strong><br>
-                    <strong>Completing story:</strong><br>
-                    (a) There were two friends..<br>
-                    (b) There lived a farmer in a village..<br>
-                    (c) Long ago there was a famous king in..<br>
-                    (d) From the very young age, Mugdho..<br>
-                    (e) One day, a farmer was taking some sacks of.<br><br>
-                    <strong>Dialogue Writing:</strong><br>
-                    (a) About the bad effects of smoking.<br>
-                    (b) About digital Bangladesh.<br>
-                    (c) About your plan after SSC Exam.<br>
-                    (d) About how to improve your English.<br>
-                    (e) On the bad effects of drug addication.<br><br>
-                    📚 <strong>Model Questions :</strong> 28 To 56
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <!-- ৪. ইংরেজি ২য় পত্র -->
-    <div id="english2" class="subject-view card">
-        <h1>English Second Paper (Grammar & Composition)</h1>
-        
-        <div class="small-card">
-            <h2>Exam Marks Distribution (Total Marks: 100 | Time : 3 hours)</h2>
-            <ul class="item-list">
-                <li>🔹 <strong>Part-A : Grammar : Marks 60</strong><br>
-                    1. Gap filling With Clues - $1 \times 10 = 10$<br>
-                    2. Substitution table - $1 \times 5 = 5$<br>
-                    3. Using Right forms of verbs - $1 \times 10 = 10$<br>
-                    4. Changing sentences (Affirmative, Negative, Assertive, Interrogative, Exclamatory, Simple, Complex, Compound) - $1 \times 10 = 10$<br>
-                    5. Tag questions - $1 \times 5 = 5$<br>
-                    6. Suffix and prefix - $1 \times 5 = 5$<br>
-                    7. Preposition - $1 \times 5 = 5$<br>
-                    8. Connectors/ Linking words - $1 \times 5 = 5$<br>
-                    9. Punctuation and Capitalization - 5
-                </li>
-                <li>🔹 <strong>Part-B : Writing : Marks 40</strong><br>
-                    10. Writing Paragraph - 10<br>
-                    11. Writing E-mail/ letter/ application - 10<br>
-                    12. Writing Short Composition - 20
-                </li>
-            </ul>
-        </div>
-
-        <div class="grid-container">
-            <div class="small-card" style="margin-bottom: 0;">
-                <h2>🌱 Half Yearly Examination</h2>
-                <p>
-                    📖 <strong>Part-A (Grammar):</strong> The Sentence, Parts of Speech, The Verb, Tense, Voice, The Preposition, The Conjunction, The Case, Phrases and Clauses, Tag Questions, Conditionals, Changing Sentences, Use of Right form of verbs, Subject-Verb Agreement, Narative Styl, Capitalization and Punctuations, Uses of Suffixes and Prefixes, Completing Sentences, Connectors/Linking Words, Framing Wh-Questions, Idoms and Phrases.<br><br>
-                    ✍️ <strong>Part-B (Composition):</strong><br>
-                    <strong>Paragraph:</strong> (a) A Tea Stall, (b) School Library, (c) Environment Pollution, (d) Tree Plantation.<br>
-                    <strong>Informal Letter/E-mails:</strong> (a) Describing what you intend to do after your SSC Examination, (b) Write an e-mail congratulating friend on her brilliant success.<br>
-                    <strong>Formal Letter/E-mails:</strong> (a) Prayer for enhance the multimedia classroom facilities, (b) Prayer for permission and monetary assistance to go on a study tour.<br>
-                    <strong>Composition:</strong> (a) My Aim in Life (to be a Doctor), (b) Duties of a student, (c) My Favourite Hobby, (d) Science is Everyday life.<br><br>
-                    📚 <strong>Model Questions :</strong> 1 To 25
-                </p>
-            </div>
-
-            <div class="small-card" style="margin-bottom: 0;">
-                <h2>🌻 Annual Examination</h2>
-                <p>
-                    📖 <strong>Part-A (Grammar):</strong> The Sentence, Parts of Speech, The Verb, Tense, Voice, The Preposition, The Conjunction, The Case, Phrases and Clauses, Tag Questions, Conditionals, Changing Sentences, Use of Right form of verbs, Subject-Verb Agreement, Narative Styl, Capitalization and Punctuations, Uses of Suffixes and Prefixes, Completing Sentences, Connectors/Linking Words, Framing Wh-Questions, Idoms and Phrases.<br><br>
-                    ✍️ <strong>Part-B (Composition):</strong><br>
-                    <strong>Paragraph:</strong> (a) July Revolution-2024, (b) A Book Fair I have Recently Visited, (c) Traffic Jam, (d) A Street Hawker, (e) An Ideal Teacher.<br>
-                    <strong>Informal Letter/E-mails:</strong> (a) Write an email inviting friend to attend your birthday party, (b) Describing the picnic at a historical place of interest.<br>
-                    <strong>Formal Letter/E-mails:</strong> (a) Prayer for permission to go on an excursion to the sundarbanc, (b) Request for admission.<br>
-                    <strong>Composition:</strong> (a) The Season I Like Most, (b) Importance of Reading Newspaper, (c) Wonders of Modern Science, (d) A Village Fair.<br><br>
-                    📚 <strong>Model Questions :</strong> 26 To 50
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <!-- ৫. গণিত -->
-    <div id="math" class="subject-view card">
-        <h1>গণিত (পাঠ্যসূচি ও মানবণ্টন - ২০২৬)</h1>
-        
-        <div class="small-card">
-            <h2>পরীক্ষার মানবণ্টন (পূর্ণমান: ১০০ | সময়: ৩ ঘণ্টা)</h2>
-            <ul class="item-list">
-                <li>🔹 <strong>সৃজনশীল প্রশ্ন: ৫০ নম্বর ($৫ \times ১০ = ৫০$)</strong> (৮টি থেকে ৫টি দিতে হবে)</li>
-                <li>🔹 <strong>সংক্ষিপ্ত উত্তর প্রশ্ন: ২০ নম্বর ($১০ \times ২ = ২০$)</strong> (১৫টি থেকে ১০টি দিতে হবে)</li>
-                <li>🔹 <strong>বহুনির্বাচনি প্রশ্ন (MCQ): ৩০ নম্বর ($১ \times ৩০ = ৩০$)</strong> (৩০টি প্রশ্নই বাধ্যতামূলক)</li>
-            </ul>
-        </div>
-
-        <div class="grid-container">
-            <div class="small-card" style="margin-bottom: 0;">
-                <h2>🌱 অর্ধবার্ষিক পরীক্ষার সিলেবাস</h2>
-                <p>
-                    <strong>বীজগণিত:</strong> বাস্তব সংখ্যা, সেট ও ফাংশন, বীজগণিতীয় রাশি (৩.১-৩.৪), অনুপাত ও সমানুপাত (১১.১)।<br>
-                    <strong>জ্যামিতি:</strong> রেখা, কোণ ও ত্রিভুজ (৬.১, ৬.২), ব্যবহারিক জ্যামিতি (৭.১), বৃত্ত (৮.১, ৮.২)।<br>
-                    <strong>ত্রিকোণমিতি ও পরিমিতি:</strong> ত্রিকোণমিতিক অনুপাত (৯.১), পরিমিতি (১৬.১, ১৬.২)।<br>
-                    <strong>পরিসংখ্যান:</strong> ১৭তম অধ্যায়।
-                </p>
-            </div>
-
-            <div class="small-card" style="margin-bottom: 0;">
-                <h2>🌻 বার্ষিক পরীক্ষার সিলেবাস</h2>
-                <p>
-                    <strong>বীজগণিত:</strong> বীজগণিতীয় রাশি (৩.৫), সূচক ও লগারিদম, এক চলকবিশিষ্ট সমীকরণ, সরল সহসমীকরণ।<br>
-                    <strong>জ্যামিতি:</strong> ব্যবহারিক জ্যামিতি (৭.২), বৃত্ত (৮.৩, ৮.৪), ক্ষেত্রফল সম্পর্কিত উপপাদ্য ও সম্পাদ্য。<br>
-                    <strong>ত্রিকোণমিতি ও পরিমিতি:</strong> ত্রিকোণমিতিক অনুপাত (৯.২), পরিমিতি (১৬.৩, ১৬.৪)।<br>
-                    <strong>পরিসংখ্যান:</strong> ১৭তম অধ্যায়।
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <!-- ৬. ইসলাম শিক্ষা -->
-    <div id="islam" class="subject-view card">
-        <h1>ইসলাম শিক্ষা (পাঠ্যসূচি ও মানবণ্টন - ২০২৬)</h1>
-        
-        <div class="small-card">
-            <h2>পরীক্ষার মানবণ্টন (পূর্ণমান: ১০০ | সময়: ৩ ঘণ্টা)</h2>
-            <ul class="item-list">
-                <li>🔹 <strong>সৃজনশীল প্রশ্ন: ৫০ নম্বর</strong> (৮টি সৃজনশীল প্রশ্ন থাকবে, ৫টির উত্তর দিতে হবে; মান: $5 \times 10 = 50$)</li>
-                <li>🔹 <strong>সংক্ষিপ্ত প্রশ্ন: ২০ নম্বর</strong> (১৫টি প্রশ্ন থাকবে, যেকোনো ১০টির উত্তর দিতে হবে; মান: $10 \times 2 = 20$)</li>
-                <li>🔹 <strong>বহুনির্বাচনি প্রশ্ন (MCQ): ৩০ নম্বর</strong> (৩০টি বহুনির্বাচনি প্রশ্ন থাকবে, সবকটি প্রশ্নের উত্তর দিতে হবে; মান: $30 \times 1 = 30$)</li>
-            </ul>
-        </div>
-
-        <div class="grid-container">
-            <div class="small-card" style="margin-bottom: 0;">
-                <h2>🌱 অর্ধবার্ষিক পরীক্ষার সিলেবাস</h2>
+        <!-- ১. বাংলা ১ম পত্র -->
+        <div id="bangla1" class="subject-view card">
+            <h1>বাংলা প্রথম পত্র (পাঠ্যসূচি - ২০২৬)</h1>
+            
+            <div class="small-card">
+                <h2>পাঠ্য বইসমূহ</h2>
                 <ul class="item-list">
-                    <li><strong>১ম অধ্যায়:</strong> আকাইদ ও নৈতিক জীবন (ইসলাম থেকে নিফাক পর্যন্ত)</li>
-                    <li><strong>২য় অধ্যায়:</strong> শরিয়তের উৎস (শরিয়ত থেকে শরিয়তের উৎস : সুন্নাহ পর্যন্ত)</li>
-                    <li><strong>৩য় অধ্যায়:</strong> ইবাদত (ইবাদত থেকে হজ পর্যন্ত)</li>
-                    <li><strong>৪র্থ অধ্যায়:</strong> আখলাক (আখলাক থেকে ভ্রাতৃত্ববোধ ও সাম্প্রদায়িক সম্প্রীতি পর্যন্ত)</li>
-                    <li><strong>৫ম অধ্যায়:</strong> আদর্শ জীবনচরিত (মহানবি হযরত মুহাম্মদ (স.) এর সমকালীন সামাজিক ও সাংস্কৃতিক অবস্থা থেকে হযরত উমর (রা.) পর্যন্ত)</li>
+                    <li>১. বোর্ড বই</li>
+                    <li>২. ভাষাবিকাশ বাংলা ব্যাকরণ ও নির্মিতি</li>
+                    <li>৩. সৃজনশীল সহায়িকা বই</li>
                 </ul>
             </div>
 
-            <div class="small-card" style="margin-bottom: 0;">
-                <h2>🌻 বার্ষিক পরীক্ষার সিলেবাস</h2>
+            <div class="small-card">
+                <h2>পরীক্ষার মানবণ্টন (পূর্ণমান: ১০০ | সময়: ৩ ঘণ্টা)</h2>
                 <ul class="item-list">
-                    <li><strong>১ম অধ্যায়:</strong> আকাইদ ও নৈতিক জীবন (রিসালাত থেকে আখিরাত পর্যন্ত)</li>
-                    <li><strong>২য় অধ্যায়:</strong> শরিয়তের উৎস (হাদিস ১ (নিয়ত সম্পর্কিত হাদিস) থেকে হাদিস ১০ (যিকির সম্পর্কিত হাদিস) পর্যন্ত)</li>
-                    <li><strong>৩য় অধ্যায়:</strong> ইবাদত (মালিক-শ্রমিক সম্পর্ক থেকে শিক্ষা ও নৈতিকতা পর্যন্ত)</li>
-                    <li><strong>৪র্থ অধ্যায়:</strong> আখলাক (নারীর প্রতি সম্মানবোধ থেকে হিংসা পর্যন্ত)</li>
-                    <li><strong>৫ম অধ্যায়:</strong> আদর্শ জীবনচরিত (হযরত উসমান (রা.) থেকে রসায়ন শাস্ত্র পর্যন্ত)</li>
+                    <li>🔹 <strong>সৃজনশীল প্রশ্ন: ৫০ নম্বর</strong> (৮টি থেকে ৫টি প্রশ্নের উত্তর দিতে হবে, মান: $10 \times 5 = 50$)</li>
+                    <li>🔹 <strong>বর্ণনামূলক প্রশ্ন: ২০ নম্বর</strong> (উপন্যাস/নাটক অংশ থেকে ৪টি থেকে ২টি, মান: $10 \times 2 = 20$)</li>
+                    <li>🔹 <strong>বহুনির্বাচনি প্রশ্ন (MCQ): ৩০ নম্বর</strong> (৩০টি প্রশ্ন, সবগুলোর উত্তর দিতে হবে)</li>
                 </ul>
             </div>
+
+            <div class="grid-container">
+                <div class="small-card" style="margin-bottom: 0;">
+                    <h2>🌱 অর্ধ-বার্ষিক পরীক্ষা</h2>
+                    <p>
+                        📖 <strong>গদ্য:</strong> প্রত্যপকার, ফুলের বিবাহ, সুভা, বই পড়া, অভাগীর স্বর্গ。<br><br>
+                        📜 <strong>কবিতা:</strong> বন্দনা, কপোতাক্ষ নদ, প্রাণ, অম্ববধূ, ঝর্ণার গান。<br><br>
+                        📚 <strong>সহপাঠ:</strong> উপন্যাস (১৯৭১) প্রথমাংশ ও নাটক (বহিপীর) প্রথমাংশ।
+                    </p>
+                </div>
+
+                <div class="small-card" style="margin-bottom: 0;">
+                    <h2>🌻 বার্ষিক পরীক্ষা</h2>
+                    <p>
+                        📖 <strong>গদ্য:</strong> পল্লিসাহিত্য, আম-আঁটির ভেঁপু, নিরীহ বাঙালি, নিমগাছ, উপেক্ষিত শক্তির উদ্ঘাটন。<br><br>
+                        📜 <strong>কবিতা:</strong> জীবন বিনিময়, উমর ফারুক, সেইদিন এই মাঠ, যাব আমি তোমার দেশে, আমার দেশ。<br><br>
+                        📚 <strong>সহপাঠ:</strong> উপন্যাস (১৯৭১) শেষাংশ ও নাটক (বহিপীর) শেষাংশ।
+                    </p>
+                </div>
+            </div>
         </div>
+
+        <!-- ২. বাংলা ২য় পত্র -->
+        <div id="bangla2" class="subject-view card">
+            <h1>বাংলা দ্বিতীয় পত্র (ব্যাকরণ ও নির্মিতি - ২০২৬)</h1>
+            
+            <div class="small-card">
+                <h2>পরীক্ষার মানবণ্টন ও সিলেবাস কাঠামো</h2>
+                <ul class="item-list">
+                    <li>🔹 <strong>ব্যাকরণ অংশ (৩০ নম্বর):</strong> ধ্বনি তত্ত্ব, রূপ তত্ত্ব, বাক্য তত্ত্ব, অর্থ তত্ত্ব, বাগধারা, প্রবাদ-প্রবচন, সমাস, উপসর্গ, অনুসর্গ, কারক, বিভক্তি, বচন, উক্তি পরিবর্তন ও বাচ্য পরিবর্তন।</li>
+                    <li>🔹 <strong>অনুচ্ছেদ রচনা (১০ নম্বর):</strong> জাতীয় পতাকা, রূপসী বাংলা, গ্রিনহাউজ প্রতিক্রিয়া, শৃঙ্খলাবোধ, জাদুঘর, বইপড়া, সড়ক দুর্ঘটনা, শিশুশ্রম, বিশ্ববিদ্যালয়, মোবাইল ফোন ইত্যাদি।</li>
+                    <li>🔹 <strong>সারমর্ম বা সারাংশ (১০ নম্বর):</strong> পাঠ্যবই ও বিভিন্ন গুরুত্বপূর্ণ প্রাবন্ধিক অংশ থেকে সারমর্ম ও সারাংশ অনুশীলন।</li>
+                    <li>🔹 <strong>ভাব-সম্প্রসারণ (১০ নম্বর):</strong> নৈতিক ও সামাজিক মূল্যবোধসম্পন্ন বিভিন্ন প্রবাদ ও প্রবচনের ভাব-সম্প্রসারণ।</li>
+                    <li>🔹 <strong>চিঠি বা দরখাস্ত (১০ নম্বর):</strong> প্রাতিষ্ঠানিক দরখাস্ত, মানপত্র, বৃক্ষরোপণ জনমত গঠন, প্রশংসাপত্র, শিক্ষা সফর, যানজট নিরসনকল্পে বা এডিস মশা নিধনের আবেদন।</li>
+                    <li>🔹 <strong>প্রতিবেদন রচনা (১০ নম্বর):</strong> সাহিত্য ও সাংস্কৃতিক সপ্তাহ পালন, নিত্যপ্রয়োজনীয় দ্রব্যের দাম বৃদ্ধি, নৈতিক অবক্ষয় রোধ ও মাদকবিরোধী সচেতনতা।</li>
+                    <li>🔹 <strong>প্রবন্ধ রচনা (২০ নম্বর):</strong> স্বদেশপ্রেম, সময়ানুবর্তিতা, অধ্যবসায়, শিষ্টাচার, মানবাধিকার, বিজ্ঞান শিক্ষার প্রয়োজনীয়তা ইত্যাদি।</li>
+                </ul>
+            </div>
+
+            <div class="grid-container">
+                <div class="small-card" style="margin-bottom: 0;">
+                    <h2>🌱 অর্ধবার্ষিক পরীক্ষার সিলেবাস (বাংলা ২য়)</h2>
+                    <p>
+                        <strong>ব্যাকরণ:</strong> ভাষা, ব্যাকরণ, ধ্বনি ও বর্ণ, সন্ধি, কারক ও বিভক্তি, বাচ্য, উক্তি, বাগধারা ও প্রবাদ-প্রবচন。<br><br>
+                        <strong>নির্মিতি:</strong> অনুচ্ছেদ (জাতীয় পতাকা, রূপসী বাংলা, শৃঙ্খলাবোধ), প্রতিবেদন (নিত্যপ্রয়োজনীয় দ্রব্যের দাম বৃদ্ধি), দরখাস্ত (যানজট নিরসন, এডিস মশা নিধন), সারাংশ ও ভাব-সম্প্রসারণ।
+                    </p>
+                </div>
+
+                <div class="small-card" style="margin-bottom: 0;">
+                    <h2>🌻 বার্ষিক পরীক্ষার সিলেবাস (বাংলা ২য়)</h2>
+                    <p>
+                        <strong>ব্যাকরণ:</strong> সমাস, উপসর্গ, অনুসর্গ, বচন, ক্রিয়াকাল, যতিচিহ্ন ও শব্দজোড়。<br><br>
+                        <strong>নির্মিতি:</strong> অনুচ্ছেদ (বইপড়া, সড়ক দুর্ঘটনা, মোবাইল ফোন), প্রতিবেদন (মাদককে না বলুন), দরখাস্ত (শিক্ষা সফর, প্রশংসাপত্র), সারমর্ম ও প্রবন্ধ রচনা।
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ৩. ইংরেজি ১ম পত্র -->
+        <div id="english1" class="subject-view card">
+            <h1>English First Paper (Marks Distribution & Syllabus)</h1>
+            
+            <div class="small-card">
+                <h2>Exam Marks Distribution (Total Marks: 100 | Time : 3 hours)</h2>
+                <ul class="item-list">
+                    <li>🔹 <strong>Part-A : Reading Test : Marks : 70</strong><br>
+                        (1) Multiple Choice Questions (MCQ) - $1 \times 7 = 7$<br>
+                        (2) Answering questions (open ended and close ended) - $2 \times 5 = 10$<br>
+                        (3) Gap Filling (without clues) - $1 \times 5 = 5$<br>
+                        (4) Information transfer - $1 \times 5 = 5$<br>
+                        (5) Writing Summary - 10<br>
+                        (6) Matching - $1 \times 8 = 8$<br>
+                        (7) Rearranging - $1 \times 10 = 10$<br>
+                        (8) Answer questions from poems in English For Today - $2 \times 5 = 10$<br>
+                        (9) Answer questions from stories in English For Today - $2 \times 5 = 10$
+                    </li>
+                    <li>🔹 <strong>Part-B (Writing Test) : Marks : 30</strong><br>
+                        (10) Completing Stories - 15<br>
+                        (11) Writing dialogues - 15
+                    </li>
+                </ul>
+            </div>
+
+            <div class="grid-container">
+                <div class="small-card" style="margin-bottom: 0;">
+                    <h2>🌱 Half Yearly Examination</h2>
+                    <p>
+                        📖 <strong>Part-A : Reading Test (TextBook: Unit- 1 to 6)</strong><br><br>
+                        ✍️ <strong>Part-B : Writing Test</strong><br>
+                        <strong>Completing story:</strong><br>
+                        (a) One there was a small boy...<br>
+                        (b) A long time ago, the town of Hamelin faced with a great problem.<br>
+                        (c) One day a crow became very thirsty..<br>
+                        (d) Robert Bruce was the king of Scotland...<br><br>
+                        <strong>Dialogue Writing:</strong><br>
+                        (a) About The merits and demerits of using mobile phone at teenage.<br>
+                        (b) About the necessity of reading newspaper.<br>
+                        (c) About the benefits of physical exercise.<br>
+                        (d) About the importance of learning English.<br><br>
+                        📚 <strong>Model Questions :</strong> 1 To 27
+                    </p>
+                </div>
+
+                <div class="small-card" style="margin-bottom: 0;">
+                    <h2>🌻 Annual Examination</h2>
+                    <p>
+                        📖 <strong>Part-A : Reading Test (TextBook: Unit- 7 to 12)</strong><br><br>
+                        ✍️ <strong>Part-B : Writing Test</strong><br>
+                        <strong>Completing story:</strong><br>
+                        (a) There were two friends..<br>
+                        (b) There lived a farmer in a village..<br>
+                        (c) Long ago there was a famous king in..<br>
+                        (d) From the very young age, Mugdho..<br>
+                        (e) One day, a farmer was taking some sacks of.<br><br>
+                        <strong>Dialogue Writing:</strong><br>
+                        (a) About the bad effects of smoking.<br>
+                        (b) About digital Bangladesh.<br>
+                        (c) About your plan after SSC Exam.<br>
+                        (d) About how to improve your English.<br>
+                        (e) On the bad effects of drug addication.<br><br>
+                        📚 <strong>Model Questions :</strong> 28 To 56
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ৪. ইংরেজি ২য় পত্র -->
+        <div id="english2" class="subject-view card">
+            <h1>English Second Paper (Grammar & Composition)</h1>
+            
+            <div class="small-card">
+                <h2>Exam Marks Distribution (Total Marks: 100 | Time : 3 hours)</h2>
+                <ul class="item-list">
+                    <li>🔹 <strong>Part-A : Grammar : Marks 60</strong><br>
+                        1. Gap filling With Clues - $1 \times 10 = 10$<br>
+                        2. Substitution table - $1 \times 5 = 5$<br>
+                        3. Using Right forms of verbs - $1 \times 10 = 10$<br>
+                        4. Changing sentences (Affirmative, Negative, Assertive, Interrogative, Exclamatory, Simple, Complex, Compound) - $1 \times 10 = 10$<br>
+                        5. Tag questions - $1 \times 5 = 5$<br>
+                        6. Suffix and prefix - $1 \times 5 = 5$<br>
+                        7. Preposition - $1 \times 5 = 5$<br>
+                        8. Connectors/ Linking words - $1 \times 5 = 5$<br>
+                        9. Punctuation and Capitalization - 5
+                    </li>
+                    <li>🔹 <strong>Part-B : Writing : Marks 40</strong><br>
+                        10. Writing Paragraph - 10<br>
+                        11. Writing E-mail/ letter/ application - 10<br>
+                        12. Writing Short Composition - 20
+                    </li>
+                </ul>
+            </div>
+
+            <div class="grid-container">
+                <div class="small-card" style="margin-bottom: 0;">
+                    <h2>🌱 Half Yearly Examination</h2>
+                    <p>
+                        📖 <strong>Part-A (Grammar):</strong> The Sentence, Parts of Speech, The Verb, Tense, Voice, The Preposition, The Conjunction, The Case, Phrases and Clauses, Tag Questions, Conditionals, Changing Sentences, Use of Right form of verbs, Subject-Verb Agreement, Narative Styl, Capitalization and Punctuations, Uses of Suffixes and Prefixes, Completing Sentences, Connectors/Linking Words, Framing Wh-Questions, Idoms and Phrases.<br><br>
+                        ✍️ <strong>Part-B (Composition):</strong><br>
+                        <strong>Paragraph:</strong> (a) A Tea Stall, (b) School Library, (c) Environment Pollution, (d) Tree Plantation.<br>
+                        <strong>Informal Letter/E-mails:</strong> (a) Describing what you intend to do after your SSC Examination, (b) Write an e-mail congratulating friend on her brilliant success.<br>
+                        <strong>Formal Letter/E-mails:</strong> (a) Prayer for enhance the multimedia classroom facilities, (b) Prayer for permission and monetary assistance to go on a study tour.<br>
+                        <strong>Composition:</strong> (a) My Aim in Life (to be a Doctor), (b) Duties of a student, (c) My Favourite Hobby, (d) Science is Everyday life.<br><br>
+                        📚 <strong>Model Questions :</strong> 1 To 25
+                    </p>
+                </div>
+
+                <div class="small-card" style="margin-bottom: 0;">
+                    <h2>🌻 Annual Examination</h2>
+                    <p>
+                        📖 <strong>Part-A (Grammar):</strong> The Sentence, Parts of Speech, The Verb, Tense, Voice, The Preposition, The Conjunction, The Case, Phrases and Clauses, Tag Questions, Conditionals, Changing Sentences, Use of Right form of verbs, Subject-Verb Agreement, Narative Styl, Capitalization and Punctuations, Uses of Suffixes and Prefixes, Completing Sentences, Connectors/Linking Words, Framing Wh-Questions, Idoms and Phrases.<br><br>
+                        ✍️ <strong>Part-B (Composition):</strong><br>
+                        <strong>Paragraph:</strong> (a) July Revolution-2024, (b) A Book Fair I have Recently Visited, (c) Traffic Jam, (d) A Street Hawker, (e) An Ideal Teacher.<br>
+                        <strong>Informal Letter/E-mails:</strong> (a) Write an email inviting friend to attend your birthday party, (b) Describing the picnic at a historical place of interest.<br>
+                        <strong>Formal Letter/E-mails:</strong> (a) Prayer for permission to go on an excursion to the sundarbanc, (b) Request for admission.<br>
+                        <strong>Composition:</strong> (a) The Season I Like Most, (b) Importance of Reading Newspaper, (c) Wonders of Modern Science, (d) A Village Fair.<br><br>
+                        📚 <strong>Model Questions :</strong> 26 To 50
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ৫. গণিত -->
+        <div id="math" class="subject-view card">
+            <h1>গণিত (পাঠ্যসূচি ও মানবণ্টন - ২০২৬)</h1>
+            
+            <div class="small-card">
+                <h2>পরীক্ষার মানবণ্টন (পূর্ণমান: ১০০ | সময়: ৩ ঘণ্টা)</h2>
+                <ul class="item-list">
+                    <li>🔹 <strong>সৃজনশীল প্রশ্ন: ৫০ নম্বর ($৫ \times ১০ = ৫০$)</strong> (৮টি থেকে ৫টি দিতে হবে)</li>
+                    <li>🔹 <strong>সংক্ষিপ্ত উত্তর প্রশ্ন: ২০ নম্বর ($১০ \times ২ = ২০$)</strong> (১৫টি থেকে ১০টি দিতে হবে)</li>
+                    <li>🔹 <strong>বহুনির্বাচনি প্রশ্ন (MCQ): ৩০ নম্বর ($১ \times ৩০ = ৩০$)</strong> (৩০টি প্রশ্নই বাধ্যতামূলক)</li>
+                </ul>
+            </div>
+
+            <div class="grid-container">
+                <div class="small-card" style="margin-bottom: 0;">
+                    <h2>🌱 অর্ধবার্ষিক পরীক্ষার সিলেবাস</h2>
+                    <p>
+                        <strong>বীজগণিত:</strong> বাস্তব সংখ্যা, সেট ও ফাংশন, বীজগণিতীয় রাশি (৩.১-৩.৪), অনুপাত ও সমানুপাত (১১.১)।<br>
+                        <strong>জ্যামিতি:</strong> রেখা, কোণ ও ত্রিভুজ (৬.১, ৬.২), ব্যবহারিক জ্যামিতি (৭.১), বৃত্ত (৮.১, ৮.২)।<br>
+                        <strong>ত্রিকোণমিতি ও পরিমিতি:</strong> ত্রিকোণমিতিক অনুপাত (৯.১), পরিমিতি (১৬.১, ১৬.২)।<br>
+                        <strong>পরিসংখ্যান:</strong> ১৭তম অধ্যায়।
+                    </p>
+                </div>
+
+                <div class="small-card" style="margin-bottom: 0;">
+                    <h2>🌻 বার্ষিক পরীক্ষার সিলেবাস</h2>
+                    <p>
+                        <strong>বীজগণিত:</strong> বীজগণিতীয় রাশি (৩.৫), সূচক ও লগারিদম, এক চলকবিশিষ্ট সমীকরণ, সরল সহসমীকরণ।<br>
+                        <strong>জ্যামিতি:</strong> ব্যবহারিক জ্যামিতি (৭.২), বৃত্ত (৮.৩, ৮.৪), ক্ষেত্রফল সম্পর্কিত উপপাদ্য ও সম্পাদ্য。<br>
+                        <strong>ত্রিকোণমিতি ও পরিমিতি:</strong> ত্রিকোণমিতিক অনুপাত (৯.২), পরিমিতি (১৬.৩, ১৬.৪)।<br>
+                        <strong>পরিসংখ্যান:</strong> ১৭তম অধ্যায়।
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ৬. ইসলাম শিক্ষা -->
+        <div id="islam" class="subject-view card">
+            <h1>ইসলাম শিক্ষা (পাঠ্যসূচি ও মানবণ্টন - ২০২৬)</h1>
+            
+            <div class="small-card">
+                <h2>পরীক্ষার মানবণ্টন (পূর্ণমান: ১০০ | সময়: ৩ ঘণ্টা)</h2>
+                <ul class="item-list">
+                    <li>🔹 <strong>সৃজনশীল প্রশ্ন: ৫০ নম্বর</strong> (৮টি সৃজনশীল প্রশ্ন থাকবে, ৫টির উত্তর দিতে হবে; মান: $5 \times 10 = 50$)</li>
+                    <li>🔹 <strong>সংক্ষিপ্ত প্রশ্ন: ২০ নম্বর</strong> (১৫টি প্রশ্ন থাকবে, যেকোনো ১০টির উত্তর দিতে হবে; মান: $10 \times 2 = 20$)</li>
+                    <li>🔹 <strong>বহুনির্বাচনি প্রশ্ন (MCQ): ৩০ নম্বর</strong> (৩০টি বহুনির্বাচনি প্রশ্ন থাকবে, সবকটি প্রশ্নের উত্তর দিতে হবে; মান: $30 \times 1 = 30$)</li>
+                </ul>
+            </div>
+
+            <div class="grid-container">
+                <div class="small-card" style="margin-bottom: 0;">
+                    <h2>🌱 অর্ধবার্ষিক পরীক্ষার সিলেবাস</h2>
+                    <ul class="item-list">
+                        <li><strong>১ম অধ্যায়:</strong> আকাইদ ও নৈতিক জীবন (ইসলাম থেকে নিফাক পর্যন্ত)</li>
+                        <li><strong>২য় অধ্যায়:</strong> শরিয়তের উৎস (শরিয়ত থেকে শরিয়তের উৎস : সুন্নাহ পর্যন্ত)</li>
+                        <li><strong>৩য় অধ্যায়:</strong> ইবাদত (ইবাদত থেকে হজ পর্যন্ত)</li>
+                        <li><strong>৪র্থ অধ্যায়:</strong> আখলাক (আখলাক থেকে ভ্রাতৃত্ববোধ ও সাম্প্রদায়িক সম্প্রীতি পর্যন্ত)</li>
+                        <li><strong>৫ম অধ্যায়:</strong> আদর্শ জীবনচরিত (মহানবি হযরত মুহাম্মদ (স.) এর সমকালীন সামাজিক ও সাংস্কৃতিক অবস্থা থেকে হযরত উমর (রা.) পর্যন্ত)</li>
+                    </ul>
+                </div>
+
+                <div class="small-card" style="margin-bottom: 0;">
+                    <h2>🌻 বার্ষিক পরীক্ষার সিলেবাস</h2>
+                    <ul class="item-list">
+                        <li><strong>১ম অধ্যায়:</strong> আকাইদ ও নৈতিক জীবন (রিসালাত থেকে আখিরাত পর্যন্ত)</li>
+                        <li><strong>২য় অধ্যায়:</strong> শরিয়তের উৎস (হাদিস ১ (নিয়ত সম্পর্কিত হাদিস) থেকে হাদিস ১০ (যিকির সম্পর্কিত হাদিস) পর্যন্ত)</li>
+                        <li><strong>৩য় অধ্যায়:</strong> ইবাদত (মালিক-শ্রমিক সম্পর্ক থেকে শিক্ষা ও নৈতিকতা পর্যন্ত)</li>
+                        <li><strong>৪র্থ অধ্যায়:</strong> আখলাক (নারীর প্রতি সম্মানবোধ থেকে হিংসা পর্যন্ত)</li>
+                        <li><strong>৫ম অধ্যায়:</strong> আদর্শ জীবনচরিত (হযরত উসমান (রা.) থেকে রসায়ন শাস্ত্র পর্যন্ত)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- ৭. তথ্য ও যোগাযোগ প্রযুক্তি (আইসিটি) -->
+        <div id="ict" class="subject-view card">
+            <h1>তথ্য ও যোগাযোগ প্রযুক্তি (পাঠ্যসূচি ও মানবণ্টন - ২০২৬)</h1>
+            
+            <div class="small-card">
+                <h2>পরীক্ষার মানবণ্টন (পূর্ণমান: ৫০ | সময়: ২ ঘণ্টা)</h2>
+                <ul class="item-list">
+                    <li>🔹 <strong>তত্ত্বীয় অংশ: ২৫ নম্বর</strong>
+                        <ul style="margin: 5px 0 0 20px; list-style-type: circle;">
+                            <li><strong>সংক্ষিপ্ত প্রশ্ন: ১০ নম্বর</strong> ($২ \times ৫ = ১০$) — ৮টি প্রশ্ন থাকবে, যেকোনো ৫টির উত্তর দিতে হবে।</li>
+                            <li><strong>বহুনির্বাচনি প্রশ্ন (MCQ): ১৫ নম্বর</strong> ($১ \times ১৫ = ১৫$) — ১৫টি প্রশ্ন থাকবে, সবকটি প্রশ্নের উত্তর দিতে হবে।</li>
+                        </ul>
+                    </li>
+                    <li>🔹 <strong>ব্যবহারিক অংশ: ২৫ নম্বর</strong>
+                        <ul style="margin: 5px 0 0 20px; list-style-type: circle;">
+                            <li>যন্ত্র/উপকরণ সংযোজন ও ব্যবহার/প্রক্রিয়া অনুসরণ/উপাত্ত সংগ্রহ/উপাত্ত প্রক্রিয়াকরণ/অঙ্কন/পর্যবেক্ষণ/শনাক্তকরণ/অনুশীলন = ১৫</li>
+                            <li>প্রতিবেদন প্রশ্ন = ৫</li>
+                            <li>মৌখিক অভীক্ষা = ৫</li>
+                        </ul>
+                    </li>
+                    <li>📌 <strong>সর্বমোট মানবণ্টন:</strong> ২৫ (তত্ত্বীয়) + ২৫ (ব্যবহারিক) = ৫০ নম্বর।</li>
+                </ul>
+            </div>
+
+            <div class="small-card">
+                <h2>ব্যবহারিক অংশের জন্য নির্দেশনাবলী</h2>
+                <ul class="item-list">
+                    <li>• পাঠ্যক্রমে বর্ণিক ব্যবহারিক কাজগুলো শিক্ষা প্রতিষ্ঠানগুলো সম্পন্ন করবে। প্রয়োজনে শিক্ষা বোর্ড ব্যবহারিক কাজের একটি তালিকা শিক্ষা প্রতিষ্ঠানগুলোতে প্রেরণ করতে পারে।</li>
+                    <li>• সম্পন্ন ব্যবহারিক কাজের মধ্যে সর্বোচ্চ নম্বর প্রাপ্ত ০৩টি ব্যবহারিক কাজের নম্বর গড় করতে হবে।</li>
+                    <li>• ব্যবহারিক কাজের প্রাপ্ত গড় নম্বর শিক্ষা প্রতিষ্ঠান প্রধানগণ শিক্ষার্থীর নিবন্ধন নম্বর অনুযায়ী সংরক্ষণ করবেন।</li>
+                    <li>• শিক্ষা বোর্ডের নির্দেশনা অনুযায়ী শিক্ষার্থীদের প্রাপ্ত নম্বর শিক্ষা প্রতিষ্ঠানসমূহ সংশ্লিষ্ট শিক্ষা বোর্ডে প্রেরণ করবে।</li>
+                </ul>
+            </div>
+
+            <div class="grid-container">
+                <div class="small-card" style="margin-bottom: 0;">
+                    <h2>🌱 অর্ধবার্ষিক পরীক্ষার সিলেবাস</h2>
+                    <p>
+                        • প্রথম অধ্যায়<br>
+                        • দ্বিতীয় অধ্যায়
+                    </p>
+                </div>
+
+                <div class="small-card" style="margin-bottom: 0;">
+                    <h2>🌻 বার্ষিক পরীক্ষার সিলেবাস</h2>
+                    <p>
+                        • তৃতীয় অধ্যায়<br>
+                        • চতুর্থ অধ্যায়<br>
+                        • পঞ্চম অধ্যায়
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ৮. বাংলাদেশের ইতিহাস ও বিশ্বসভ্যতা -->
+        <div id="bgs" class="subject-view card">
+            <h1>বাংলাদেশের ইতিহাস ও বিশ্বসভ্যতা (পাঠ্যসূচি ও মানবণ্টন - ২০২৬)</h1>
+            
+            <div class="small-card">
+                <h2>পরীক্ষার মানবণ্টন (পূর্ণমান: ১০০ | সময়: ৩ ঘণ্টা)</h2>
+                <ul class="item-list">
+                    <li>🔹 <strong>সৃজনশীল প্রশ্ন: ৫০ নম্বর</strong> ($৫ \times ১০ = ৫০$) — ৮টি সৃজনশীল প্রশ্ন থাকবে, ৫টির উত্তর দিতে হবে।</li>
+                    <li>🔹 <strong>সংক্ষিপ্ত প্রশ্ন: ২০ নম্বর</strong> ($১০ \times ২ = ২০$) — ১৫টি প্রশ্ন থাকবে, যেকোনো ১০টির উত্তর দিতে হবে।</li>
+                    <li>🔹 <strong>বহুনির্বাচনি প্রশ্ন (MCQ): ৩০ নম্বর</strong> ($৩০ \times ১ = ৩০$) — ৩০টি বহুনির্বাচনি প্রশ্ন থাকবে, সবকটি প্রশ্নের উত্তর দিতে হবে।</li>
+                </ul>
+            </div>
+
+            <div class="grid-container">
+                <div class="small-card" style="margin-bottom: 0;">
+                    <h2>🌱 অর্ধবার্ষিক পরীক্ষার সিলেবাস</h2>
+                    <p>
+                        • ১য় অধ্যায়<br>
+                        • ২য় অধ্যায়<br>
+                        • ৩য় অধ্যায়<br>
+                        • ৪র্থ অধ্যায়
+                    </p>
+                </div>
+
+                <div class="small-card" style="margin-bottom: 0;">
+                    <h2>🌻 বার্ষিক পরীক্ষার সিলেবাস</h2>
+                    <p>
+                        • ৫ম অধ্যায়<br>
+                        • ৬ষ্ঠ অধ্যায়<br>
+                        • ৭ম অধ্যায়<br>
+                        • ৮ম অধ্যায়
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ৯. অর্থনীতি -->
+        <div id="economics" class="subject-view card">
+            <h1>অর্থনীতি (পাঠ্যসূচি ও মানবণ্টন - ২০২৬)</h1>
+            
+            <div class="small-card">
+                <h2>পরীক্ষার মানবণ্টন (পূর্ণমান: ১০০ | সময়: ৩ ঘণ্টা)</h2>
+                <ul class="item-list">
+                    <li>🔹 <strong>সৃজনশীল প্রশ্ন: ৫০ নম্বর</strong> ($৫ \times ১০ = ৫০$) — ৮টি সৃজনশীল প্রশ্ন থাকবে, ৫টির উত্তর দিতে হবে।</li>
+                    <li>🔹 <strong>সংক্ষিপ্ত প্রশ্ন: ২০ নম্বর</strong> ($১০ \times ২ = ২০$) — ১৫টি প্রশ্ন থাকবে, যেকোনো ১০টির উত্তর দিতে হবে।</li>
+                    <li>🔹 <strong>বহুনির্বাচনি প্রশ্ন (MCQ): ৩০ নম্বর</strong> ($৩০ \times ১ = ৩০$) — ৩০টি বহুনির্বাচনি প্রশ্ন থাকবে, সবকটি প্রশ্নের উত্তর দিতে হবে।</li>
+                </ul>
+            </div>
+
+            <div class="grid-container">
+                <div class="small-card" style="margin-bottom: 0;">
+                    <h2>🌱 অর্ধবার্ষিক পরীক্ষার সিলেবাস</h2>
+                    <p>
+                        • প্রথম অধ্যায়<br>
+                        • দ্বিতীয় অধ্যায়<br>
+                        • তৃতীয় অধ্যায়<br>
+                        • চতুর্থ অধ্যায়
+                    </p>
+                </div>
+
+                <div class="small-card" style="margin-bottom: 0;">
+                    <h2>🌻 বার্ষিক পরীক্ষার সিলেবাস</h2>
+                    <p>
+                        • পঞ্চম অধ্যায়<br>
+                        • ষষ্ঠ অধ্যায়<br>
+                        • সপ্তম অধ্যায়<br>
+                        • অষ্টম অধ্যায়
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ১০. ভূগোল ও পরিবেশ -->
+        <div id="geography" class="subject-view card">
+            <h1>ভূগোল ও পরিবেশ (পাঠ্যসূচি ও মানবণ্টন - ২০২৬)</h1>
+            
+            <div class="small-card">
+                <h2>পরীক্ষার মানবণ্টন (পূর্ণমান: ১০০ | সময়: ৩ ঘণ্টা)</h2>
+                <ul class="item-list">
+                    <li>🔹 <strong>সৃজনশীল প্রশ্ন: ৫০ নম্বর</strong> ($৫ \times ১০ = ৫০$) — ৮টি সৃজনশীল প্রশ্ন থাকবে, ৫টির উত্তর দিতে হবে।</li>
+                    <li>🔹 <strong>সংক্ষিপ্ত প্রশ্ন: ২০ নম্বর</strong> ($১০ \times ২ = ২০$) — ১৫টি প্রশ্ন থাকবে, যেকোনো ১০টির উত্তর দিতে হবে।</li>
+                    <li>🔹 <strong>বহুনির্বাচনি প্রশ্ন (MCQ): ৩০ নম্বর</strong> ($৩০ \times ১ = ৩০$) — ৩০টি বহুনির্বাচনি প্রশ্ন থাকবে, সবকটি প্রশ্নের উত্তর দিতে হবে।</li>
+                </ul>
+            </div>
+
+            <div class="grid-container">
+                <div class="small-card" style="margin-bottom: 0;">
+                    <h2>🌱 অর্ধবার্ষিক পরীক্ষার সিলেবাস</h2>
+                    <p>
+                        • প্রথম অধ্যায়<br>
+                        • দ্বিতীয় অধ্যায়<br>
+                        • তৃতীয় অধ্যায়<br>
+                        • চতুর্থ অধ্যায়<br>
+                        • পঞ্চম অধ্যায়<br>
+                        • ষষ্ঠ অধ্যায়
+                    </p>
+                </div>
+
+                <div class="small-card" style="margin-bottom: 0;">
+                    <h2>🌻 বার্ষিক পরীক্ষার সিলেবাস</h2>
+                    <p>
+                        • সপ্তম অধ্যায়<br>
+                        • অষ্টম অধ্যায়<br>
+                        • নবম অধ্যায়<br>
+                        • দশম অধ্যায়<br>
+                        • একাদশ অধ্যায়<br>
+                        • দ্বাদশ অধ্যায়
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ১১. পদার্থবিজ্ঞান -->
+        <div id="physics" class="subject-view card">
+            <h1>পদার্থবিজ্ঞান (পাঠ্যসূচি ও মানবণ্টন - ২০২৬)</h1>
+            
+            <div class="small-card">
+                <h2>পরীক্ষার মানবণ্টন (পূর্ণমান: ১০০ | সময়: ২ ঘণ্টা ৩০ মিনিট)</h2>
+                <ul class="item-list">
+                    <li>🔹 <strong>সৃজনশীল প্রশ্ন: ৪০ নম্বর</strong> ($১০ \times ৪ = ৪০$) — ৭টি সৃজনশীল প্রশ্ন থাকবে, যেকোনো ৪টি প্রশ্নের উত্তর দিতে হবে।</li>
+                    <li>🔹 <strong>সংক্ষিপ্ত প্রশ্ন উত্তর: ১০ নম্বর</strong> ($৫ \times ২ = ১০$) — ৭টি প্রশ্ন থাকবে, যেকোনো ৫টি প্রশ্নের উত্তর দিতে হবে।</li>
+                    <li>🔹 <strong>বহুনির্বাচনী প্রশ্ন (MCQ): ২৫ নম্বর</strong> ($১ \times ২৫ = ২৫$) — মোট ২৫টি বহুনির্বাচনী প্রশ্ন থাকবে, সবকটি প্রশ্নের উত্তর দিতে হবে (প্রতিটি প্রশ্নের মান ১)।</li>
+                    <li>🔹 <strong>ব্যবহারিক অংশ: ২৫ নম্বর</strong>
+                        <ul style="margin: 5px 0 0 20px; list-style-type: circle;">
+                            <li>পরীক্ষণ: যন্ত্র/উপকরণ সংযোজন ও ব্যবহার/সঠিক প্রক্রিয়া অনুসরণ/উপাত্ত সংগ্রহ ও প্রক্রিয়াকরণ/পর্যবেক্ষণ/অঙ্কন/শনাক্তকরণ/অনুশীলন = ১৫</li>
+                            <li>ব্যাখ্যাসহ ফলাফল উপস্থাপন = ৫</li>
+                            <li>মৌখিক অভীক্ষা = ৫</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="grid-container">
+                <div class="small-card" style="margin-bottom: 0;">
+                    <h2>🌱 অর্ধবার্ষিক পরীক্ষার সিলেবাস</h2>
+                    <p>
+                        • প্রথম অধ্যায়<br>
+                        • দ্বিতীয় অধ্যায়<br>
+                        • তৃতীয় অধ্যায়<br>
+                        • চতুর্থ অধ্যায়<br>
+                        • পঞ্চম অধ্যায়
+                    </p>
+                </div>
+
+                <div class="small-card" style="margin-bottom: 0;">
+                    <h2>🌻 বার্ষিক পরীক্ষার সিলেবাস</h2>
+                    <p>
+                        • ষষ্ঠ অধ্যায়<br>
+                        • সপ্তম অধ্যায়<br>
+                        • অষ্টম অধ্যায়<br>
+                        • নবম অধ্যায়
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ১২. জীববিজ্ঞান -->
+        <div id="biology" class="subject-view card">
+            <h1>জীববিজ্ঞান (পাঠ্যসূচি ও মানবণ্টন - ২০২৬)</h1>
+            
+            <div class="small-card">
+                <h2>পরীক্ষার মানবণ্টন (পূর্ণমান: ১০০ | সময়: ২ ঘণ্টা ৩০ মিনিট)</h2>
+                <ul class="item-list">
+                    <li>🔹 <strong>সৃজনশীল প্রশ্ন: ৪০ নম্বর</strong> ($১০ \times ৪ = ৪০$) — ৮টি সৃজনশীল প্রশ্ন থাকবে, যেকোনো ৪টি প্রশ্নের উত্তর দিতে হবে।</li>
+                    <li>🔹 <strong>সংক্ষিপ্ত প্রশ্ন উত্তর: ১০ নম্বর</strong> ($৫ \times ২ = ১০$) — ৭টি প্রশ্ন থাকবে, যেকোনো ৫টি প্রশ্নের উত্তর দিতে হবে।</li>
+                    <li>🔹 <strong>বহুনির্বাচনী প্রশ্ন (MCQ): ২৫ নম্বর</strong> ($১ \times ২৫ = ২৫$) — মোট ২৫টি বহুনির্বাচনী প্রশ্ন থাকবে, সবকটি প্রশ্নের উত্তর দিতে হবে (প্রতিটি প্রশ্নের মান ১)।</li>
+                    <li>🔹 <strong>ব্যবহারিক অংশ: ২৫ নম্বর</strong>
+                        <ul style="margin: 5px 0 0 20px; list-style-type: circle;">
+                            <li>পরীক্ষণ: যন্ত্র/উপকরণ সংযোজন ও ব্যবহার/সঠিক প্রক্রিয়া অনুসরণ/উপাত্ত সংগ্রহ ও প্রক্রিয়াকরণ/পর্যবেক্ষণ/অঙ্কন/শনাক্তকরণ/অনুশীলন = ১৫</li>
+                            <li>ব্যাখ্যাসহ ফলাফল উপস্থাপন = ৫</li>
+                            <li>মৌখিক অভীক্ষা = ৫</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="grid-container">
+                <div class="small-card" style="margin-bottom: 0;">
+                    <h2>🌱 অর্ধবার্ষিক পরীক্ষার সিলেবাস</h2>
+                    <p>
+                        • প্রথম অধ্যায়<br>
+                        • দ্বিতীয় অধ্যায়<br>
+                        • তৃতীয় অধ্যায়<br>
+                        • চতুর্থ অধ্যায়<br>
+                        • পঞ্চম অধ্যায়
+                    </p>
+                </div>
+
+                <div class="small-card" style="margin-bottom: 0;">
+                    <h2>🌻 বার্ষিক পরীক্ষার সিলেবাস</h2>
+                    <p>
+                        • ষষ্ঠ অধ্যায়<br>
+                        • সপ্তম অধ্যায়<br>
+                        • অষ্টম অধ্যায়<br>
+                        • নবম অধ্যায়<br>
+                        • দশম অধ্যায়
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ১৩. রসায়ন -->
+        <div id="chemistry" class="subject-view card">
+            <h1>রসায়ন (পাঠ্যসূচি ও মানবণ্টন - ২০২৬)</h1>
+            
+            <div class="small-card">
+                <h2>পরীক্ষার মানবণ্টন (পূর্ণমান: ১০০ | সময়: ২ ঘণ্টা ৩০ মিনিট)</h2>
+                <ul class="item-list">
+                    <li>🔹 <strong>সৃজনশীল প্রশ্ন: ৪০ নম্বর</strong> ($১০ \times ৪ = ৪০$) — ৭টি সৃজনশীল প্রশ্ন থাকবে, যেকোনো ৪টি প্রশ্নের উত্তর দিতে হবে।</li>
+                    <li>🔹 <strong>সংক্ষিপ্ত প্রশ্ন উত্তর: ১০ নম্বর</strong> ($৫ \times ২ = ১০$) — ৭টি প্রশ্ন থাকবে, যেকোনো ৫টি প্রশ্নের উত্তর দিতে হবে।</li>
+                    <li>🔹 <strong>বহুনির্বাচনী প্রশ্ন (MCQ): ২৫ নম্বর</strong> ($১ \times ২৫ = ২৫$) — মোট ২৫টি বহুনির্বাচনী প্রশ্ন থাকবে, সবকটি প্রশ্নের উত্তর দিতে হবে (প্রতিটি প্রশ্নের মান ১)।</li>
+                    <li>🔹 <strong>ব্যবহারিক অংশ: ২৫ নম্বর</strong>
+                        <ul style="margin: 5px 0 0 20px; list-style-type: circle;">
+                            <li>পরীক্ষণ: যন্ত্র/উপকরণ সংযোজন ও ব্যবহার/সঠিক প্রক্রিয়া অনুসরণ/উপাত্ত সংগ্রহ ও প্রক্রিয়াকরণ/পর্যবেক্ষণ/অঙ্কন/শনাক্তকরণ/অনুশীলন = ১৫</li>
+                            <li>ব্যাখ্যাসহ ফলাফল উপস্থাপন = ৫</li>
+                            <li>মৌখিক অভীক্ষা = ৫</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="grid-container">
+                <div class="small-card" style="margin-bottom: 0;">
+                    <h2>🌱 অর্ধবার্ষিক পরীক্ষার সিলেবাস</h2>
+                    <p>
+                        • প্রথম অধ্যায়<br>
+                        • দ্বিতীয় অধ্যায়<br>
+                        • তৃতীয় অধ্যায়<br>
+                        • চতুর্থ অধ্যায়<br>
+                        • পঞ্চম অধ্যায়
+                    </p>
+                </div>
+
+                <div class="small-card" style="margin-bottom: 0;">
+                    <h2>🌻 বার্ষিক পরীক্ষার সিলেবাস</h2>
+                    <p>
+                        • ষষ্ঠ অধ্যায়<br>
+                        • সপ্তম অধ্যায়<br>
+                        • অষ্টম অধ্যায়<br>
+                        • নবম অধ্যায়
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ১৪. উচ্চতর গণিত -->
+        <div id="higher-math" class="subject-view card">
+            <h1>উচ্চতর গণিত (পাঠ্যসূচি ও মানবণ্টন - ২০২৬)</h1>
+            
+            <div class="small-card">
+                <h2>পরীক্ষার মানবণ্টন (পূর্ণমান: ১০০ | সময়: ২ ঘণ্টা ৩০ মিনিট)</h2>
+                <ul class="item-list">
+                    <li>🔹 <strong>সৃজনশীল প্রশ্ন: ৪০ নম্বর ($১০ \times ৪ = ৮০$)</strong><br>
+                        ক-বিভাগ (বীজগণিত) হতে ৩টি, খ-বিভাগ (জ্যামিতি ও ভেক্টর) হতে ২টি, গ-বিভাগ (ত্রিকোণমিতি ও সম্ভাবনা) হতে ২টিসহ মোট ৭টি প্রশ্ন থাকবে। প্রত্যেক বিভাগ হতে ন্যূনতম একটি করে মোট ৪টি প্রশ্নের উত্তর দিতে হবে।
+                    </li>
+                    <li>🔹 <strong>সংক্ষিপ্ত উত্তর প্রশ্ন: ১০ নম্বর ($২ \times ৫ = ১০$)</strong><br>
+                        ৭টি প্রশ্ন থাকবে, যেকোনো ৫টির উত্তর দিতে হবে।
+                    </li>
+                    <li>🔹 <strong>বহুনির্বাচনী প্রশ্ন (MCQ): ২৫ নম্বর ($১ \times ২৫ = ২৫$)</strong><br>
+                        বীজগণিত থেকে ৮-১২টি, জ্যামিতি থেকে ৮-১২টি, ত্রিকোণমিতি ও সম্ভাবনা অংশ থেকে ৫টিসহ মোট ২৫টি প্রশ্ন থাকবে। সবকটির প্রশ্নের উত্তর দিতে হবে।
+                    </li>
+                    <li>🔹 <strong>ব্যবহারিক অংশ: ২৫ নম্বর</strong><br>
+                        পরীক্ষণের ৫টি কার্যক্রম থাকবে। ২টি কার্যক্রম সম্পন্ন করতে হবে।<br>
+                        • পরীক্ষণ: যন্ত্র/উপকরণ সংযোজন ও ব্যবহার/সঠিক প্রক্রিয়া অনুসরণ/উপাত্ত সংগ্রহ ও প্রক্রিয়াকরণ/পর্যবেক্ষণ/অঙ্কন/শনাক্তকরণ/অনুশীলন = ২০<br>
+                        • ব্যাখ্যাসহ ফলাফল উপস্থাপন = ৫<br>
+                        • মৌখিক অভীক্ষা = ৫<br>
+                        <em>(সর্বমোট: ১০০ নম্বর)</em>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="grid-container">
+                <div class="small-card" style="margin-bottom: 0;">
+                    <h2>🌱 অর্ধবার্ষিক পরীক্ষার সিলেবাস</h2>
+                    <p>
+                        <strong>বীজগণিত:</strong><br>
+                        ১। প্রথম অধ্যায় : সেট ও ফাংশন<br>
+                        ২। দ্বিতীয় অধ্যায় : বীজগণিতীয় রাশি<br>
+                        ৩। পঞ্চম অধ্যায় : সমীকরণ<br>
+                        ৪। সপ্তম অধ্যায় : অসীম ধারা (অনুশীলনী-৭.১)<br><br>
+                        <strong>জ্যামিতি ও ভেক্টর:</strong><br>
+                        ১। তৃতীয় অধ্যায় : জ্যামিতি (অনুশীলনী-৩.১)<br>
+                        ২। একাদশ অধ্যায় : স্থানাঙ্ক জ্যামিতি (অনুশীলনী-১১.১, ১১.২)<br>
+                        ৩। দ্বাদশ অধ্যায় : সমতলীয় ভেক্টর<br><br>
+                        <strong>ত্রিকোণমিতি ও সম্ভাবনা:</strong><br>
+                        অষ্টম অধ্যায় (অনুঃ ৮.১ ও ৮.২), চতুর্দশ অধ্যায় : সম্ভাবনা।
+                    </p>
+                </div>
+
+                <div class="small-card" style="margin-bottom: 0;">
+                    <h2>🌻 বার্ষিক পরীক্ষার সিলেবাস</h2>
+                    <p>
+                        <strong>বীজগণিত:</strong><br>
+                        ১। ষষ্ঠ অধ্যায় : অসমতা<br>
+                        ২। সপ্তম অধ্যায় : অসীম ধারা (অনুশীলনী-৭.২)<br>
+                        ৩। নবম অধ্যায় : সূচকীয় ও লগারিদমীয় ফাংশন (অনুশীলনী-৯.১)<br>
+                        ৪। দশম অধ্যায় : দ্বিপদী বিস্তৃতি (অনুশীলনী-১০.১)<br><br>
+                        <strong>জ্যামিতি ও ভেক্টর:</strong><br>
+                        ১। তৃতীয় অধ্যায় : জ্যামিতি (অনুশীলনী-৩.২)<br>
+                        ২। চতুর্থ অধ্যায় : জ্যামিতিক অঙ্কন<br>
+                        ৩। একাদশ অধ্যায় : স্থানাঙ্ক জ্যামিতি (অনুশীলনী-৮.৩)<br>
+                        ৪। ত্রয়োদশ অধ্যায় : ঘন জ্যামিতি<br><br>
+                        <strong>ত্রিকোণমিতি ও সম্ভাবনা:</strong><br>
+                        অষ্টম অধ্যায় (অনুঃ ৮.২, ৮.৩), চতুর্দশ অধ্যায় : সম্ভাবনা।
+                    </p>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <!-- ৭. তথ্য ও যোগাযোগ প্রযুক্তি (আইসিটি) -->
-    <div id="ict" class="subject-view card">
-        <h1>তথ্য ও যোগাযোগ প্রযুক্তি (পাঠ্যসূচি ও মানবণ্টন - ২০২৬)</h1>
-        
-        <div class="small-card">
-            <h2>পরীক্ষার মানবণ্টন (পূর্ণমান: ৫০ | সময়: ২ ঘণ্টা)</h2>
-            <ul class="item-list">
-                <li>🔹 <strong>তত্ত্বীয় অংশ: ২৫ নম্বর</strong>
-                    <ul style="margin: 5px 0 0 20px; list-style-type: circle;">
-                        <li><strong>সংক্ষিপ্ত প্রশ্ন: ১০ নম্বর</strong> ($২ \times ৫ = ১০$) — ৮টি প্রশ্ন থাকবে, যেকোনো ৫টির উত্তর দিতে হবে।</li>
-                        <li><strong>বহুনির্বাচনি প্রশ্ন (MCQ): ১৫ নম্বর</strong> ($১ \times ১৫ = ১৫$) — ১৫টি প্রশ্ন থাকবে, সবকটি প্রশ্নের উত্তর দিতে হবে।</li>
-                    </ul>
-                </li>
-                <li>🔹 <strong>ব্যবহারিক অংশ: ২৫ নম্বর</strong>
-                    <ul style="margin: 5px 0 0 20px; list-style-type: circle;">
-                        <li>যন্ত্র/উপকরণ সংযোজন ও ব্যবহার/প্রক্রিয়া অনুসরণ/উপাত্ত সংগ্রহ/উপাত্ত প্রক্রিয়াকরণ</li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-    </div>
-
-</div>
-
-<script>
-    // জাভাস্ক্রিপ্ট ফাংশন বিভিন্ন ট্যাব বা সাবজেক্ট দেখানোর জন্য
-    function showHome() {
-        let views = document.querySelectorAll('.subject-view');
-        views.forEach(v => v.style.display = 'none');
-        document.getElementById('home-view').style.display = 'block';
-        
-        // মোবাইল ভিউতে মেনু বন্ধ করার জন্য
-        if(window.innerWidth <= 900) {
-            document.getElementById('sidebar').classList.remove('active');
-        }
-    }
-
-    function showSubject(id) {
-        let views = document.querySelectorAll('.subject-view');
-        views.forEach(v => v.style.display = 'none');
-        
-        let target = document.getElementById(id);
-        if(target) {
-            target.style.display = 'block';
-        } else {
-            // যদি কোনো সাবজেক্টের আলাদা ডিভ না থাকে, তবে হোম পেজে রাখবে এবং অ্যালার্ট দেবে
+    <script>
+        function showHome() {
+            let views = document.getElementsByClassName('subject-view');
+            for (let i = 0; i < views.length; i++) {
+                views[i].style.display = 'none';
+            }
             document.getElementById('home-view').style.display = 'block';
+            
+            let buttons = document.querySelectorAll('.sidebar ul li button');
+            buttons.forEach(btn => btn.classList.remove('active'));
         }
 
-        // মোবাইল ভিউতে মেনু বন্ধ করার জন্য
-        if(window.innerWidth <= 900) {
-            document.getElementById('sidebar').classList.remove('active');
-        }
-    }
+        function showSubject(subjectId) {
+            let views = document.getElementsByClassName('subject-view');
+            for (let i = 0; i < views.length; i++) {
+                views[i].style.display = 'none';
+            }
+            let targetView = document.getElementById(subjectId);
+            targetView.style.display = 'block';
+            
+            // রি-ট্রিগার অ্যানিমেশন
+            targetView.style.animation = 'none';
+            targetView.offsetHeight; // ট্রিগার রিফ্লো
+            targetView.style.animation = 'fadeIn 0.5s ease-in-out';
 
-    function toggleMenu() {
-        let sidebar = document.getElementById('sidebar');
-        sidebar.classList.toggle('active');
-    }
-</script>
+            let buttons = document.querySelectorAll('.sidebar ul li button');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
