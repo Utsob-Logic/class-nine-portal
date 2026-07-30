@@ -33,7 +33,7 @@
 --glass-border: rgba(0, 0, 0, 0.1);
 --sidebar-bg: rgba(255, 255, 255, 0.95);
 }
-* {
+*{
 box-sizing: border-box;
 margin: 0;
 padding: 0;
@@ -52,7 +52,7 @@ transition: background 0.4s ease, color 0.4s ease;
 50% { background-position: 100% 50%; }
 100% { background-position: 0% 50%; }
 }
-/* ফ্লোটিং একশন বাটন গ্রুপ */
+/* ফ্লোটিং একশন বাটন গ্রুপ - স্ক্রল করলে হাইড হওয়ার ট্রানজিশন যোগ করা হয়েছে */
 .floating-action-group {
 position: fixed;
 bottom: 25px;
@@ -61,6 +61,12 @@ display: flex;
 flex-direction: column;
 gap: 12px;
 z-index: 2000;
+transition: transform 0.4s ease, opacity 0.4s ease;
+}
+.floating-action-group.hidden {
+transform: translateY(120px);
+opacity: 0;
+pointer-events: none;
 }
 .floating-btn {
 background: linear-gradient(135deg, #6366f1, #ec4899);
@@ -730,7 +736,7 @@ transition: all 0.3s ease;
 <!-- অডিও ও সাউন্ড ইফেক্ট এলিমেন্ট -->
 <audio id="clickSound" src="click.mp3" preload="auto"></audio>
 <!-- ফ্লোটিং একশন বাটন গ্রুপ -->
-<div class="floating-action-group">
+<div class="floating-action-group" id="floatingActionGroup">
 <button class="floating-btn scroll-top-btn" id="scrollTopBtn" onclick="playSound(); scrollToTop();" title="উপরে যান">↑</button>
 <button class="floating-btn" onclick="playSound(); toggleTheme();" id="themeToggleBtn" title="থিম পরিবর্তন করুন" style="background: linear-gradient(135deg, #f59e0b, #10b981);">থিম: ডিফল্ট</button>
 <button class="floating-btn" onclick="playSound(); openMathPuzzleGame();" title="ম্যাথ পাজল গেম" style="background: linear-gradient(135deg, #8b5cf6, #ec4899);">গেম</button>
@@ -794,7 +800,7 @@ transition: all 0.3s ease;
 <div class="sidebar-school-title">NM HIGH SCHOOL</div>
 <div class="sidebar-school-sub">ডিজিটাল পোর্টাল ও সিলেবাস ২০২৬</div>
 <div class="sidebar-widget">
-<h4>বিষয় খুজঁ নু</h4>
+<h4>বিষয় খুঁজুন</h4>
 <input type="text" id="liveSearchInput" class="sidebar-search-input" placeholder="নাম লিখুন..." onkeyup="filterSidebarMenu()">
 </div>
 <h2>মেনু ও বিষয়সমূহ</h2>
@@ -868,7 +874,7 @@ transition: all 0.3s ease;
 </div>
 </div>
 <div class="hover-card" style="border-left-color: #10b981; margin-top: 20px;">
-<h2 style="color: #34d399; margin-bottom: 10px; font-size: 1.1rem;">📌 পোর্টাল ব্যবহারের সহজ গাইডলাইন ও নিয়মাবলী</h2>
+<h2 style="color: #34d399; margin-bottom: 10px; font-size: 1.1rem;">গাইডলাইন ও নিয়মাবলী</h2>
 <ul class="syllabus-list">
 <li><strong>বাম দিকের মেনু:</strong> যেকোনো বিষয়ের সিলেবাস দেখতে পাশের তালিকা থেকে পছন্দের বিষয়ে ক্লিক করো।</li>
 <li><strong>আমার নোটস (My Notes):</strong> নিজের পছন্দমতো অধ্যায়ে গুরুত্বপূর্ণ পয়েন্ট লিখে 'নোট সেভ করো' বাটনে ক্লিক করলে তা ব্রাউজারে সংরক্ষিত থাকবে।</li>
@@ -877,7 +883,7 @@ transition: all 0.3s ease;
 </ul>
 </div>
 <div class="hover-card" style="border-left-color: #f59e0b; margin-top: 20px;">
-<h2 style="color: #fbbf24; margin-bottom: 10px; font-size: 1.1rem;">🚀 ভবিষ্যতে যা যা যোগ করা হবে (Upcoming Features)</h2>
+<h2 style="color: #fbbf24; margin-bottom: 10px; font-size: 1.1rem;">ভবিষ্যতে যা যা যোগ করা হবে (Upcoming Features)</h2>
 <ul class="syllabus-list">
 <li>অনলাইন কুইজ কম্পিটিশন ও লিডারবোর্ড সিস্টেম।</li>
 <li>পড়ার মনোযোগ বাড়ানোর জন্য ব্যাকগ্রাউন্ড অ্যাম্বিয়েন্ট লফাই সাউন্ড প্লেয়ার।</li>
@@ -886,8 +892,8 @@ transition: all 0.3s ease;
 </ul>
 </div>
 <div class="hover-card" style="border-left-color: #38bdf8; margin-top: 20px; text-align: center;">
-<h2 style="color: #38bdf8; margin-bottom: 6px; font-size: 1.05rem;">💡 আজকের ছোট্ট স্টাডি টিপস</h2>
-<p style="color: var(--text-sub); font-size: 0.9rem;"> "পড়ার সময় একটানা ১ ঘণ্টা না পড়ে, প্রতি ২৫ মিনিট পর ৫ মিনিট ব্রেন ব্রেক নাও (পোমোদোরো টেকনিক)। এতে পড়া দ্রুত মাথায় থাকবে এবং ক্লান্তি দূর হবে!"</p>
+<h2 style="color: #38bdf8; margin-bottom: 6px; font-size: 1.05rem;">আজকের ছোট্ট স্টাডি টিপস</h2>
+<p style="color: var(--text-sub); font-size: 0.9rem;">"পড়ার সময় একটানা ১ ঘণ্টা না পড়ে, প্রতি ২৫ মিনিট পর ৫ মিনিট ব্রেন ব্রেক নাও (পোমোদোরো টেকনিক)। এতে পড়া দ্রুত মাথায় থাকবে এবং ক্লান্তি দূর হবে!"</p>
 </div>
 </div>
 <!-- অন্যান্য (Others) মেইন ড্যাশবোর্ড ভিউ -->
@@ -1040,7 +1046,7 @@ transition: all 0.3s ease;
 </div>
 </div>
 <div id="subjectChapterContainer" style="display: none; margin-top: 15px;">
-<button class="back-to-notes-btn" onclick="playSound(); backToSubjectsGrid();">সকল বিষয়ের লিস্টে ফিরে যাও</button>
+<button class="back-to-notes-btn" onclick="playSound(); backToSubjectsGrid();">← সকল বিষয়ের লিস্টে ফিরে যাও</button>
 <h2 id="selectedSubjectTitle" style="color: #38bdf8; font-size: 1.1rem; margin-bottom: 15px;"></h2>
 <div id="chapterListArea" class="chapter-list-container"></div>
 </div>
@@ -1599,17 +1605,34 @@ document.getElementById('liveSearchInput').value = '';
 filterSidebarMenu();
 showHome();
 }
+
+/* স্ক্রল করার সময় ফ্লোটিং বাটন হাইড/শো করার লজিক */
+let lastScrollTop = 0;
 window.onscroll = function() {
 let scrollBtn = document.getElementById('scrollTopBtn');
-if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+let floatingGroup = document.getElementById('floatingActionGroup');
+let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+// স্ক্রল বাটন শো/হাইড
+if (currentScroll > 200) {
 scrollBtn.style.display = 'flex';
 } else {
 scrollBtn.style.display = 'none';
 }
+
+// নিচের দিকে স্ক্রল করলে ফ্লোটিং বাটনগুলো লুকিয়ে যাবে, ওপরের দিকে গেলে আবার আসবে
+if (currentScroll > lastScrollTop && currentScroll > 100) {
+floatingGroup.classList.add('hidden');
+} else {
+floatingGroup.classList.remove('hidden');
+}
+lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
 };
+
 function scrollToTop() {
 window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
 /* ম্যাথ পাজল গেম লজিক */
 const mathPuzzlesData = [
 { level: 1, question: "পরের সংখ্যাটি কত হবে? ২, ৪, ৬, ৮, ...", answers: ["১০", "10"], hint: "প্রতিবার ২ করে বাড়ছে।" },
@@ -1658,7 +1681,7 @@ if (currentPuzzleIndex >= mathPuzzlesData.length) {
 currentPuzzleIndex = 0;
 }
 let p = mathPuzzlesData[currentPuzzleIndex];
-document.getElementById('puzzleLevelTitle').innerText = 'লেভেল ' + p.level + ' / ' + mathPuzzlesData.length;
+document.getElementById('puzzleLevelTitle').innerText = 'লেভেল ' + p.level + '/' + mathPuzzlesData.length;
 document.getElementById('puzzleQuestionText').innerText = p.question;
 document.getElementById('puzzleAnswerInput').value = '';
 document.getElementById('puzzleFeedback').innerText = '';
