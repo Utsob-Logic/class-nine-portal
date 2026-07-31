@@ -33,7 +33,7 @@
 --glass-border: rgba(0, 0, 0, 0.1);
 --sidebar-bg: rgba(255, 255, 255, 0.95);
 }
-*{
+* {
 box-sizing: border-box;
 margin: 0;
 padding: 0;
@@ -52,7 +52,7 @@ transition: background 0.4s ease, color 0.4s ease;
 50% { background-position: 100% 50%; }
 100% { background-position: 0% 50%; }
 }
-/* ফ্লোটিং একশন বাটন গ্রুপ - স্ক্রল করলে হাইড হওয়ার ট্রানজিশন যোগ করা হয়েছে */
+/* ফ্লোটিং একশন বাটন গ্রুপ */
 .floating-action-group {
 position: fixed;
 bottom: 25px;
@@ -413,11 +413,12 @@ margin-bottom: 8px;
 word-break: break-word;
 }
 .syllabus-list li::before {
-content: '→';
+content: '';
 position: absolute;
 left: 0;
-color: #818cf8;
-font-weight: bold;
+color: #f472b6;
+font-size: 0.75rem;
+top: 2px;
 }
 /* স্কুল হেডার বড় বক্স */
 .school-header-box {
@@ -856,45 +857,78 @@ transition: all 0.3s ease;
 <div class="stat-label">বোর্ড ও ঐচ্ছিক বিষয়</div>
 </div>
 </div>
-<div class="hover-card">
-<h2 style="color: #60a5fa; margin-bottom: 10px; font-size: 1.1rem;">স্বাগতম ডিজিটাল অ্যাকাডেমিক ও সিলেবাস পোর্টালে</h2>
-<p style="color: var(--text-sub); line-height: 1.7; font-size: 0.9rem;">
-আমাদের এই পোর্টালে নবম শ্রেণির মূল বিষয়গুলোর সিলেবাস, মানবণ্টন ও নোট তৈরি করার সুবিধা রয়েছে। বাম দিকের মেনু বা ফ্লোটিং বাটন চেপে খুব সহজেই যেকোনো বিষয় পরিবর্তন করতে পারবি!
-</p>
+
+<!-- কার্ড স্টাইল মডিফাইড হোম পেজ কনটেন্ট -->
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+  
+  <div class="hover-card" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(236, 72, 153, 0.2)); border: 1px solid rgba(255, 255, 255, 0.25); backdrop-filter: blur(12px); margin-bottom: 0;">
+    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+      <span style="font-size: 1.8rem;">✨</span>
+      <h2 style="font-size: 1.15rem; background: linear-gradient(90deg, #38bdf8, #f472b6, #fbbf24); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900; letter-spacing: 0.5px;">ডিজিটাল অ্যাকাডেমিক পোর্টাল ও ঐতিহ্য</h2>
+    </div>
+    <p style="color: var(--text-main); line-height: 1.8; font-size: 0.9rem; font-weight: 500;">
+      আমাদের এই ডায়নামিক পোর্টালে NM High School এর পাশাপাশি ঐতিহ্যবাহী <strong>নরিচা মসুরিয়া হাই স্কুল</strong>-এর সার্বিক তথ্য, সিলেবাস, মানবণ্টন এবং আধুনিক স্টাডি টুলস সংযুক্ত করা হয়েছে। শিক্ষার আলো ছড়িয়ে দিতে এবং শিক্ষার্থীদের মেধাবিকাশে আমাদের এই ক্ষুদ্র প্রয়াস।
+    </p>
+  </div>
+
+  <div class="hover-card" style="border-left-color: #38bdf8; background: var(--glass-card); margin-bottom: 0;">
+    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+      <span style="font-size: 1.5rem;">📖</span>
+      <h2 style="color: #38bdf8; font-size: 1.1rem; font-weight: 800;">নরিচা মসুরিয়া হাই স্কুল - সংক্ষিপ্ত পরিচিতি</h2>
+    </div>
+    <p style="color: var(--text-sub); line-height: 1.7; font-size: 0.9rem;">
+      নরিচা মসুরিয়া হাই স্কুল অত্র অঞ্চলের অন্যতম প্রাচীন ও সুনামধন্য শিক্ষাপ্রতিষ্ঠান। শৃঙ্খলা, নৈতিক শিক্ষা এবং আধুনিক জ্ঞান-বিজ্ঞানের সুসমন্বয়ে প্রতিষ্ঠানটি দীর্ঘদিন ধরে কৃতিত্বের সাথে শিক্ষা দান করে আসছে।
+    </p>
+  </div>
+
+  <div class="hover-card" style="border-left-color: #ec4899; background: var(--glass-card); margin-bottom: 0;">
+    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+      <span style="font-size: 1.5rem;">🔔</span>
+      <h2 style="color: #f472b6; font-size: 1.1rem; font-weight: 800;">নোটিশ ও গুরুত্বপূর্ণ আপডেট</h2>
+    </div>
+    <div class="notice-item" style="margin-bottom: 8px;">
+      <span style="font-size: 0.88rem;">নবম শ্রেণির অর্ধবার্ষিক পরীক্ষার নতুন রুটিন ও আসন বিন্যাস প্রকাশিত হয়েছে।</span>
+      <span class="notice-date">২০ মে ২০২৬</span>
+    </div>
+    <div class="notice-item" style="margin-bottom: 0;">
+      <span style="font-size: 0.88rem;">আইসিটি, বিজ্ঞান ও ব্যবহারিক ক্লাসের রুটিন আপডেট করা হয়েছে।</span>
+      <span class="notice-date">১৫ মে ২০২৬</span>
+    </div>
+  </div>
+
+  <div class="hover-card" style="border-left-color: #10b981; background: var(--glass-card); margin-bottom: 0;">
+    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+      <span style="font-size: 1.5rem;">💡</span>
+      <h2 style="color: #34d399; font-size: 1.1rem; font-weight: 800;">গাইডলাইন ও ব্যবহারবিধি</h2>
+    </div>
+    <ul class="syllabus-list" style="font-size: 0.86rem;">
+      <li><strong>বাম মেনু:</strong> যেকোনো বিষয়ের সিলেবাস দেখতে ক্লিক করো।</li>
+      <li><strong>আমার নোটস:</strong> নিজের মতো নোট লিখে সেভ করো।</li>
+      <li><strong>অন্যান্য:</strong> স্যারদের নম্বর ও হাজিরা খাতা দেখো।</li>
+    </ul>
+  </div>
+
+  <div class="hover-card" style="border-left-color: #f59e0b; background: var(--glass-card); margin-bottom: 0;">
+    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+      <span style="font-size: 1.5rem;">🚀</span>
+      <h2 style="color: #fbbf24; font-size: 1.1rem; font-weight: 800;">ভবিষ্যতে যা যা যোগ করা হবে</h2>
+    </div>
+    <ul class="syllabus-list" style="font-size: 0.86rem;">
+      <li>অনলাইন কুইজ কম্পিটিশন ও লিডারবোর্ড সিস্টেম।</li>
+      <li>স্মার্ট জিপিএ (GPA) ও গ্রেড ক্যালকুলেটর টুল।</li>
+      <li>এআই ভিত্তিক স্টাডি অ্যাসিস্ট্যান্ট প্যানেল।</li>
+    </ul>
+  </div>
+
+  <div class="hover-card" style="border-left-color: #38bdf8; background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(99, 102, 241, 0.1)); text-align: center; margin-bottom: 0; display: flex; flex-direction: column; justify-content: center;">
+    <div style="font-size: 1.6rem; margin-bottom: 4px;">🎯</div>
+    <h2 style="color: #38bdf8; margin-bottom: 6px; font-size: 1rem; font-weight: 800;">আজকের ছোট্ট স্টাডি টিপস</h2>
+    <p style="color: var(--text-sub); font-size: 0.86rem;">"পড়ার সময় একটানা ১ ঘণ্টা না পড়ে, প্রতি ২৫ মিনিট পর ৫ মিনিট ব্রেন ব্রেক নাও (পোমোদোরো টেকনিক)।"</p>
+  </div>
+
 </div>
-<div class="hover-card" style="border-left-color: #ec4899;">
-<h2 style="color: #f472b6; margin-bottom: 12px; font-size: 1.1rem;">নোটিশ ও গুরুত্বপূর্ণ আপডেট</h2>
-<div class="notice-item">
-<span>নবম শ্রেণির অর্ধবার্ষিক পরীক্ষার নতুন রুটিন ও আসন বিন্যাস প্রকাশিত হয়েছে।</span>
-<span class="notice-date">২০ মে ২০২৬</span>
-</div>
-<div class="notice-item">
-<span>আইসিটি, বিজ্ঞান ও ব্যবহারিক ক্লাসের রুটিন আপডেট করা হয়েছে।</span>
-<span class="notice-date">১৫ মে ২০২৬</span>
-</div>
-</div>
-<div class="hover-card" style="border-left-color: #10b981; margin-top: 20px;">
-<h2 style="color: #34d399; margin-bottom: 10px; font-size: 1.1rem;">গাইডলাইন ও নিয়মাবলী</h2>
-<ul class="syllabus-list">
-<li><strong>বাম দিকের মেনু:</strong> যেকোনো বিষয়ের সিলেবাস দেখতে পাশের তালিকা থেকে পছন্দের বিষয়ে ক্লিক করো।</li>
-<li><strong>আমার নোটস (My Notes):</strong> নিজের পছন্দমতো অধ্যায়ে গুরুত্বপূর্ণ পয়েন্ট লিখে 'নোট সেভ করো' বাটনে ক্লিক করলে তা ব্রাউজারে সংরক্ষিত থাকবে।</li>
-<li><strong>অন্যান্য ড্যাশবোর্ড:</strong> এখান থেকে শিক্ষকদের মোবাইল নম্বর, হাজিরা খাতা এবং লাইভ ডিজিটাল ঘড়ি ও এক্সাম কাউন্টডাউন দেখতে পাবে।</li>
-<li><strong>থিম পরিবর্তন:</strong> ডান পাশের ফ্লোটিং বাটন থেকে যেকোনো সময় থিম বদলিয়ে নিতে পারো।</li>
-</ul>
-</div>
-<div class="hover-card" style="border-left-color: #f59e0b; margin-top: 20px;">
-<h2 style="color: #fbbf24; margin-bottom: 10px; font-size: 1.1rem;">ভবিষ্যতে যা যা যোগ করা হবে (Upcoming Features)</h2>
-<ul class="syllabus-list">
-<li>অনলাইন কুইজ কম্পিটিশন ও লিডারবোর্ড সিস্টেম।</li>
-<li>পড়ার মনোযোগ বাড়ানোর জন্য ব্যাকগ্রাউন্ড অ্যাম্বিয়েন্ট লফাই সাউন্ড প্লেয়ার।</li>
-<li>স্মার্ট জিপিএ (GPA) ও গ্রেড ক্যালকুলেটর টুল।</li>
-<li>এআই ভিত্তিক স্টাডি অ্যাসিস্ট্যান্ট ও গুরুত্বপূর্ণ সাজেশনের প্যানেল।</li>
-</ul>
-</div>
-<div class="hover-card" style="border-left-color: #38bdf8; margin-top: 20px; text-align: center;">
-<h2 style="color: #38bdf8; margin-bottom: 6px; font-size: 1.05rem;">আজকের ছোট্ট স্টাডি টিপস</h2>
-<p style="color: var(--text-sub); font-size: 0.9rem;">"পড়ার সময় একটানা ১ ঘণ্টা না পড়ে, প্রতি ২৫ মিনিট পর ৫ মিনিট ব্রেন ব্রেক নাও (পোমোদোরো টেকনিক)। এতে পড়া দ্রুত মাথায় থাকবে এবং ক্লান্তি দূর হবে!"</p>
-</div>
+<!-- মডিফাইড কার্ড গ্রিড শেষ -->
+
 </div>
 <!-- অন্যান্য (Others) মেইন ড্যাশবোর্ড ভিউ -->
 <div id="others-view" class="subject-view card">
@@ -906,7 +940,7 @@ transition: all 0.3s ease;
 <h3 style="font-size: 0.95rem;">স্যারদের নাম ও নম্বর</h3>
 </div>
 <div class="notes-subject-card" onclick="playSound(); showAttendance();">
-<div style="font-size: 1.8rem; margin-bottom: 8px;">📋</div>
+<div style="font-size: 1.8rem; margin-bottom: 8px;">📊</div>
 <h3 style="font-size: 0.95rem;">হাজিরা খাতা</h3>
 </div>
 <div class="notes-subject-card" onclick="playSound(); showClockCountdown();">
@@ -1025,7 +1059,7 @@ transition: all 0.3s ease;
 <h3 style="font-size: 0.95rem;">সাধারণ গণিত</h3>
 </div>
 <div class="notes-subject-card" onclick="playSound(); openSubjectChapters('english1', 'ইংরেজি ১ম পত্র')">
-<div style="font-size: 1.8rem; margin-bottom: 8px;">📚</div>
+<div style="font-size: 1.8rem; margin-bottom: 8px;">🔤</div>
 <h3 style="font-size: 0.95rem;">ইংরেজি ১ম পত্র</h3>
 </div>
 <div class="notes-subject-card" onclick="playSound(); openSubjectChapters('ict', 'আইসিটি (ICT)')">
@@ -1046,7 +1080,7 @@ transition: all 0.3s ease;
 </div>
 </div>
 <div id="subjectChapterContainer" style="display: none; margin-top: 15px;">
-<button class="back-to-notes-btn" onclick="playSound(); backToSubjectsGrid();">← সকল বিষয়ের লিস্টে ফিরে যাও</button>
+<button class="back-to-notes-btn" onclick="playSound(); backToSubjectsGrid();">সকল বিষয়ের লিস্টে ফিরে যাও</button>
 <h2 id="selectedSubjectTitle" style="color: #38bdf8; font-size: 1.1rem; margin-bottom: 15px;"></h2>
 <div id="chapterListArea" class="chapter-list-container"></div>
 </div>
@@ -1355,7 +1389,7 @@ transition: all 0.3s ease;
 <div class="syllabus-box annual">
 <span class="syllabus-badge">বার্ষিক</span>
 <ul class="syllabus-list">
-<li>অধ্যায় ৮: ত্রিকোণমিতি | অধ্যায় ৯: সূচক | অধ্যায় ১১: সম্ভাবনা</li>
+<li>অধ্যায় ৫: ত্রিকোণমিতি | অধ্যায় ৯: সূচক | অধ্যায় ১১: সম্ভাবনা</li>
 </ul>
 </div>
 </div>
@@ -1398,9 +1432,9 @@ let savedTheme = localStorage.getItem('portal_theme') || 'default';
 let themeIdx = themes.indexOf(savedTheme);
 if (themeIdx !== -1) {
 currentThemeIndex = themeIdx;
-}
 document.documentElement.setAttribute('data-theme', themes[currentThemeIndex]);
 document.getElementById('themeToggleBtn').innerText = themeNames[themes[currentThemeIndex]];
+}
 });
 function toggleSidebar() {
 const sidebar = document.getElementById('sidebar');
@@ -1533,11 +1567,11 @@ let container = document.getElementById('subjectChapterContainer');
 container.style.display = 'block';
 document.getElementById('selectedSubjectTitle').innerText = subjectName + ' অধ্যায়সমূহ ও নোটস';
 let chapterListArea = document.getElementById('chapterListArea');
-chapterListArea.innerHTML = '';
+chapterListArea.innerHTML = "";
 let chapters = subjectChaptersData[subjectKey] || ["অধ্যায় ১: সাধারণ আলোচনা", "অধ্যায় ২: বিস্তারিত পাঠ"];
 chapters.forEach((chap, index) => {
 let storageKey = 'note_' + subjectKey + '_chap_' + index;
-let savedNoteText = localStorage.getItem(storageKey) || '';
+let savedNoteText = localStorage.getItem(storageKey) || "";
 let box = document.createElement('div');
 box.className = 'chapter-note-box';
 box.innerHTML = `
@@ -1565,7 +1599,7 @@ let items = list.getElementsByTagName('li');
 for (let i = 0; i < items.length; i++) {
 let text = items[i].textContent.toLowerCase();
 if (text.includes(input)) {
-items[i].style.display = '';
+items[i].style.display = "";
 } else {
 items[i].style.display = 'none';
 }
@@ -1601,26 +1635,21 @@ showSubject(subjectId);
 }
 }
 function resetPortal() {
-document.getElementById('liveSearchInput').value = '';
+document.getElementById('liveSearchInput').value = "";
 filterSidebarMenu();
 showHome();
 }
-
 /* স্ক্রল করার সময় ফ্লোটিং বাটন হাইড/শো করার লজিক */
 let lastScrollTop = 0;
 window.onscroll = function() {
 let scrollBtn = document.getElementById('scrollTopBtn');
 let floatingGroup = document.getElementById('floatingActionGroup');
 let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-
-// স্ক্রল বাটন শো/হাইড
 if (currentScroll > 200) {
 scrollBtn.style.display = 'flex';
 } else {
 scrollBtn.style.display = 'none';
 }
-
-// নিচের দিকে স্ক্রল করলে ফ্লোটিং বাটনগুলো লুকিয়ে যাবে, ওপরের দিকে গেলে আবার আসবে
 if (currentScroll > lastScrollTop && currentScroll > 100) {
 floatingGroup.classList.add('hidden');
 } else {
@@ -1628,11 +1657,9 @@ floatingGroup.classList.remove('hidden');
 }
 lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
 };
-
 function scrollToTop() {
 window.scrollTo({ top: 0, behavior: 'smooth' });
 }
-
 /* ম্যাথ পাজল গেম লজিক */
 const mathPuzzlesData = [
 { level: 1, question: "পরের সংখ্যাটি কত হবে? ২, ৪, ৬, ৮, ...", answers: ["১০", "10"], hint: "প্রতিবার ২ করে বাড়ছে।" },
@@ -1647,8 +1674,8 @@ hideAllViews();
 let container = document.getElementById('math-puzzle-view');
 if (!container) {
 createPuzzleView();
-}
 container = document.getElementById('math-puzzle-view');
+}
 container.style.display = 'block';
 container.classList.add('animate-view');
 loadPuzzle();
@@ -1683,8 +1710,8 @@ currentPuzzleIndex = 0;
 let p = mathPuzzlesData[currentPuzzleIndex];
 document.getElementById('puzzleLevelTitle').innerText = 'লেভেল ' + p.level + '/' + mathPuzzlesData.length;
 document.getElementById('puzzleQuestionText').innerText = p.question;
-document.getElementById('puzzleAnswerInput').value = '';
-document.getElementById('puzzleFeedback').innerText = '';
+document.getElementById('puzzleAnswerInput').value = "";
+document.getElementById('puzzleFeedback').innerText = "";
 }
 function checkPuzzleAnswer() {
 let userAns = document.getElementById('puzzleAnswerInput').value.trim();
