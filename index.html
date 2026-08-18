@@ -1,746 +1,1959 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="bn" data-theme="default">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>উপন্যাস সমগ্র - প্রফেশনাল রিডার</title>
-    <style>
-        :root {
-            --sidebar-width: 300px;
-            --glass-bg: rgba(255, 255, 255, 0.1);
-            --glass-border: rgba(255, 255, 255, 0.2);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NM HIGH SCHOOL পাঠ্যসূচি ও মানবণ্টন ২০২৬</title>
+<style>
+/* থিম কালার ভেরিয়েবল */
+:root[data-theme="default"] {
+    --bg-gradient: linear-gradient(-45deg, #0f172a, #1e1b4b, #2e1065, #0369a1, #0f172a);
+    --text-main: #f8fafc;
+    --text-sub: #cbd5e1;
+    --glass-bg: rgba(15, 23, 42, 0.92);
+    --glass-card: rgba(30, 41, 59, 0.75);
+    --glass-border: rgba(255, 255, 255, 0.12);
+    --sidebar-bg: rgba(15, 23, 42, 0.92);
+}
+:root[data-theme="dark"] {
+    --bg-gradient: linear-gradient(135deg, #000000, #111111, #050505);
+    --text-main: #ffffff;
+    --text-sub: #a1a1aa;
+    --glass-bg: rgba(9, 9, 11, 0.95);
+    --glass-card: rgba(24, 24, 27, 0.85);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --sidebar-bg: rgba(9, 9, 11, 0.95);
+}
+:root[data-theme="light"] {
+    --bg-gradient: linear-gradient(135deg, #f8fafc, #e2e8f0, #cbd5e1);
+    --text-main: #0f172a;
+    --text-sub: #475569;
+    --glass-bg: rgba(255, 255, 255, 0.9);
+    --glass-card: rgba(255, 255, 255, 0.8);
+    --glass-border: rgba(0, 0, 0, 0.1);
+    --sidebar-bg: rgba(255, 255, 255, 0.95);
+}
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+    background: var(--bg-gradient);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    color: var(--text-main);
+    min-height: 100vh;
+    transition: background 0.4s ease, color 0.4s ease;
+}
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+/* ফ্লোটিং একশন বাটন গ্রুপ */
+.floating-action-group {
+    position: fixed;
+    bottom: 25px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 2000;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+}
+.floating-action-group.hidden {
+    transform: translateY(120px);
+    opacity: 0;
+    pointer-events: none;
+}
+.floating-btn {
+    background: linear-gradient(135deg, #6366f1, #ec4899);
+    color: #fff;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(99, 102, 241, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.floating-btn:hover {
+    transform: scale(1.1) translateY(-4px);
+    box-shadow: 0 15px 30px rgba(236, 72, 153, 0.8);
+}
+.scroll-top-btn {
+    background: var(--glass-card);
+    border: 1px solid var(--glass-border);
+    color: var(--text-main);
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    padding: 0;
+    display: none;
+    align-self: flex-end;
+}
+/* মোবাইল হেডার */
+.mobile-header {
+    display: flex;
+    background: var(--glass-bg);
+    backdrop-filter: blur(15px);
+    padding: 14px 18px;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    border-bottom: 1px solid var(--glass-border);
+    justify-content: space-between;
+    align-items: center;
+}
+.mobile-header h3 {
+    font-size: 1.05rem;
+    color: var(--text-main);
+    letter-spacing: 0.5px;
+}
+.menu-toggle {
+    background: linear-gradient(135deg, #6366f1, #ec4899);
+    border: none;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+/* সাইডবার (SIDEBAR) */
+.sidebar {
+    width: 280px;
+    background: var(--sidebar-bg);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border-right: 1px solid var(--glass-border);
+    padding: 20px 12px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    overflow-y: auto;
+    box-shadow: 15px 0 35px rgba(0, 0, 0, 0.3);
+    z-index: 1500;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.4s ease;
+}
+@media (min-width: 900px) {
+    .sidebar { transform: translateX(0) !important; }
+    .mobile-header { display: none; }
+    .main-content { margin-left: 280px; padding: 40px; }
+}
+@media (max-width: 899px) {
+    .sidebar { transform: translateX(-100%); width: 280px; }
+    .sidebar.open { transform: translateX(0); }
+    .main-content { margin-left: 0; padding: 15px !important; }
+}
+.sidebar::-webkit-scrollbar { width: 5px; }
+.sidebar::-webkit-scrollbar-thumb { background: rgba(100, 100, 100, 0.25); border-radius: 10px; }
+.sidebar-school-title {
+    font-size: 1.05rem;
+    background: linear-gradient(90deg, #818cf8, #f472b6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 4px;
+    padding-left: 8px;
+    text-transform: uppercase;
+    font-weight: 800;
+}
+.sidebar-school-sub {
+    font-size: 0.72rem;
+    color: var(--text-sub);
+    margin-bottom: 15px;
+    padding-left: 8px;
+    border-bottom: 1px solid var(--glass-border);
+    padding-bottom: 10px;
+}
+.sidebar-widget {
+    background: var(--glass-card);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 12px;
+}
+.sidebar-widget h4 {
+    font-size: 0.8rem;
+    color: #93c5fd;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.sidebar-search-input {
+    width: 100%;
+    padding: 8px 10px;
+    background: var(--glass-card);
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    color: var(--text-main);
+    font-size: 0.82rem;
+    outline: none;
+    transition: all 0.3s ease;
+}
+.sidebar-search-input:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.3);
+}
+.sidebar h2 {
+    font-size: 0.82rem;
+    color: #f472b6;
+    margin: 12px 0 8px 8px;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+.sidebar ul { list-style: none; }
+.sidebar ul li { margin-bottom: 6px; }
+.sidebar ul li button {
+    width: 100%;
+    text-align: left;
+    padding: 9px 12px;
+    border: 1px solid transparent;
+    background: var(--glass-card);
+    border-radius: 10px;
+    font-size: 0.82rem;
+    color: var(--text-sub);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.sidebar ul li button:hover {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(236, 72, 153, 0.2));
+    color: var(--text-main);
+    transform: translateX(6px);
+    border-color: var(--glass-border);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.sidebar ul li button.active {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.95), rgba(236, 72, 153, 0.95));
+    color: #ffffff;
+    font-weight: 700;
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.6);
+    border-color: rgba(255, 255, 255, 0.35);
+}
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(6px);
+    z-index: 1400;
+}
+.main-content {
+    max-width: 1150px;
+    transition: all 0.3s ease;
+}
+/* কার্ড ও অ্যানিমেশন স্টাইল */
+.card {
+    background: var(--glass-card);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--glass-border);
+    margin-bottom: 25px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.4s ease, color 0.4s ease;
+}
+@media (min-width: 900px) {
+    .card { padding: 35px; }
+}
+.card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 5px;
+    background: linear-gradient(90deg, #6366f1, #ec4899, #06b6d4, #10b981);
+}
+.hover-card {
+    background: var(--glass-card);
+    border: 1px solid var(--glass-border);
+    border-left: 5px solid #6366f1;
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 20px;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+}
+@media (min-width: 900px) {
+    .hover-card { padding: 22px; }
+}
+.hover-card:hover {
+    transform: translateY(-6px) scale(1.01);
+    box-shadow: 0 15px 35px rgba(99, 102, 241, 0.2);
+    border-left-width: 8px;
+}
+h1 {
+    font-size: 1.4rem;
+    color: var(--text-main);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--glass-border);
+}
+@media (min-width: 900px) {
+    h1 { font-size: 1.9rem; }
+}
+.subject-view { display: none; }
+.animate-view {
+    animation: floatUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes floatUp {
+    0% { opacity: 0; transform: translateY(25px) scale(0.97); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+/* স্ট্যাটস গ্রিড */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 25px;
+}
+@media (min-width: 650px) {
+    .stats-grid { grid-template-columns: repeat(4, 1fr); gap: 15px; }
+}
+.stat-card {
+    background: var(--glass-card);
+    border: 1px solid var(--glass-border);
+    padding: 16px 12px;
+    border-radius: 14px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+.stat-card:hover {
+    transform: translateY(-5px);
+    border-color: #6366f1;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+.stat-num {
+    font-size: 1.5rem;
+    font-weight: 800;
+    background: linear-gradient(90deg, #6366f1, #38bdf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+@media (min-width: 900px) {
+    .stat-num { font-size: 1.8rem; }
+}
+.stat-label {
+    font-size: 0.8rem;
+    color: var(--text-sub);
+    margin-top: 6px;
+}
+/* সিলেবাস গ্রিড */
+.syllabus-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-top: 20px;
+}
+@media (min-width: 768px) {
+    .syllabus-grid { grid-template-columns: repeat(2, 1fr); }
+}
+.syllabus-box {
+    background: var(--glass-card);
+    border-radius: 14px;
+    padding: 18px;
+    border: 1px solid var(--glass-border);
+    transition: all 0.3s ease;
+}
+@media (min-width: 900px) {
+    .syllabus-box { padding: 22px; }
+}
+.syllabus-box:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+}
+.syllabus-box.half-yearly { border-top: 5px solid #10b981; }
+.syllabus-box.annual { border-top: 5px solid #f59e0b; }
+.syllabus-badge {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+.syllabus-box.half-yearly .syllabus-badge {
+    background: rgba(16, 185, 129, 0.18);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.35);
+}
+.syllabus-box.annual .syllabus-badge {
+    background: rgba(245, 158, 11, 0.18);
+    color: #fbbf24;
+    border: 1px solid rgba(245, 158, 11, 0.35);
+}
+.syllabus-list {
+    list-style: none;
+    line-height: 1.8;
+    color: var(--text-sub);
+    font-size: 0.88rem;
+}
+@media (min-width: 900px) {
+    .syllabus-list { font-size: 0.92rem; }
+}
+.syllabus-list li {
+    position: relative;
+    padding-left: 20px;
+    margin-bottom: 8px;
+    word-break: break-word;
+}
+.syllabus-list li::before {
+    content: '✦';
+    position: absolute;
+    left: 0;
+    color: #f472b6;
+    font-size: 0.75rem;
+    top: 2px;
+}
+/* স্কুল হেডার বড় বক্স */
+.school-header-box {
+    text-align: center;
+    padding: 25px 15px;
+    background: var(--glass-card);
+    border-radius: 16px;
+    border: 1px solid var(--glass-border);
+    margin-bottom: 25px;
+    transition: all 0.4s ease;
+}
+@media (min-width: 900px) {
+    .school-header-box { padding: 35px 20px; }
+}
+.school-header-box:hover {
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+.school-logo {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    display: inline-block;
+    background: var(--glass-card);
+    padding: 15px;
+    border-radius: 50%;
+    border: 1px solid var(--glass-border);
+    transition: transform 0.4s ease;
+}
+@media (min-width: 900px) {
+    .school-logo { font-size: 3rem; padding: 18px; }
+}
+.school-header-box:hover .school-logo {
+    transform: rotate(10deg) scale(1.1);
+}
+.school-title {
+    font-size: 1.6rem;
+    font-weight: 900;
+    letter-spacing: 0.8px;
+    background: linear-gradient(90deg, #6366f1, #ec4899, #06b6d4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+}
+@media (min-width: 900px) {
+    .school-title { font-size: 2.1rem; }
+}
+.school-meta {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    font-size: 0.82rem;
+    color: var(--text-sub);
+}
+@media (min-width: 900px) {
+    .school-meta { gap: 12px; font-size: 0.9rem; }
+}
+.school-badge {
+    background: var(--glass-card);
+    padding: 5px 12px;
+    border-radius: 16px;
+    border: 1px solid var(--glass-border);
+    transition: all 0.3s ease;
+}
+.school-badge:hover {
+    transform: translateY(-2px);
+}
+.notice-item {
+    padding: 12px 14px;
+    background: var(--glass-card);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    border-left: 5px solid #ec4899;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+@media (min-width: 650px) {
+    .notice-item { flex-direction: row; justify-content: space-between; align-items: center; gap: 10px; padding: 14px 18px; }
+}
+.notice-item:hover {
+    transform: translateX(5px);
+    border-left-width: 8px;
+}
+.notice-date {
+    font-size: 0.78rem;
+    background: rgba(236, 72, 153, 0.2);
+    color: #f472b6;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-weight: bold;
+    align-self: flex-start;
+}
+@media (min-width: 650px) {
+    .notice-date { align-self: auto; }
+}
+.notes-subject-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+@media (min-width: 900px) {
+    .notes-subject-grid { gap: 18px; }
+}
+.notes-subject-card {
+    background: var(--glass-card);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    padding: 18px;
+    text-align: center;
+    cursor: pointer;
+    color: var(--text-main);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@media (min-width: 900px) {
+    .notes-subject-card { padding: 22px; }
+}
+.notes-subject-card:hover {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.25), rgba(236, 72, 153, 0.25));
+    transform: translateY(-6px) scale(1.02);
+    border-color: #6366f1;
+    box-shadow: 0 12px 30px rgba(99, 102, 241, 0.2);
+}
+.chapter-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 15px;
+}
+.chapter-note-box {
+    background: var(--glass-card);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 16px;
+    transition: all 0.3s ease;
+}
+@media (min-width: 900px) {
+    .chapter-note-box { padding: 18px; }
+}
+.chapter-note-box h4 {
+    font-size: 0.95rem;
+    color: #38bdf8;
+    margin-bottom: 10px;
+}
+.chapter-textarea {
+    width: 100%;
+    background: var(--glass-card);
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    color: var(--text-main);
+    padding: 12px;
+    font-size: 0.88rem;
+    min-height: 100px;
+    resize: vertical;
+    outline: none;
+    transition: all 0.3s ease;
+}
+.chapter-textarea:focus {
+    border-color: #ec4899;
+    box-shadow: 0 0 12px rgba(236, 72, 153, 0.3);
+}
+.save-note-btn {
+    background: linear-gradient(135deg, #10b981, #06b6d4);
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    float: right;
+    transition: all 0.3s ease;
+}
+.save-note-btn:hover {
+    opacity: 0.95;
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+}
+/* টেবিল স্টাইল */
+.table-responsive-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.attendance-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: var(--text-main);
+    min-width: 450px;
+}
+.attendance-table th, .attendance-table td {
+    padding: 12px 10px;
+    text-align: left;
+    border-bottom: 1px solid var(--glass-border);
+    font-size: 0.88rem;
+}
+@media (min-width: 900px) {
+    .attendance-table th, .attendance-table td { padding: 14px; font-size: 0.92rem; }
+}
+.attendance-table th {
+    color: #38bdf8;
+    font-weight: 600;
+}
+.status-badge {
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.78rem;
+    font-weight: bold;
+    white-space: nowrap;
+}
+.status-present {
+    background: rgba(16, 185, 129, 0.2);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+.status-absent {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+/* মডাল */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    z-index: 3000;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+}
+.modal-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 550px;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 20px;
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5);
+}
+@media (min-width: 900px) {
+    .modal-card { padding: 25px; }
+}
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--glass-border);
+}
+.modal-header h3 {
+    font-size: 1.1rem;
+    background: linear-gradient(90deg, #818cf8, #f472b6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.close-btn {
+    background: var(--glass-card);
+    border: 1px solid var(--glass-border);
+    color: var(--text-main);
+    font-size: 1rem;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.close-btn:hover { background: rgba(236, 72, 153, 0.5); transform: rotate(90deg); }
+.modal-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+@media (min-width: 650px) {
+    .modal-grid { gap: 12px; }
+}
+.modal-grid-btn {
+    background: var(--glass-card);
+    border: 1px solid var(--glass-border);
+    padding: 12px;
+    border-radius: 10px;
+    color: var(--text-main);
+    font-size: 0.85rem;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.modal-grid-btn:hover {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(236, 72, 153, 0.3));
+    border-color: #6366f1;
+    transform: translateY(-3px);
+}
+.back-to-notes-btn {
+    background: var(--glass-card);
+    border: 1px solid var(--glass-border);
+    color: var(--text-main);
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    margin-bottom: 18px;
+    transition: all 0.3s ease;
+}
+.back-to-notes-btn:hover { transform: translateX(-3px); }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'SolaimanLipi', Arial, sans-serif;
-        }
-
-        /* Smooth Animated Gradient Background */
-        body {
-            background: linear-gradient(-45deg, #1a1c29, #2C3E50, #4CA1AF, #2c3e50);
-            background-size: 400% 400%;
-            animation: gradientBG 18s ease infinite;
-            color: #fff;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow-x: hidden;
-        }
-
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Top Title Header */
-        header {
-            text-align: center;
-            padding: 22px;
-            font-size: 2.5rem;
-            font-weight: bold;
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--glass-border);
-            letter-spacing: 2px;
-            color: #ffeb3b;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-            z-index: 10;
-        }
-
-        .main-container {
-            display: flex;
-            flex: 1;
-            position: relative;
-        }
-
-        /* Professional Left Sidebar */
-        aside.sidebar {
-            width: var(--sidebar-width);
-            background: rgba(15, 23, 42, 0.9);
-            backdrop-filter: blur(15px);
-            position: fixed;
-            height: calc(100vh - 90px);
-            top: 90px;
-            left: calc(-1 * var(--sidebar-width));
-            transition: left 0.4s cubic-bezier(0.77, 0, 0.175, 1);
-            box-shadow: 8px 0 30px rgba(0,0,0,0.5);
-            z-index: 100;
-            border-right: 1px solid var(--glass-border);
-            overflow-y: auto;
-        }
-
-        aside.sidebar.open {
-            left: 0;
-        }
-
-        .sidebar-title {
-            padding: 25px 20px;
-            font-size: 1.4rem;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            color: #38bdf8;
-            text-align: center;
-            font-weight: bold;
-        }
-
-        .novel-list {
-            list-style: none;
-            padding: 20px 0;
-        }
-
-        .novel-list li {
-            padding: 15px 25px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 1.15rem;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .novel-list li::before {
-            content: "📖";
-            font-size: 0.9rem;
-        }
-
-        .novel-list li:hover {
-            background: rgba(56, 189, 248, 0.15);
-            padding-left: 32px;
-            color: #38bdf8;
-        }
-
-        /* Right Professional Toggle Button */
-        .right-sidebar-btn {
-            position: fixed;
-            right: 30px;
-            top: 28px;
-            background: linear-gradient(135deg, #38bdf8, #0369a1);
-            color: white;
-            border: none;
-            padding: 10px 22px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);
-            z-index: 101;
-        }
-
-        .right-sidebar-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.6);
-        }
-
-        /* Content Area */
-        .content-area {
-            flex: 1;
-            padding: 50px 20px;
-            max-width: 950px;
-            margin: 0 auto;
-            z-index: 1;
-            width: 100%;
-        }
-
-        /* Professional Home Card Style */
-        .home-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            border: 1px solid var(--glass-border);
-            padding: 50px;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-            text-align: center;
-            animation: fadeIn 0.8s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .home-card h2 {
-            font-size: 2.8rem;
-            margin-bottom: 20px;
-            color: #ffeb3b;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-        }
-
-        .home-card p {
-            font-size: 1.25rem;
-            line-height: 2;
-            color: #e2e8f0;
-            margin-bottom: 25px;
-        }
-
-        .quote-box {
-            font-style: italic;
-            color: #94a3b8;
-            border-left: 4px solid #38bdf8;
-            padding: 15px 20px;
-            margin-top: 30px;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 0 10px 10px 0;
-            text-align: left;
-        }
-
-        /* Novel Reader Interface */
-        .reader-view {
-            display: none;
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(20px);
-            padding: 50px;
-            border-radius: 20px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
-            border: 1px solid var(--glass-border);
-            animation: fadeIn 0.5s ease-in-out;
-        }
-
-        .reader-view h2 {
-            color: #38bdf8;
-            margin-bottom: 25px;
-            font-size: 2.3rem;
-            border-bottom: 2px solid rgba(255,255,255,0.1);
-            padding-bottom: 15px;
-        }
-
-        .reader-view .novel-text {
-            font-size: 1.2rem;
-            line-height: 2.2;
-            color: #f8fafc;
-        }
-
-        .reader-view .novel-text p {
-            margin-bottom: 20px;
-            text-align: justify;
-        }
-
-        .back-home-btn {
-            background: linear-gradient(135deg, #f43f5e, #be123c);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-bottom: 25px;
-            font-size: 1rem;
-            font-weight: bold;
-            transition: all 0.3s;
-            box-shadow: 0 4px 12px rgba(244, 63, 94, 0.3);
-        }
-
-        .back-home-btn:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(10px);
-            font-size: 1rem;
-            border-top: 1px solid var(--glass-border);
-            color: #94a3b8;
-        }
-
-        /* Responsive Mobile Layout */
-        @media (max-width: 768px) {
-            header { font-size: 1.8rem; padding: 15px; }
-            .right-sidebar-btn { top: 18px; right: 15px; padding: 8px 15px; font-size: 0.9rem; }
-            .home-card, .reader-view { padding: 25px; }
-            .home-card h2 { font-size: 2rem; }
-        }
-    </style>
+/* NM AI চ্যাটবট স্টাইল */
+.ai-chatbot-widget {
+    position: fixed;
+    bottom: 25px;
+    left: 20px;
+    z-index: 2500;
+}
+.ai-toggle-btn {
+    background: linear-gradient(135deg, #06b6d4, #3b82f6);
+    color: white;
+    border: none;
+    width: 55px; height: 55px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(6, 182, 212, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.ai-chat-box {
+    display: none;
+    position: absolute;
+    bottom: 70px;
+    left: 0;
+    width: 330px;
+    max-height: 450px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+    flex-direction: column;
+    overflow: hidden;
+}
+.ai-chat-box.open { display: flex; }
+.ai-chat-header {
+    background: linear-gradient(135deg, #06b6d4, #3b82f6);
+    color: white;
+    padding: 12px 15px;
+    font-weight: bold;
+    font-size: 0.95rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.ai-chat-messages {
+    padding: 12px;
+    overflow-y: auto;
+    flex-grow: 1;
+    max-height: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 0.85rem;
+}
+.ai-msg {
+    padding: 8px 12px;
+    border-radius: 10px;
+    max-width: 85%;
+    line-height: 1.4;
+    word-break: break-word;
+}
+.ai-msg.bot {
+    background: var(--glass-card);
+    color: var(--text-main);
+    align-self: flex-start;
+    border-left: 3px solid #06b6d4;
+}
+.ai-msg.user {
+    background: linear-gradient(135deg, #6366f1, #ec4899);
+    color: white;
+    align-self: flex-end;
+}
+.ai-chat-input-area {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid var(--glass-border);
+    background: var(--glass-card);
+    gap: 8px;
+}
+.ai-chat-input {
+    flex-grow: 1;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    padding: 8px 10px;
+    border-radius: 8px;
+    color: var(--text-main);
+    font-size: 0.85rem;
+    outline: none;
+}
+.ai-send-btn {
+    background: #06b6d4;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+</style>
 </head>
 <body>
+<!-- অডিও ও সাউন্ড ইফেক্ট এলিমেন্ট -->
+<audio id="clickSound" src="click.mp3" preload="auto"></audio>
 
-    <!-- Top Heading -->
-    <header>
-        উপন্যাস সমগ্র
-    </header>
+<!-- NM AI চ্যাটবট উইজেট -->
+<div class="ai-chatbot-widget">
+    <button class="ai-toggle-btn" onclick="toggleAIChat()" title="NM AI অ্যাসিস্ট্যান্ট">🤖</button>
+    <div class="ai-chat-box" id="aiChatBox">
+        <div class="ai-chat-header">
+            <span>NM AI অ্যাসিস্ট্যান্ট</span>
+            <button onclick="toggleAIChat()" style="background:none; border:none; color:white; font-size:1rem; cursor:pointer;">×</button>
+        </div>
+        <div class="ai-chat-messages" id="aiChatMessages">
+            <div class="ai-msg bot">নমস্কার! আমি NM AI। ইতিহাস, বিজ্ঞান কিংবা পৃথিবীর যেকোনো অদ্ভুত প্রশ্ন করতে পারো, আমি শুদ্ধ বাংলায় উত্তর দেব।</div>
+        </div>
+        <div class="ai-chat-input-area">
+            <input type="text" id="aiUserInput" class="ai-chat-input" placeholder="এখানে কিছু লিখুন..." onkeypress="handleAIChatKey(event)">
+            <button class="ai-send-btn" onclick="sendNM_AIChatMessage()">পাঠাও</button>
+        </div>
+    </div>
+</div>
 
-    <!-- Right Side Toggle Button (Click to Open / Close Sidebar) -->
-    <button class="right-sidebar-btn" onclick="toggleSidebar()">☰ সাইডবার</button>
+<!-- ফ্লোটিং একশন বাটন গ্রুপ -->
+<div class="floating-action-group" id="floatingActionGroup">
+    <button class="floating-btn scroll-top-btn" id="scrollTopBtn" onclick="playSound(); scrollToTop();" title="উপরে যান">↑</button>
+    <button class="floating-btn" onclick="playSound(); toggleTheme();" id="themeToggleBtn" title="থিম পরিবর্তন করুন" style="background: linear-gradient(135deg, #f59e0b, #10b981);">থিম: ডিফল্ট</button>
+    <button class="floating-btn" onclick="playSound(); openMathPuzzleGame();" title="ম্যাথ পাজল গেম" style="background: linear-gradient(135deg, #8b5cf6, #ec4899);">গেম</button>
+    <button class="floating-btn" onclick="playSound(); openSubjectModal();" title="সব বিষয়ের তালিকা">বিষয়</button>
+    <button class="floating-btn" onclick="playSound(); openRoutineModal();" title="স্টাডি রুটিন" style="background: linear-gradient(135deg, #10b981, #06b6d4);">রুটিন</button>
+    <button class="floating-btn" onclick="playSound(); showOthers();" title="অন্যান্য" style="background: linear-gradient(135deg, #3b82f6, #10b981);">অন্যান্য</button>
+    <button class="floating-btn" onclick="playSound(); resetPortal();" title="রিসেট" style="background: linear-gradient(135deg, #f59e0b, #ef4444);">রিসেট</button>
+</div>
 
-    <div class="main-container">
-        <!-- Left Sidebar -->
-        <aside class="sidebar" id="sidebar">
-            <div class="sidebar-title">সূচিপত্র</div>
-            <ul class="novel-list">
-                <li onclick="openNovel('hridoyJure')">হৃদয় জুড়ে তুমি</li>
-                <!-- এখানে নতুন উপন্যাস যুক্ত করার জন্য আরও তালিকা যোগ করতে পারবি -->
+<!-- মোবাইল হেডার -->
+<div class="mobile-header">
+    <h3>NM HIGH SCHOOL</h3>
+    <button class="menu-toggle" onclick="playSound(); toggleSidebar();">মেনু</button>
+</div>
+
+<!-- ওভারলে -->
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- বিষয় সিলেক্টর মডাল -->
+<div class="modal-overlay" id="subjectModal" onclick="closeModalOnOutsideClick(event, 'subjectModal')">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3>দ্রুত বিষয় নির্বাচন</h3>
+            <button class="close-btn" onclick="playSound(); closeSubjectModal();">×</button>
+        </div>
+        <div class="modal-grid">
+            <button class="modal-grid-btn" onclick="playSound(); selectFromModal('home-view')">হোম পেজ</button>
+            <button class="modal-grid-btn" onclick="playSound(); selectFromModal('my-notes-view')">আমার নোটস</button>
+            <button class="modal-grid-btn" onclick="playSound(); selectFromModal('others-view')">অন্যান্য (ড্যাশবোর্ড)</button>
+            <button class="modal-grid-btn" onclick="playSound(); selectFromModal('bangla1')">১. বাংলা ১ম পত্র</button>
+            <button class="modal-grid-btn" onclick="playSound(); selectFromModal('bangla2')">২. বাংলা ২য় পত্র</button>
+            <button class="modal-grid-btn" onclick="playSound(); selectFromModal('english1')">৩. ইংরেজি ১ম পত্র</button>
+            <button class="modal-grid-btn" onclick="playSound(); selectFromModal('english2')">৪. ইংরেজি ২য় পত্র</button>
+            <button class="modal-grid-btn" onclick="playSound(); selectFromModal('math')">৫. সাধারণ গণিত</button>
+            <button class="modal-grid-btn" onclick="playSound(); selectFromModal('islam')">৬. ইসলাম শিক্ষা</button>
+            <button class="modal-grid-btn" onclick="playSound(); selectFromModal('ict')">৭. আইসিটি (ICT)</button>
+            <button class="modal-grid-btn" onclick="playSound(); selectFromModal('bgs')">৮. ইতিহাস ও বিশ্বসভ্যতা</button>
+            <button class="modal-grid-btn" onclick="playSound(); selectFromModal('economics')">৯. অর্থনীতি</button>
+            <button class="modal-grid-btn" onclick="playSound(); selectFromModal('geography')">১০. ভূগোল ও পরিবেশ</button>
+            <button class="modal-grid-btn" onclick="playSound(); selectFromModal('physics')">১১. পদার্থবিজ্ঞান</button>
+            <button class="modal-grid-btn" onclick="playSound(); selectFromModal('biology')">১২. জীববিজ্ঞান</button>
+            <button class="modal-grid-btn" onclick="playSound(); selectFromModal('chemistry')">১৩. রসায়ন</button>
+            <button class="modal-grid-btn" onclick="playSound(); selectFromModal('higher-math')">১৪. উচ্চতর গণিত</button>
+        </div>
+    </div>
+</div>
+
+<!-- রুটিন মডাল -->
+<div class="modal-overlay" id="routineModal" onclick="closeModalOnOutsideClick(event, 'routineModal')">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3>আজকের স্টাডি রুটিন</h3>
+            <button class="close-btn" onclick="playSound(); closeRoutineModal();">×</button>
+        </div>
+        <ul class="syllabus-list" style="display: flex; flex-direction: column; gap: 12px;">
+            <li><input type="checkbox" style="accent-color: #ec4899; margin-right: 8px; transform: scale(1.2);"> সকালে ঘুম থেকে উঠে গণিত প্র্যাকটিস</li>
+            <li><input type="checkbox" style="accent-color: #ec4899; margin-right: 8px; transform: scale(1.2);"> দুপুরে ইংরেজি গ্রামার ও ভোকাবুলারি</li>
+            <li><input type="checkbox" style="accent-color: #ec4899; margin-right: 8px; transform: scale(1.2);"> বিকেলে বিজ্ঞান বিষয় ও নোট তৈরি</li>
+            <li><input type="checkbox" style="accent-color: #ec4899; margin-right: 8px; transform: scale(1.2);"> রাতে বাংলা ও আইসিটি পড়া</li>
+        </ul>
+    </div>
+</div>
+
+<!-- সাইডবার -->
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-school-title">NM HIGH SCHOOL</div>
+    <div class="sidebar-school-sub">ডিজিটাল পোর্টাল ও সিলেবাস ২০২৬</div>
+    <div class="sidebar-widget">
+        <h4>বিষয় খুঁজুন</h4>
+        <input type="text" id="liveSearchInput" class="sidebar-search-input" placeholder="নাম লিখুন..." onkeyup="filterSidebarMenu()">
+    </div>
+    <h2>মেনু ও বিষয়সমূহ</h2>
+    <ul id="sidebarMenuList">
+        <li><button id="btn-home-view" class="active" onclick="playSound(); showHome(event)">হোম পেজ</button></li>
+        <li><button id="btn-my-notes-view" onclick="playSound(); showMyNotes(event)" style="color: #f472b6; font-weight: bold;">আমার নোটস (My Notes)</button></li>
+        <li><button id="btn-others-view" onclick="playSound(); showOthers(event)" style="color: #38bdf8; font-weight: bold;">অন্যান্য (Others)</button></li>
+        <li><button onclick="playSound(); openMathPuzzleGame()" style="color: #c084fc; font-weight: bold;">ম্যাথ পাজল গেম</button></li>
+        <li><button id="btn-bangla1" onclick="playSound(); showSubject('bangla1', event)">১. বাংলা ১ম পত্র</button></li>
+        <li><button id="btn-bangla2" onclick="playSound(); showSubject('bangla2', event)">২. বাংলা ২য় পত্র</button></li>
+        <li><button id="btn-english1" onclick="playSound(); showSubject('english1', event)">৩. ইংরেজি ১ম পত্র</button></li>
+        <li><button id="btn-english2" onclick="playSound(); showSubject('english2', event)">৪. ইংরেজি ২য় পত্র</button></li>
+        <li><button id="btn-math" onclick="playSound(); showSubject('math', event)">৫. সাধারণ গণিত</button></li>
+        <li><button id="btn-islam" onclick="playSound(); showSubject('islam', event)">৬. ইসলাম ও নৈতিক শিক্ষা</button></li>
+        <li><button id="btn-ict" onclick="playSound(); showSubject('ict', event)">৭. তথ্য ও যোগাযোগ প্রযুক্তি</button></li>
+        <li><button id="btn-bgs" onclick="playSound(); showSubject('bgs', event)">৮. ইতিহাস ও বিশ্বসভ্যতা</button></li>
+        <li><button id="btn-economics" onclick="playSound(); showSubject('economics', event)">৯. অর্থনীতি</button></li>
+        <li><button id="btn-geography" onclick="playSound(); showSubject('geography', event)">১০. ভূগোল ও পরিবেশ</button></li>
+        <li><button id="btn-physics" onclick="playSound(); showSubject('physics', event)">১১. পদার্থবিজ্ঞান</button></li>
+        <li><button id="btn-biology" onclick="playSound(); showSubject('biology', event)">১২. জীববিজ্ঞান</button></li>
+        <li><button id="btn-chemistry" onclick="playSound(); showSubject('chemistry', event)">১৩. রসায়ন</button></li>
+        <li><button id="btn-higher-math" onclick="playSound(); showSubject('higher-math', event)">১৪. উচ্চতর গণিত</button></li>
+    </ul>
+</div>
+
+<!-- মূল কন্টেন্ট এরিয়া -->
+<div class="main-content">
+    <!-- হোম পেজ -->
+    <div id="home-view" class="subject-view card animate-view" style="display: block;">
+        <div class="school-header-box">
+            <div class="school-logo">🏫</div>
+            <div class="school-title">NM HIGH SCHOOL</div>
+            <div class="school-meta">
+                <span class="school-badge">স্থাপিত: ১৯৬৮ খ্রিঃ</span>
+                <span class="school-badge">EIIN: ১০৮৫৪২</span>
+                <span class="school-badge">অঞ্চল: রাজশাহী, বাংলাদেশ</span>
+            </div>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-num">৩২০+</div>
+                <div class="stat-label">মোট শিক্ষার্থী</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num">১০+</div>
+                <div class="stat-label">দক্ষ শিক্ষক/শিক্ষিকা</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num">৯৮.৫%</div>
+                <div class="stat-label">গড় পাসের হার</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num">১৪+</div>
+                <div class="stat-label">বোর্ড ও ঐচ্ছিক বিষয়</div>
+            </div>
+        </div>
+        
+        <div class="hover-card" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(236, 72, 153, 0.15)); border: 1px solid rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px);">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                <span style="font-size: 1.8rem;">🌟</span>
+                <h2 style="font-size: 1.25rem; background: linear-gradient(90deg, #38bdf8, #f472b6, #fbbf24); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900; letter-spacing: 0.5px;">ডিজিটাল অ্যাকাডেমিক পোর্টাল ও ঐতিহ্য</h2>
+            </div>
+            <p style="color: var(--text-main); line-height: 1.8; font-size: 0.95rem; font-weight: 500; text-shadow: 0 1px 2px rgba(0,0,0,0.2);">
+                আমাদের এই ডায়নামিক পোর্টালে NM High School এর পাশাপাশি ঐতিহ্যবাহী <strong>নরিচা মসুরিয়া হাই স্কুল</strong>-এর সার্বিক তথ্য, সিলেবাস, মানবণ্টন এবং আধুনিক স্টাডি টুলস সংযুক্ত করা হয়েছে। শিক্ষার আলো ছড়িয়ে দিতে এবং শিক্ষার্থীদের মেধাবিকাশে আমাদের এই ক্ষুদ্র প্রয়াস।
+            </p>
+        </div>
+
+        <div class="hover-card" style="border-left-color: #38bdf8;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                <span style="font-size: 1.5rem;">🏫</span>
+                <h2 style="color: #38bdf8; font-size: 1.15rem; font-weight: 800;">নরিচা মসুরিয়া হাই স্কুল - সংক্ষিপ্ত পরিচিতি</h2>
+            </div>
+            <p style="color: var(--text-sub); line-height: 1.7; font-size: 0.92rem;">
+                নরিচা মসুরিয়া হাই স্কুল অত্র অঞ্চলের অন্যতম প্রাচীন ও সুনামধন্য শিক্ষাপ্রতিষ্ঠান। শৃঙ্খলা, নৈতিক শিক্ষা এবং আধুনিক জ্ঞান-বিজ্ঞানের সুসমন্বয়ে প্রতিষ্ঠানটি দীর্ঘদিন ধরে কৃতিত্বের সাথে শিক্ষা দান করে আসছে। এখান থেকে পাস করে শিক্ষার্থীরা দেশ ও জাতির কল্যাণে গুরুত্বপূর্ণ অবদান রেখে চলেছে।
+            </p>
+        </div>
+
+        <div class="hover-card" style="border-left-color: #ec4899;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                <span style="font-size: 1.5rem;">📌</span>
+                <h2 style="color: #f472b6; font-size: 1.15rem; font-weight: 800;">নোটিশ ও গুরুত্বপূর্ণ আপডেট</h2>
+            </div>
+            <div class="notice-item">
+                <span>নবম শ্রেণির অর্ধবার্ষিক পরীক্ষার নতুন রুটিন ও আসন বিন্যাস প্রকাশিত হয়েছে।</span>
+                <span class="notice-date">২০ মে ২০২৬</span>
+            </div>
+            <div class="notice-item">
+                <span>আইসিটি, বিজ্ঞান ও ব্যবহারিক ক্লাসের রুটিন আপডেট করা হয়েছে।</span>
+                <span class="notice-date">১৫ মে ২০২৬</span>
+            </div>
+        </div>
+
+        <div class="hover-card" style="border-left-color: #10b981; margin-top: 20px;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                <span style="font-size: 1.5rem;">💡</span>
+                <h2 style="color: #34d399; font-size: 1.15rem; font-weight: 800;">গাইডলাইন ও ব্যবহারবিধি</h2>
+            </div>
+            <ul class="syllabus-list">
+                <li><strong>বাম দিকের মেনু:</strong> যেকোনো বিষয়ের সিলেবাস দেখতে পাশের তালিকা থেকে পছন্দের বিষয়ে ক্লিক করো।</li>
+                <li><strong>আমার নোটস (My Notes):</strong> নিজের পছন্দমতো অধ্যায়ে গুরুত্বপূর্ণ পয়েন্ট লিখে 'নোট সেভ করো' বাটনে ক্লিক করলে তা ব্রাউজারে সংরক্ষিত থাকবে।</li>
+                <li><strong>অন্যান্য ড্যাশবোর্ড:</strong> এখান থেকে শিক্ষকদের মোবাইল নম্বর, হাজিরা খাতা এবং লাইভ ডিজিটাল ঘড়ি ও এক্সাম কাউন্টডাউন দেখতে পাবে।</li>
+                <li><strong>থিম পরিবর্তন:</strong> ডান পাশের ফ্লোটিং বাটন থেকে যেকোনো সময় থিম বদলিয়ে নিতে পারো।</li>
             </ul>
-        </aside>
-
-        <!-- Main Dynamic Content Area -->
-        <div class="content-area">
-            
-            <!-- Professional Home Page Content -->
-            <div id="homeContent" class="home-card">
-                <h2>শব্দ ও অনুভূতির ঠিকানায় স্বাগতম</h2>
-                <p>কল্পনার ডানা মেলে সাহিত্যের অন্তহীন রাজ্যে হারিয়ে যাওয়ার এক দারুণ মাধ্যম এই প্ল্যাটফর্ম। জীবনের নানা রঙ, না বলা অনুভূতি আর ভালোবাসার অমোঘ টানাপোড়েন নিয়ে সাজানো হয়েছে এখানকার প্রতিটি গল্প ও উপন্যাস।</p>
-                <p>আপনার পড়ার অভিজ্ঞতাকে আরও মসৃণ ও আনন্দদায়ক করতে তৈরি করা হয়েছে এই আধুনিক ইউজার ইন্টারফেস। ডান পাশের <strong>"সাইডবার"</strong> বাটনে ক্লিক করে পছন্দের উপন্যাস বেছে নিন এবং ডুব দিন কল্পনার দুনিয়ায়。</p>
-                
-                <div class="quote-box">
-                    "বই হলো এমন এক জাদুকরী জানালা, যা দিয়ে খুব সহজেই অন্য একটি পৃথিবীর দেখা মেলে।"
-                </div>
-            </div>
-
-            <!-- Novel Reader Interface (Initially Hidden) -->
-            <div id="readerContent" class="reader-view">
-                <button class="back-home-btn" onclick="goHome()">← মূল পাতায় ফিরে যান</button>
-                <h2 id="novelTitleHeader">উপন্যাসের নাম</h2>
-                <div class="novel-text" id="novelTextBody">
-                    <!-- উপন্যাসের লেখা এখানে ডায়নামিকভাবে লোড হবে -->
-                </div>
-            </div>
-
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer>
-        © 2026 সর্বস্বত্ব সংরক্ষিত। সাহিত্যপ্রেমীদের জন্য তৈরি।
-    </footer>
+    <!-- অন্যান্য (Others) মেইন ড্যাশবোর্ড ভিউ -->
+    <div id="others-view" class="subject-view card">
+        <h1>অন্যান্য অপশনসমূহ (Others Dashboard)</h1>
+        <p style="color: var(--text-sub); font-size: 0.9rem; margin-bottom: 18px;">প্রয়োজনীয় অপশনটি বেছে নিতে নিচের কার্ডগুলোতে ক্লিক করো:</p>
+        <div class="notes-subject-grid">
+            <div class="notes-subject-card" onclick="playSound(); showTeachers();">
+                <div style="font-size: 1.8rem; margin-bottom: 8px;">👨‍🏫</div>
+                <h3 style="font-size: 0.95rem;">স্যারদের নাম ও নম্বর</h3>
+            </div>
+            <div class="notes-subject-card" onclick="playSound(); showAttendance();">
+                <div style="font-size: 1.8rem; margin-bottom: 8px;">📋</div>
+                <h3 style="font-size: 0.95rem;">হাজিরা খাতা</h3>
+            </div>
+            <div class="notes-subject-card" onclick="playSound(); showClockCountdown();">
+                <div style="font-size: 1.8rem; margin-bottom: 8px;">⏰</div>
+                <h3 style="font-size: 0.95rem;">ডিজিটাল ঘড়ি ও কাউন্টডাউন</h3>
+            </div>
+        </div>
+    </div>
 
-    <script>
-        // Toggle Sidebar Function (Click once to open, click again to close)
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('open');
+    <!-- ডিজিটাল ঘড়ি ও কাউন্টডাউন ভিউ -->
+    <div id="clock-countdown-view" class="subject-view card">
+        <button class="back-to-notes-btn" onclick="playSound(); showOthers();">← অন্যান্য ড্যাশবোর্ডে ফিরে যাও</button>
+        <h1>লাইভ ডিজিটাল ঘড়ি ও এক্সাম কাউন্টডাউন</h1>
+        <p style="color: var(--text-sub); font-size: 0.9rem; margin-bottom: 18px;">বর্তমান সময় এবং পরীক্ষার বাকি দিনগুলোর লাইভ হিসাব:</p>
+        <div class="hover-card" style="text-align: center; border-left-color: #38bdf8;">
+            <h3 style="color: #38bdf8; font-size: 1.05rem; margin-bottom: 10px;">বর্তমান লাইভ ঘড়ি</h3>
+            <div id="liveClockDisplay" style="font-size: 1.8rem; font-weight: 800; background: linear-gradient(90deg, #6366f1, #38bdf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">০০:০০:০০</div>
+            <div id="liveDateDisplay" style="font-size: 0.9rem; color: var(--text-sub); margin-top: 5px;">লোড হচ্ছে...</div>
+        </div>
+        <div class="hover-card" style="text-align: center; border-left-color: #ec4899; margin-top: 20px;">
+            <h3 style="color: #f472b6; font-size: 1.05rem; margin-bottom: 10px;">অর্ধবার্ষিক পরীক্ষা ২০২৬ কাউন্টডাউন</h3>
+            <div id="examCountdownDisplay" style="font-size: 1.3rem; font-weight: 800; color: var(--text-main);">হিসাব করা হচ্ছে...</div>
+        </div>
+    </div>
+
+    <!-- স্যারদের নাম ও নম্বর ভিউ -->
+    <div id="teachers-view" class="subject-view card">
+        <button class="back-to-notes-btn" onclick="playSound(); showOthers();">← অন্যান্য ড্যাশবোর্ডে ফিরে যাও</button>
+        <h1>স্যারদের নাম ও মোবাইল নম্বর</h1>
+        <p style="color: var(--text-sub); font-size: 0.9rem; margin-bottom: 18px;">বিদ্যালয়ের সম্মানিত শিক্ষকবৃন্দের যোগাযোগের তালিকা:</p>
+        <div class="hover-card">
+            <div class="table-responsive-wrapper">
+                <table class="attendance-table">
+                    <thead>
+                        <tr>
+                            <th>শিক্ষকের নাম</th>
+                            <th>পদবী / বিষয়</th>
+                            <th>মোবাইল নম্বর</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>মোঃ রফিকুল ইসলাম</td>
+                            <td>প্রধান শিক্ষক (গণিত)</td>
+                            <td>০১৭০০-১১২২৩৪</td>
+                        </tr>
+                        <tr>
+                            <td>নাজমা খাতুন</td>
+                            <td>সহকারী প্রধান শিক্ষক (ইংরেজি)</td>
+                            <td>০১৮০০-২২৩৩৪৫</td>
+                        </tr>
+                        <tr>
+                            <td>আব্দুল জব্বার</td>
+                            <td>সহকারী শিক্ষক (বিজ্ঞান)</td>
+                            <td>০১৯২২-৩৩৪৪৫৬</td>
+                        </tr>
+                        <tr>
+                            <td>ফারজানা সুলতানা</td>
+                            <td>সহকারী শিক্ষক (বাংলা)</td>
+                            <td>০১৫৩৩-৪৪৫৫৬৭</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- হাজিরা খাতা ভিউ -->
+    <div id="attendance-view" class="subject-view card">
+        <button class="back-to-notes-btn" onclick="playSound(); showOthers();">← অন্যান্য ড্যাশবোর্ডে ফিরে যাও</button>
+        <h1>শিক্ষার্থী হাজিরা খাতা (Attendance Record)</h1>
+        <p style="color: var(--text-sub); font-size: 0.9rem; margin-bottom: 18px;">নবম শ্রেণির শিক্ষার্থীদের আজকের ক্লাসের উপস্থিতি তালিকা:</p>
+        <div class="hover-card">
+            <div class="table-responsive-wrapper">
+                <table class="attendance-table">
+                    <thead>
+                        <tr>
+                            <th>রোল</th>
+                            <th>শিক্ষার্থীর নাম</th>
+                            <th>শ্রেণী</th>
+                            <th>উপস্থিতি স্ট্যাটাস</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>০১</td>
+                            <td>রাহিম আহমেদ</td>
+                            <td>নবম (আর্টস)</td>
+                            <td><span class="status-badge status-present">উপস্থিত (Present)</span></td>
+                        </tr>
+                        <tr>
+                            <td>০২</td>
+                            <td>ফাতিমা আক্তার</td>
+                            <td>নবম (আর্টস)</td>
+                            <td><span class="status-badge status-present">উপস্থিত (Present)</span></td>
+                        </tr>
+                        <tr>
+                            <td>০৩</td>
+                            <td>তানভীর হাসান</td>
+                            <td>নবম (আর্টস)</td>
+                            <td><span class="status-badge status-absent">অনুপস্থিত (Absent)</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- আমার নোটস মেইন ভিউ -->
+    <div id="my-notes-view" class="subject-view card">
+        <h1>আমার নোটস (অধ্যায়ভিত্তিক নোট তৈরি)</h1>
+        <p style="color: var(--text-sub); font-size: 0.9rem; margin-bottom: 18px;">যেকোনো বিষয় সিলেক্ট করো, তারপর অধ্যায় অনুযায়ী নিজের নোট লিখে সেভ করো:</p>
+        <div id="notesSubjectGrid" class="notes-subject-grid">
+            <div class="notes-subject-card" onclick="playSound(); openSubjectChapters('bangla1', 'বাংলা ১ম পত্র')">
+                <div style="font-size: 1.8rem; margin-bottom: 8px;">📖</div>
+                <h3 style="font-size: 0.95rem;">বাংলা ১ম পত্র</h3>
+            </div>
+            <div class="notes-subject-card" onclick="playSound(); openSubjectChapters('math', 'সাধারণ গণিত')">
+                <div style="font-size: 1.8rem; margin-bottom: 8px;">📐</div>
+                <h3 style="font-size: 0.95rem;">সাধারণ গণিত</h3>
+            </div>
+            <div class="notes-subject-card" onclick="playSound(); openSubjectChapters('english1', 'ইংরেজি ১ম পত্র')">
+                <div style="font-size: 1.8rem; margin-bottom: 8px;">🔤</div>
+                <h3 style="font-size: 0.95rem;">ইংরেজি ১ম পত্র</h3>
+            </div>
+            <div class="notes-subject-card" onclick="playSound(); openSubjectChapters('ict', 'আইসিটি (ICT)')">
+                <div style="font-size: 1.8rem; margin-bottom: 8px;">💻</div>
+                <h3 style="font-size: 0.95rem;">আইসিটি</h3>
+            </div>
+            <div class="notes-subject-card" onclick="playSound(); openSubjectChapters('bgs', 'ইতিহাস ও বিশ্বসভ্যতা')">
+                <div style="font-size: 1.8rem; margin-bottom: 8px;">🏛️</div>
+                <h3 style="font-size: 0.95rem;">ইতিহাস ও বিশ্বসভ্যতা</h3>
+            </div>
+            <div class="notes-subject-card" onclick="playSound(); openSubjectChapters('physics', 'পদার্থবিজ্ঞান')">
+                <div style="font-size: 1.8rem; margin-bottom: 8px;">⚛️</div>
+                <h3 style="font-size: 0.95rem;">পদার্থবিজ্ঞান</h3>
+            </div>
+            <div class="notes-subject-card" onclick="playSound(); openSubjectChapters('chemistry', 'রসায়ন')">
+                <div style="font-size: 1.8rem; margin-bottom: 8px;">🧪</div>
+                <h3 style="font-size: 0.95rem;">রসায়ন</h3>
+            </div>
+        </div>
+        <div id="subjectChapterContainer" style="display: none; margin-top: 15px;">
+            <button class="back-to-notes-btn" onclick="playSound(); backToSubjectsGrid();">← সকল বিষয়ের লিস্টে ফিরে যাও</button>
+            <h2 id="selectedSubjectTitle" style="color: #38bdf8; font-size: 1.1rem; margin-bottom: 15px;"></h2>
+            <div id="chapterListArea" class="chapter-list-container"></div>
+        </div>
+    </div>
+
+    <!-- ১. বাংলা ১ম পত্র -->
+    <div id="bangla1" class="subject-view card">
+        <h1>বাংলা ১ম পত্র (পাঠ্যসূচি ও মানবণ্টন- ২০২৬)</h1>
+        <div class="hover-card">
+            <h2 style="color: #818cf8; margin-bottom: 10px; font-size: 1.1rem;">পরীক্ষার মানবন্টন (পূর্ণমান: ১০০)</h2>
+            <ul class="syllabus-list">
+                <li><strong>সৃজনশীল অংশ: ৭০ নম্বর</strong> (১১টি প্রশ্ন থেকে ৭টি দিতে হবে)।</li>
+                <li><strong>বহুনির্বাচনী প্রশ্ন (MCQ): ৩০ নম্বর</strong> (৩০টি প্রশ্ন থাকবে)।</li>
+            </ul>
+        </div>
+        <div class="syllabus-grid">
+            <div class="syllabus-box half-yearly">
+                <span class="syllabus-badge">অর্ধবার্ষিক সিলেবাস</span>
+                <ul class="syllabus-list">
+                    <li>গল্প: শোভা, বই পড়া, আম আঁটির ভেঁপু, মানুষ মহুম্মদ (স.)।</li>
+                    <li>কবিতা: বঙ্গবাণী, কপোতাক্ষ নদ, জীবন-সংগীত।</li>
+                    <li>সহপাঠ: কাকতারুয়া (১ থেকে ৫ অধ্যায়)।</li>
+                </ul>
+            </div>
+            <div class="syllabus-box annual">
+                <span class="syllabus-badge">বার্ষিক সিলেবাস</span>
+                <ul class="syllabus-list">
+                    <li>গল্প: নিমগাছ, শিক্ষা ও মনুষ্যত্ব, প্রবাস বন্ধু, মমতাদি।</li>
+                    <li>কবিতা: ঝর্ণার গান, মানুষ, সেই দিন এই মাঠ।</li>
+                    <li>সহপাঠ: কাকতারুয়া (সম্পূর্ণ) ও বহি পীর।</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- ২. বাংলা ২য় পত্র -->
+    <div id="bangla2" class="subject-view card">
+        <h1>বাংলা ২য় পত্র (পাঠ্যসূচি ও মানবণ্টন ২০২৬)</h1>
+        <div class="hover-card">
+            <h2 style="color: #818cf8; margin-bottom: 10px; font-size: 1.1rem;">মানবন্টন: রচনামূলক ৭০ + বহু নির্বাচন ৩০ = ১০০</h2>
+        </div>
+        <div class="syllabus-grid">
+            <div class="syllabus-box half-yearly">
+                <span class="syllabus-badge">অর্ধবার্ষিক সিলেবাস</span>
+                <ul class="syllabus-list">
+                    <li>ব্যাকরণ: পরিচ্ছেদ ১ থেকে ২০।</li>
+                    <li>নির্মীতি: অনুচ্ছেদ, সারমর্ম ও পত্র লিখন।</li>
+                </ul>
+            </div>
+            <div class="syllabus-box annual">
+                <span class="syllabus-badge">বার্ষিক সিলেবাস</span>
+                <ul class="syllabus-list">
+                    <li>ব্যাকরণ: পরিচ্ছেদ ২১ থেকে শেষ।</li>
+                    <li>নির্মীতি: ভাবসম্প্রসারণ, প্রতিবেদন ও প্রবন্ধ রচনা।</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- ৩. ইংরেজি ১ম পত্র -->
+    <div id="english1" class="subject-view card">
+        <h1>English 1st Paper (Syllabus & Marks 2026)</h1>
+        <div class="hover-card">
+            <h2 style="color: #818cf8; margin-bottom: 10px; font-size: 1.1rem;">Marks: Reading Test (60) + Writing Test (40) = 100</h2>
+        </div>
+        <div class="syllabus-grid">
+            <div class="syllabus-box half-yearly">
+                <span class="syllabus-badge">Half-Yearly Syllabus</span>
+                <ul class="syllabus-list">
+                    <li>English For Today: Units 1, 2, 3, 4 and 5.</li>
+                    <li>Paragraphs and Graphs from Units 1-5.</li>
+                </ul>
+            </div>
+            <div class="syllabus-box annual">
+                <span class="syllabus-badge">Annual Syllabus</span>
+                <ul class="syllabus-list">
+                    <li>English For Today: Units 6, 7, 8, 9, 10, 11 and 12.</li>
+                    <li>All Writing items & Vocabulary.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- ৪. ইংরেজি ২য় পত্র -->
+    <div id="english2" class="subject-view card">
+        <h1>English 2nd Paper (Grammar & Composition 2026)</h1>
+        <div class="hover-card">
+            <h2 style="color: #818cf8; margin-bottom: 10px; font-size: 1.1rem;">Marks: Grammar 60 + Composition 40 = 100</h2>
+        </div>
+        <div class="syllabus-grid">
+            <div class="syllabus-box half-yearly">
+                <span class="syllabus-badge">Half-Yearly</span>
+                <ul class="syllabus-list">
+                    <li>Gap filling, Substitution table, Right forms of verbs, Changing Sentences.</li>
+                </ul>
+            </div>
+            <div class="syllabus-box annual">
+                <span class="syllabus-badge">Annual</span>
+                <ul class="syllabus-list">
+                    <li>Narration, Modifiers, Connectors, Tag questions, Punctuation, CV/Email.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- ৫. সাধারণ গণিত -->
+    <div id="math" class="subject-view card">
+        <h1>সাধারণ গণিত (পাঠ্যসূচি ও মানবণ্টন ২০২৬)</h1>
+        <div class="hover-card">
+            <h2 style="color: #818cf8; margin-bottom: 10px; font-size: 1.1rem;">সৃজনশীল ৭০ + MCQ ৩০ = ১০০</h2>
+        </div>
+        <div class="syllabus-grid">
+            <div class="syllabus-box half-yearly">
+                <span class="syllabus-badge">অর্ধবার্ষিক সিলেবাস</span>
+                <ul class="syllabus-list">
+                    <li>অধ্যায় ১: বাস্তব সংখ্যা | অধ্যায় ২: সেট ও ফাংশন</li>
+                    <li>অধ্যায় ৩: বীজগণিতীয় রাশি | অধ্যায় ৭: ব্যবহারিক জ্যামিতি</li>
+                </ul>
+            </div>
+            <div class="syllabus-box annual">
+                <span class="syllabus-badge">বার্ষিক সিলেবাস</span>
+                <ul class="syllabus-list">
+                    <li>অধ্যায় ৪: সূচক ও লগারিদম | অধ্যায় ৮, ৯, ১০: বৃত্ত ও ত্রিকোণমিতি</li>
+                    <li>অধ্যায় ১৬: পরিমিতি | অধ্যায় ১৭: পরিসংখ্যান</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- ৬. ইসলাম শিক্ষা -->
+    <div id="islam" class="subject-view card">
+        <h1>ইসলাম ও নৈতিক শিক্ষা</h1>
+        <div class="hover-card">
+            <h2 style="color: #818cf8; margin-bottom: 10px; font-size: 1.1rem;">পূর্ণমান: ১০০ (সৃজনশীল ৭০ + MCQ ৩০)</h2>
+        </div>
+        <div class="syllabus-grid">
+            <div class="syllabus-box half-yearly">
+                <span class="syllabus-badge">অর্ধবার্ষিক</span>
+                <ul class="syllabus-list">
+                    <li>অধ্যায় ১: আকাইদ ও বিশ্বাস | অধ্যায় ২: শরীয়তের উৎস</li>
+                </ul>
+            </div>
+            <div class="syllabus-box annual">
+                <span class="syllabus-badge">বার্ষিক</span>
+                <ul class="syllabus-list">
+                    <li>অধ্যায় ৩: ইবাদত | অধ্যায় ৪: আখলাক | অধ্যায় ৫: আদর্শ জীবনচরিত</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- ৭. আইসিটি -->
+    <div id="ict" class="subject-view card">
+        <h1>তথ্য ও যোগাযোগ প্রযুক্তি (আইসিটি)</h1>
+        <div class="hover-card">
+            <h2 style="color: #818cf8; margin-bottom: 10px; font-size: 1.1rem;">তত্ত্বীয় ২৫ + ব্যবহারিক ২৫ = ৫০ নম্বর</h2>
+        </div>
+        <div class="syllabus-grid">
+            <div class="syllabus-box half-yearly">
+                <span class="syllabus-badge">অর্ধবার্ষিক</span>
+                <ul class="syllabus-list">
+                    <li>অধ্যায় ১: আইসিটি ও বাংলাদেশ | অধ্যায় ২: কম্পিউটার ও নিরাপত্তা</li>
+                </ul>
+            </div>
+            <div class="syllabus-box annual">
+                <span class="syllabus-badge">বার্ষিক</span>
+                <ul class="syllabus-list">
+                    <li>অধ্যায় ৩: ইন্টারনেট | অধ্যায় ৪: লেখালেখি | অধ্যায় ৫: মাল্টিমিডিয়া</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- ৮. ইতিহাস -->
+    <div id="bgs" class="subject-view card">
+        <h1>ইতিহাস ও বিশ্বসভ্যতা</h1>
+        <div class="hover-card">
+            <h2 style="color: #818cf8; margin-bottom: 10px; font-size: 1.1rem;">পূর্ণমান: ১০০ (সৃজনশীল + MCQ)</h2>
+        </div>
+        <div class="syllabus-grid">
+            <div class="syllabus-box half-yearly">
+                <span class="syllabus-badge">অর্ধবার্ষিক</span>
+                <ul class="syllabus-list">
+                    <li>অধ্যায় ১: ইতিহাস পরিচিতি | অধ্যায় ২: বিশ্ব সভ্যতা</li>
+                    <li>অধ্যায় ৩ ও ৪: প্রাচীন বাংলার ইতিহাস</li>
+                </ul>
+            </div>
+            <div class="syllabus-box annual">
+                <span class="syllabus-badge">বার্ষিক</span>
+                <ul class="syllabus-list">
+                    <li>অধ্যায় ৫ থেকে ৮: মধ্যযুগ, ব্রিটিশ শাসন ও স্বাধিকার আন্দোলন</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- ৯. অর্থনীতি -->
+    <div id="economics" class="subject-view card">
+        <h1>অর্থনীতি</h1>
+        <div class="hover-card">
+            <h2 style="color: #818cf8; margin-bottom: 10px; font-size: 1.1rem;">পূর্ণমান: ১০০</h2>
+        </div>
+        <div class="syllabus-grid">
+            <div class="syllabus-box half-yearly">
+                <span class="syllabus-badge">অর্ধবার্ষিক</span>
+                <ul class="syllabus-list">
+                    <li>অধ্যায় ১ থেকে ৪: পরিচিতি, উৎপাদন, উপযোগ ও বাজার</li>
+                </ul>
+            </div>
+            <div class="syllabus-box annual">
+                <span class="syllabus-badge">বার্ষিক</span>
+                <ul class="syllabus-list">
+                    <li>অধ্যায় ৫ থেকে ৮: জাতীয় আয়, ব্যাংক ও বাণিজ্য</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- ১০. ভূগোল -->
+    <div id="geography" class="subject-view card">
+        <h1>ভূগোল ও পরিবেশ</h1>
+        <div class="hover-card">
+            <h2 style="color: #818cf8; margin-bottom: 10px; font-size: 1.1rem;">পূর্ণমান: ১০০</h2>
+        </div>
+        <div class="syllabus-grid">
+            <div class="syllabus-box half-yearly">
+                <span class="syllabus-badge">অর্ধবার্ষিক</span>
+                <ul class="syllabus-list">
+                    <li>অধ্যায় ১ থেকে ৫: ভূগোল, পৃথিবী, বারিমণ্ডল ও জলবায়ু</li>
+                </ul>
+            </div>
+            <div class="syllabus-box annual">
+                <span class="syllabus-badge">বার্ষিক</span>
+                <ul class="syllabus-list">
+                    <li>অধ্যায় ৬ থেকে ১২: সম্পদ, যোগাযোগ ও পরিবেশ</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- ১১. পদার্থবিজ্ঞান -->
+    <div id="physics" class="subject-view card">
+        <h1>পদার্থবিজ্ঞান</h1>
+        <div class="hover-card">
+            <h2 style="color: #818cf8; margin-bottom: 10px; font-size: 1.1rem;">তত্ত্বীয় ৭৫ + ব্যবহারিক ২৫ = ১০০</h2>
+        </div>
+        <div class="syllabus-grid">
+            <div class="syllabus-box half-yearly">
+                <span class="syllabus-badge">অর্ধবার্ষিক</span>
+                <ul class="syllabus-list">
+                    <li>অধ্যায় ১: পরিমাপ | অধ্যায় ২: গতি | অধ্যায় ৩: বল | অধ্যায় ৪: শক্তি</li>
+                </ul>
+            </div>
+            <div class="syllabus-box annual">
+                <span class="syllabus-badge">বার্ষিক</span>
+                <ul class="syllabus-list">
+                    <li>অধ্যায় ৫: চাপ | অধ্যায় ৬: তাপ | অধ্যায় ৭-৯: তরঙ্গ ও আলো</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- ১২. জীববিজ্ঞান -->
+    <div id="biology" class="subject-view card">
+        <h1>জীববিজ্ঞান</h1>
+        <div class="hover-card">
+            <h2 style="color: #818cf8; margin-bottom: 10px; font-size: 1.1rem;">তত্ত্বীয় ৭৫ + ব্যবহারিক ২৫ = ১০০</h2>
+        </div>
+        <div class="syllabus-grid">
+            <div class="syllabus-box half-yearly">
+                <span class="syllabus-badge">অর্ধবার্ষিক</span>
+                <ul class="syllabus-list">
+                    <li>অধ্যায় ১: জীবন পাঠ | অধ্যায় ২: জীবকোষ | অধ্যায় ৩: কোষ বিভাজন</li>
+                </ul>
+            </div>
+            <div class="syllabus-box annual">
+                <span class="syllabus-badge">বার্ষিক</span>
+                <ul class="syllabus-list">
+                    <li>অধ্যায় ৪ থেকে ১০: জীবনীশক্তি, পুষ্টি, শ্বসন ও সংবহন</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- ১৩. রসায়ন -->
+    <div id="chemistry" class="subject-view card">
+        <h1>রসায়ন</h1>
+        <div class="hover-card">
+            <h2 style="color: #818cf8; margin-bottom: 10px; font-size: 1.1rem;">তত্ত্বীয় ৭৫ + ব্যবহারিক ২৫ = ১০০</h2>
+        </div>
+        <div class="syllabus-grid">
+            <div class="syllabus-box half-yearly">
+                <span class="syllabus-badge">অর্ধবার্ষিক</span>
+                <ul class="syllabus-list">
+                    <li>অধ্যায় ১: ধারণা | অধ্যায় ২: অবস্থা | অধ্যায় ৩: গঠন | অধ্যায় ৪: পর্যায় সারণি</li>
+                </ul>
+            </div>
+            <div class="syllabus-box annual">
+                <span class="syllabus-badge">বার্ষিক</span>
+                <ul class="syllabus-list">
+                    <li>অধ্যায় ৫ থেকে ৯: বন্ধন, মোল ধারণা, বিক্রিয়া ও অম্ল-ক্ষারক</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- ১৪. উচ্চতর গণিত -->
+    <div id="higher-math" class="subject-view card">
+        <h1>উচ্চতর গণিত</h1>
+        <div class="hover-card">
+            <h2 style="color: #818cf8; margin-bottom: 10px; font-size: 1.1rem;">পূর্ণমান: ১০০</h2>
+        </div>
+        <div class="syllabus-grid">
+            <div class="syllabus-box half-yearly">
+                <span class="syllabus-badge">অর্ধবার্ষিক</span>
+                <ul class="syllabus-list">
+                    <li>অধ্যায় ১: সেট | অধ্যায় ২: রাশি | অধ্যায় ৩: জ্যামিতি | অধ্যায় ৪: স্থানাঙ্ক</li>
+                </ul>
+            </div>
+            <div class="syllabus-box annual">
+                <span class="syllabus-badge">বার্ষিক</span>
+                <ul class="syllabus-list">
+                    <li>অধ্যায় ৫: ত্রিকোণমিতি | অধ্যায় ৯: সূচক | অধ্যায় ১১: সম্ভাবনা</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- জাভাস্ক্রিপ্ট লজিক -->
+<script>
+// তোর জেমিনি এপিআই কি (API Key) এখানে বসিয়ে দিবি
+const GEMINI_API_KEY = "YOUR_GEMINI_API_KEY"; 
+
+function playSound() {
+    const sound = document.getElementById('clickSound');
+    if (sound) {
+        sound.currentTime = 0;
+        sound.play().catch(e => {});
+    }
+}
+
+const subjectChaptersData = {
+    bangla1: ["অধ্যায় ১: শোভা (গল্প)", "অধ্যায় ২: বই পড়া (প্রবন্ধ)", "অধ্যায় ৩: আম আঁটির ভেঁপু", "অধ্যায় ৪: বঙ্গবাণী (কবিতা)", "অধ্যায় ৫: কপোতাক্ষ নদ"],
+    math: ["অধ্যায় ১: বাস্তব সংখ্যা", "অধ্যায় ২: সেট ও ফাংশন", "অধ্যায় ৩: বীজগণিতীয় রাশি", "অধ্যায় ৭: ব্যবহারিক জ্যামিতি", "অধ্যায় ১৬: পরিমিতি"],
+    english1: ["Unit 1: Good Citizens", "Unit 2: My Childhood", "Unit 3: Event and Festivals", "Unit 4: Environment", "Unit 5: Education"],
+    ict: ["অধ্যায় ১: আইসিটি ও আমাদের বাংলাদেশ", "অধ্যায় ২: কম্পিউটার ও নিরাপত্তা", "অধ্যায় ৩: ইন্টারনেট পরিচিতি", "অধ্যায় ৪: ওয়ার্ড প্রসেসিং"],
+    bgs: ["অধ্যায় ১: ইতিহাস পরিচিতি", "অধ্যায় ২: বিশ্ব সভ্যতা", "অধ্যায় ৩: প্রাচীন বাংলা", "অধ্যায় ৪: রাজনৈতিক ইতিহাস"],
+    physics: ["অধ্যায় ১: ভৌত রাশি ও পরিমাপ", "অধ্যায় ২: গতি", "অধ্যায় ৩: বল", "অধ্যায় ৪: কাজ, ক্ষমতা ও শক্তি"],
+    chemistry: ["অধ্যায় ১: রসায়নের ধারণা", "অধ্যায় ২: পদার্থের অবস্থা", "অধ্যায় ৩: পদার্থের গঠন", "অধ্যায় ৪: পর্যায় সারণি"]
+};
+
+/* থিম সুইচিং লজিক */
+const themes = ["default", "dark", "light"];
+const themeNames = { default: "থিম: ডিফল্ট", dark: "থিম: ডার্ক", light: "থিম: লাইট" };
+let currentThemeIndex = 0;
+
+function toggleTheme() {
+    currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+    let selectedTheme = themes[currentThemeIndex];
+    document.documentElement.setAttribute('data-theme', selectedTheme);
+    document.getElementById('themeToggleBtn').innerText = themeNames[selectedTheme];
+    localStorage.setItem('portal_theme', selectedTheme);
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    let savedTheme = localStorage.getItem('portal_theme') || 'default';
+    let themeIdx = themes.indexOf(savedTheme);
+    if (themeIdx !== -1) {
+        currentThemeIndex = themeIdx;
+    }
+    document.documentElement.setAttribute('data-theme', themes[currentThemeIndex]);
+    document.getElementById('themeToggleBtn').innerText = themeNames[themes[currentThemeIndex]];
+});
+
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    sidebar.classList.toggle('open');
+    overlay.style.display = sidebar.classList.contains('open') ? 'block' : 'none';
+}
+
+function toggleAIChat() {
+    document.getElementById('aiChatBox').classList.toggle('open');
+}
+
+function handleAIChatKey(event) {
+    if (event.key === 'Enter') { sendNM_AIChatMessage(); }
+}
+
+// রিয়েল জেমিনি এআই এপিআই কল ফাংশন - পৃথিবীর যেকোনো প্রশ্নের উত্তর দিতে সক্ষম
+async function sendNM_AIChatMessage() {
+    const inputField = document.getElementById('aiUserInput');
+    const msgContainer = document.getElementById('aiChatMessages');
+    const userText = inputField.value.trim();
+
+    if (!userText) return;
+
+    if (GEMINI_API_KEY === "YOUR_GEMINI_API_KEY") {
+        alert("দয়া করে কোডের ওপরের দিকে আপনার জেমিনি এপিআই কি (API Key) বসান!");
+        return;
+    }
+
+    const userMsgDiv = document.createElement('div');
+    userMsgDiv.className = 'ai-msg user';
+    userMsgDiv.innerText = userText;
+    msgContainer.appendChild(userMsgDiv);
+
+    inputField.value = '';
+    msgContainer.scrollTop = msgContainer.scrollHeight;
+
+    const loadingDiv = document.createElement('div');
+    loadingDiv.className = 'ai-msg bot';
+    loadingDiv.innerText = 'উত্তর তৈরি হচ্ছে...';
+    msgContainer.appendChild(loadingDiv);
+    msgContainer.scrollTop = msgContainer.scrollHeight;
+
+    try {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                contents: [{
+                    parts: [{
+                        text: "তুমি একজন অত্যন্ত বুদ্ধিমান এবং জ্ঞানী এআই সহকারী (NM AI)। ব্যবহারকারী পৃথিবীর যেকোনো কঠিন, সহজ বা আবল-তাবল প্রশ্নই করুক না কেন, তুমি অত্যন্ত সুন্দর, নির্ভুল এবং শুদ্ধ বাংলায় তার উত্তর দেবে। প্রশ্ন: " + userText
+                    }]
+                }]
+            })
+        });
+
+        const data = await response.json();
+        
+        if (data.candidates && data.candidates[0].content.parts[0].text) {
+            loadingDiv.innerText = data.candidates[0].content.parts[0].text;
+        } else {
+            loadingDiv.innerText = "দুঃখিত, উত্তর পাওয়া যায়নি। আবার চেষ্টা করুন।";
         }
+    } catch (error) {
+        loadingDiv.innerText = "সংযোগ স্থাপন করতে সমস্যা হচ্ছে। ইন্টারনেট সংযোগ পরীক্ষা করুন।";
+    }
 
-        // Open Specific Novel Interface
-        function openNovel(novelId) {
-            const home = document.getElementById('homeContent');
-            const reader = document.getElementById('readerContent');
-            const titleHeader = document.getElementById('novelTitleHeader');
-            const textBody = document.getElementById('novelTextBody');
+    msgContainer.scrollTop = msgContainer.scrollHeight;
+}
 
-            if (novelId === 'hridoyJure') {
-                titleHeader.innerText = "হৃদয় জুড়ে তুমি";
-                textBody.innerHTML = `
-                    <p>শীতের বিকেলটা তখন গলে গলে ঠিক সন্ধের মুখে এসে দাঁড়িয়েছে। চারপাশটায় হালকা কুয়াশার একটা চাদর জেকে বসেছে, যার ভেতর দিয়ে বুনো আলো আর ফুরুফুরে ঠান্ডা হাওয়া বইছে। চারদিকে কেবল সবুজ চা বাগান, যার বুক চিরে চলে গেছে পুরোনো এক রেললাইন।</p>
-                    <p>স্টেশনটা খুব একটা বড় নয়, বরং বেশ শান্ত ও নিরিবিলি। শীতের এই পড়ন্ত বিকেলে বাতাসে একটা অদ্ভুত ঘ্রাণ—ভেজা মাটি, শুকনো পাতা আর কফি বা চায়ের কেটলির সুবাস মিশে একাকার হয়ে আছে।</p>
-                    <p>অর্ণব প্ল্যাটফর্মে দাঁড়িয়ে আছে আনমনে। ছোটবড় নানা মানুষের ভিড়। কাকার মুখে শুধু নাম শুনেছে—"তোর মেজো ফুপুর মেয়ে মেঘলা আসছে।" কিন্তু সামনা-সামনি আজ অবধি মেয়েটিকে দেখেনি অর্ণব। ঠিক তখনই ঝুমঝুম শব্দে ট্রেনটা এসে থামল ছোট স্টেশনের প্ল্যাটফর্মে।</p>
-                    <p>যাত্রীরা নামতে শুরু করল। অর্ণব একটু খোঁজার চেষ্টা করছে কাউকে চেনার জন্য। ঠিক তখনই ট্রেনের বগি থেকে নেমে প্ল্যাটফর্মে পা রাখল একটি মেয়ে। পরনে হালকা নীল রঙের শাল, পিঠে ছোট ব্যাকপ্যাক। সে চারপাশ দেখতে দেখতে অর্ণবের দিকেই হেঁটে আসছে।</p>
-                    <p>আর ঠিক সেই মুহূর্তেই ঘটে গেল এক কাণ্ড! প্ল্যাটফর্মে থাকা একটা কুচকুচে কালো বিড়াল হঠাৎ এক দৌড়ে এসে সোজা মেঘলার পায়ের সামনে পড়ল। বিড়ালটার সাথে ধাক্কা লেগে মেঘলা ভারসাম্য হারিয়ে ফেলল—অর্ণব চোখের পলকে হাত বাড়িয়ে সামলানোর চেষ্টা করল, কিন্তু সামলাাতে না পেরে দুজনেই ছিটকে প্ল্যাটফর্মে সিমেন্টের মেঝেতে হুড়মুড় করে পড়ে গেল!</p>
-                    <p>সময়টা যেন ঠিক তখনই ওই একটা বিন্দুতে এসে থেমে গেল। মেঘলা অর্ণবের ঠিক ওপরে পড়ে আছে। শীতের বাতাসের সাথে তার সুবাস, আর কানের পাশ দিয়ে ছন্নছাড়া কিছু চুল এসে পড়েছে অর্ণবের মুখের ওপর। অর্ণব একটু অবাক হয়ে নিচে শুয়ে আছে। আর মেঘলা চোখ বড় বড় করে তাকিয়ে আছে তার দিকে। অর্ণবের চোখ গিয়ে সরাসরি আটকে গেল মেঘলার চোখের গভীরতায়। প্রথম দেখাতেই হৃদস্পন্দন কেমন যেন কয়েক মুহূর্তের জন্য থেমে গেল।</p>
-                    <p>দুজনেই কোনোমতে সামলে উঠে দাঁড়াল। অর্ণব নিজের কোটটা ঝেড়ে সোজা হয়ে দাঁড়িয়ে একটু রাগী ও বিরক্ত গলায় বলে উঠল—</p>
-                    <p>অর্ণব: একটু দেখে-শুনে চলতে পারেন না? হুড়মুড় করে এসে একদম সোজা মানুষের ওপর আছড়ে পড়লেন!</p>
-                    <p>মেঘলা তখনো ধাক্কার রেশ আর বিড়ালটার কান্ডে থমকে ছিল। অর্ণবের এমন হুট করে কড়া কথা শুনে সে চোখ বড় বড় করে এক পলক তাকিয়ে রইল। তারপর তার গালে রাগের একটা হালকা লালচে আভা খেলে গেল। সে হাত দিয়ে নিজের শালটা ঠিক করতে করতে জবাব দিল—</p>
-                    <p>মেঘলা: অন্ধ হব কেন? আর আমি কি ইচ্ছে করে আপনার ওপর পড়েছি নাকি? ওই বিশ্রী কালো বিড়ালটা কোতহেকে এসে পায়ে ধাক্কা দিল, বলুন! একটু ভালো করে কথা বলতে পারেন না?</p>
-                    <p>অর্ণব মেঝের ওপর থেকে নিজের জিনিসপত্র তুলতে তুলতে হাত বাড়িয়ে দিল মেঘলাকে তোলার জন্য, কিন্তু মুখে তখনো খাপছাড়া বিরক্তির ভাব।</p>
-                    <p>অর্ণব: ভালো করে কথা না বলার কী আছে? ট্রেন থেকে নেমেই যদি সোজা আমার বুকের ওপর ল্যান্ড করেন, তবে কি নোবেল প্রাইজ দেব নাকি?</p>
-                    <p>মেঘলা অর্ণবের বাড়িয়ে দেওয়া হাতটার দিকে এক পলক তাকিয়ে নিজের ভর নিজেই উঠে দাঁড়াল। ব্যাকপ্যাকটা কাঁধে ঠিক করে ঝাঁঝালো গলায় বলে উঠল—</p>
-                    <p>মেঘলা: আপনার সাহায্যের কোনো দরকার নেই! আর আপনি কে বলুন তো? এভাবে আমাদের ওপর চড়াও হচ্ছেন কেন?</p>
-                    <p>অর্ণব পকেট থেকে হাত দুটো বের করে একটু অদ্ভুত দৃষ্টিতে তাকিয়ে রইল। তারপর ঠান্ডা গলায় বলল—</p>
-                    <p>অর্ণব: আমি কে, সেটা একটু পরেই জানতে পারবেন। কাকা আমাকে পাঠিয়েছে আপনাকে রিসিভ করতে। আর আপনার নাম যদি মেঘলা হয়ে থাকে, তবে স্বাগতম এই অজপাড়াগাঁয়ে!</p>
-                    <p>মেঘলার চোখ দুটো তখন পলকের জন্য গোল হয়ে গেল। সে অর্ণবের মুখের দিকে একবার ভালো করে তাকিয়ে নড়েচড়ে উঠল। তারপর গলাটা একটু নামিয়ে ভ্রু কুঁচকে বলে উঠল—</p>
-                    <p>মেঘলা: আচ্ছা... আপনার নাম কি অর্ণব? মায়ের মুখে আপনার কথা অনেক শুনেছি! ভেবেছিলাম মানুষটা অন্তত শান্তশিষ্ট হবে, কিন্তু এসে দেখি আস্ত একটা লম্বালম্বি সাইজ ডাইনোসর! মুখে এত ফায়ার কেন আপনার?</p>
-                    <p>অর্ণব: (চোখ দুটো ছোট করে) ডাইনোসর বললাম আমি? নিজের গায়ে কদমফুল নিজে মাখছেন কেন? আর আমি যদি ডাইনোসর হই, তবে আপনি হলেন আস্ত একটা হ্যারিকেন—যে এসেই চারপাশ ওলটপালট করে দেয়!</p>
-                    <p>মেঘলা: (মুখ বাঁকিয়ে) বাহ! বেশ ভালো কথা সাজিয়ে বলতে পারেন তো! বিড়ালটা ধাক্কা দিল আমাকে, আর দোষটা সব আমার ঘাড়ে চাপানো হচ্ছে? যদি জানতাম এই স্টেশনে এমন রাগী একটা নমুনা আমার জন্য অপেক্ষা করছে, তবে আমি ভুলেও ট্রেনে উঠতাম না!</p>
-                    <p>অর্ণব: বেশ তো! তাহলে পরের ট্রেন ধরে সোজা উল্টো পথে ব্যাক করুন। কে আটকেছে আপনাকে?</p>
-                    <p>দুজনের কথার লড়াইয়ের মাঝেই চারপাশের ঠান্ডা হাওয়াটা যেন আরও একটু ভারী হয়ে এল। হঠাৎ অর্ণব ঘড়ির দিকে তাকিয়ে দেখল আকাশটা বেশ দ্রুত অন্ধকার হয়ে আসছে। সে দীর্ঘশ্বাস ফেলে বলল—</p>
-                    <p>অর্ণব: হয়েছে, হয়েছে! আর ঝগড়া করতে হবে না। সন্ধে হয়ে যাচ্ছে, অনেক পথ এখনও যেতে হবে। বাইকে বসুন।</p>
-                    <p>মেঘলা নাক উঁচু করে মুখ ঘুরিয়ে দাঁড়িয়ে রইল। তারপর জেদের সুরে বলল—</p>
-                    <p>মেঘলা: না! আমি আপনার সাথে যাব না। একা একাই চলে যান আপনার বাইক নিয়ে!</p>
-                    <p>অর্ণব এক ভ্রু উঁচিয়ে বাঁকা হাসল। একটু নির্বিকার গলায় বাইকের চাবিটা পকেট থেকে বের করে ঘুরাতে ঘুরাতে বলল—</p>
-                    <p>অর্ণব: ও আচ্ছা! তাহলে তো ভালোই হলো, আমি তাহলে একাই চলে যাই!</p>
-                    <p>এই বলে অর্ণব কোনো দিকে না তাকিয়ে সোজা হেঁটে গিয়ে বাইকটার ওপর বসল এবং কিক স্টার্ট দিয়ে ইঞ্জিনটা স্টার্ট করে ফেলল।</p>
-                    <p>মেঘলা তো আশাই করেনি যে এই লোক সত্যিই এভাবে তাকে ফেলে চলে যাওয়ার জন্য রেডি হয়ে যাবে! চারপাশের ঝাপসা অন্ধকার, কুয়াশা আর অদ্ভুত নিস্তব্ধ স্টেশনের চত্বর দেখে তার বুকের ভেতরটা এক মুহূর্তে কেঁপে উঠল। সে আর নিজের রাগ ধরে রাখতে পারল না, দৌড়ে গিয়ে এক টানে বাইকের পেছনে দাঁড়িয়ে পড়ে খপ করে অর্ণবের জ্যাকেটের হাতা ধরে ফেলল—</p>
-                    <p>মেঘলা: আঃ না না! এভাবে রেখে যাওয়া হচ্ছে কেন? আমাকে নিয়ে যান বলছি! তাড়াতাড়ি বাইক স্টার্ট করুন!</p>
-                    <p>অর্ণব বাইকের ওপর বসে মৃদু হাসল, যা মেঘলা দেখতে পেল না। তারপর গিয়ার ফেলে বাইকটা এগিয়ে দিল।</p>
-                    <p>চা বাগানের সরু মেঠোপথ দিয়ে বাইকটা যখন ছুটতে শুরু করল, তখন চারপাশের হিমেল হাওয়া হুড়মুড় করে এসে আছড়ে পড়তে লাগল তাদের গায়ে। অন্ধকার আর কুয়াশার চাদর ভেদ করে বাইকের হেডলাইটের আলো সামনে পথ দেখিয়ে নিয়ে চলেছে। মেঘলার দুহাত তখন ঠান্ডার ভয়ে হোক বা গতির আতঙ্কে, শক্ত করে অর্ণবের জ্যাকেটের পাশটা খামচে ধরে আছে।</p>
-                    <p>হালকা গতি কমিয়ে অর্ণব একটু ঘাড় ফিরিয়ে পিছন দিকে তাকিয়ে গম্ভীর গলায় জিজ্ঞেস করল—</p>
-                    <p>অর্ণব: কী ব্যাপার, পিঠের পেছনের মূর্তির মতো শক্ত হয়ে বসে আছেন কেন? পড়ে যাওয়ার ভয় করছে নাকি?</p>
-                    <p>মেঘলা একটু কেঁপে উঠে চাদরটা গায়ে ভালো করে জড়িয়ে নিয়ে রাগি গলায় জবাব দিল—</p>
-                    <p>মেঘলা: আপনার বাইকের স্পিড কমাও বলছি! মনে হচ্ছে সোজা মৃত্যুর মুখে নিয়ে যাচ্ছেন। একটু আস্তে চালাতে কি হাত ব্যথা করে?</p>
-                    <p>অর্ণব: (একচোট হেসে) আস্তে চালালে তো রাতেই আর গন্তব্যে পৌঁছানো যাবে না। তখন পাহাড়ি ভূত এসে ধরবে! আর ভয় পেলে আরেকটু শক্ত করে ধরতে পারেন, সমস্যা নেই!</p>
-                    <p>মেঘলা: (চোখ গোল করে মনে মনে) অসভ্য একটা ছেলে তো! একটুও ভদ্রতা জানে না!</p>
-                    <p>কিন্তু মুখে আর কিছু বলল না মেঘলা। বাইকের গতির সাথে সাথে চারপাশের অন্ধকারে যেন তাদের এই অদ্ভুত মায়াবী জার্নিটা আরও গভীর হয়ে উঠতে লাগল।</p>
-                    <p>ঠিক যেভাবে চারপাশটা পুরোপুরি ঘুটঘুটে অন্ধকারে ঢেকে গেছে, একটা অদ্ভুত শব্দ করে বাইকটা হঠাত করে বন্ধ হয়ে গেল!</p>
-                    <p>মেঘলা: (ভয়ে ও বিরক্তিতে ফেটে পড়ে) আপনার আবার কি হলো? বাইক থামালেন কেন এখন?</p>
-                    <p>অর্ণব হ্যান্ডেলটা একটু নাড়াতে নাড়াতে বলল—</p>
-                    <p>অর্ণব: বাইকটা বন্ধ হয়ে গেল... মনে হয় তেল শেষ!</p>
-                    <p>অর্ণব বাইকটা একটু ঝাঁকিয়ে দেখল, সত্যিই ট্যাংকের ভেতর তেলের কোনো শব্দ নেই, একদম খটখটে খালি।</p>
-                    <p>মেঘলা: (মাথায় হাত দিয়ে) আচ্ছা বিপদে পড়লাম তো! এই জন্যই তো আমি আপনার সাথে আসতে চাইনি!</p>
-                    <p>অর্ণব: আপনাকে আসতে বলছিল কে?</p>
-                    <p>মেঘলা: বেশি কথা বলবেন না! এখন বাড়ি যাব কী করে, তাই বলুন! রাত হয়ে যাচ্ছে তো! আচ্ছা, এই আশেপাশের এলাকায় কি কোনো পেট্রলপাম্প নেই?</p>
-                    <p>অর্ণব একটু হাসল। তারপর মেঘলার দিকে ফিরে বাঁকা সুরে বলল—</p>
-                    <p>অর্ণব: ম্যাডাম, এই চা বাগানের মাঝখানে পেট্রলপাম্প পাবেন কই!</p>
-                    <p>মেঘলা: (রেগে আগুন হয়ে) তো বাকি পথ কি হেঁটে হেঁটে যাব নাকি?!</p>
-                    <p>অর্ণব: বাহ, আইডিয়াটা খারাপ না! হাঁটলে শরীর গরম থাকবে, ঠান্ডাও লাগবে না!</p>
-                    <p>মেঘলা: (চোখ রাঙিয়ে) বেশি ফাজলামো করবেন না বলছি! মাঝরাতে এই অন্ধকার জঙ্গলে আমাকে একা ফেলে দেওয়ার মতলব নাকি? ফোন কোথায় আপনার? কাউকে কল করুন!</p>
-                    <p>অর্ণব: (পকেট থেকে ফোন বের করে) করছি, করছি। রাগলে তো আপনাকে আস্ত একটা ড্রাগন মনে হয়!</p>
-                    <p>অর্ণব তার ফ্রেন্ড রুদ্রকে কল দিল। কিছু ক্ষণ কথা বলে ফোনটা কেটে পকেটে রাখল।</p>
-                    <p>অর্ণব: আমার এক ফ্রেন্ডকে কল দিয়েছি। ও একটা বোতলে করে পেট্রল নিয়ে আসছে। তবে পাহাড়ি রাস্তা তো, আসতে একটু টাইম লাগবে—কমপক্ষে তিরিশ মিনিট!</p>
-                    <p>মেঘলা: (চোখ কপালে তুলে) তিরিশ মিনিট?! মহাজালা তো! এই আস্ত অন্ধকার জঙ্গলে দাঁড়িয়ে মশার কামড় খাব নাকি এখন?</p>
-                    <p>অর্ণব: এছাড়া আর কোনো অপশন নেই, ম্যাডাম!</p>
-                    <p>ঠিক ত্রিশ মিনিট পর—চারপাশের নিস্তব্ধতা ভেঙে একটা বাইকের শব্দ শোনা গেল। অর্ণবের সেই বন্ধু রুদ্র একটা পেট্রলের বোতল হাতে নিয়ে হন্তদন্ত হয়ে হাজির হলো সেখানে। চা বাগানের মায়াবী আলো-আঁধারিতে বোতল থেকে তেলের ট্যাংকে পেট্রল ঢেলে বাইকটা আবার চালু করা হলো।</p>
-                    <p>রুদ্রর সাথে সামান্য হাসাহাসি আর মেঘলার চোখের ইশারার ধমক খাওয়ার পর, অর্ণব আবার বাইক চালু করল।</p>
-                    <p>এরপর আরও প্রায় তিরিশ মিনিট পাহাড়ি ও মেঠোপথ পেরিয়ে অবশেষে বাইকটা এসে থামল একটা সুন্দর পুরোনো বাড়ির বিশাল গেটের সামনে। চারপাশটায় জোনাকি জ্বলছে আর বাড়ির ভেতর থেকে নরম হলুদ আলোর ছটা বেরিয়ে আসছে।</p>
-                    <p>অর্ণব বাইক থামিয়ে হেলমেটটা খুলে একপাশে রেখে উদাসীন গলায় বলল—</p>
-                    <p>অর্ণব: এই যে ম্যাডাম, নামুন। চলে এসেছি।</p>
-                    <p>মেঘলা: (স্বস্তির নিঃশ্বাস ফেলে) উফ! বাঁচলাম! ফাইনাল ডেস্টিনেশনে পৌঁছানো গেল!</p>
-                    <p>অর্ণব কিছুটা তাড়া দেওয়ার সুরে বলল—</p>
-                    <p>অর্ণব: তাড়াতাড়ি নামুন, আমার আর পাহারাদারির শখ নেই!</p>
-                    <p>মেঘলা: (মুখ বাঁকিয়ে রেগে) আরে বাবা, নামছি তো! এভাবে সবসময় এমন খ্যাপেন কেন বলুন তো? একটু ভদ্রভাবে কথা বললে কি হাত বা মুখ খসে পড়ে?</p>
-                    <p>অর্ণব: (চোখ দুটো ছোট করে) মুখে মুখে জবান তো কম চলে না দেখছি! নামুন তাড়াতাড়ি।</p>
-                    <p>দুজনের এই ছোট্টখাটো মিষ্টি ঝগড়ার মাঝেই বাড়ির গেটটা ক্যাঁচক্যাচ শব্দ করে খুলে গেল। গেটের সামনে এসে অর্ণব গলা ছেড়ে ডাকল—</p>
-                    <p>অর্ণব: মা... বাবা! চলে এসেছি আমরা!</p>
-                    <p>গেট খোলার পর সামনে এসে দাঁড়াল অর্ণবের বাবা মিলন আর ঠিক তার পেছনেই অর্ণবের মা আলো। গেট খোলার পর মেঘলা একটু সামনে এগিয়ে মাথা নিচু করে নরম গলায় বলল—</p>
-                    <p>মেঘলা: আসসালামু আলাইকুম চাচু।</p>
-                    <p>মিলন: ওয়ালাইকুমাসসালাম মা! কেমন আছো তুমি?</p>
-                    <p>মেঘলা: আলহামদুলিল্লাহ ভালো আছি চাচু। আপনি কেমন আছেন, আর চাচি কোথায়?</p>
-                    <p>মিলন: আমরাও আলহামদুলিল্লাহ ভালো আছি। ভেতরে এসো।</p>
-                    <p>ঠিক তখনই অর্ণবের মা আলো এগিয়ে এলেন গেটের একদম কাছে। মেঘলাকে এক পলক দেখেই তার চোখ দুটো চকচক করে উঠল।</p>
-                    <p>আলো: ওমা! এ কি সেই মেঘলা নাকি? মা রে, কতো বড় হয়ে গেছিস তুই! আমি যখন শেষ দেখেছিলাম, তখন তো একদম এতটুকু একটা পুঁচকে মেয়ে ছিলি!</p>
-                    <p>মেঘলার গাল দুটো লজ্জায় লাল হয়ে উঠল। সে চোখ নিচু করে হালকা হেসে মাটির দিকে তাকিয়ে রইল।</p>
-                    <p>পাশে দাঁড়িয়ে থাকা অর্ণব পকেটে হাত গুঁজে চোখ উল্টে বলল—</p>
-                    <p>অর্ণব: আচ্ছা, তোমাদের এই আবেগঘন ডায়লগ আর পুরনো দিনের মেমোরি শেয়ারিং সেশন যদি শেষ হয়ে থাকে, তবে কি আমি এবার একটু ঘরের ভেতরে ঢোকার পারমিশন পেতে পারি? বাইরে জাঁকিয়ে ঠান্ডা পড়েছে!</p>
-                    <p>আলো একটু তিরস্কারের সুরে ছেলের দিকে তাকিয়ে হাসলেন—</p>
-                    <p>আলো: ধুর ছেলেটা! আসো মা ঘরে আসো, আর অর্ণব তুইও আয় পাজি কোথাকার!</p>
-                    <p>এরপর হাসিমুখে কথা বলতে বলতে সবাই মিলে বাড়ির ভেতর প্রবেশ করল।</p>
-                    <p>রাতের খাওয়া-দাওয়া শেষে বাড়িটা যখন শান্ত হয়ে এল, বাইরে বৃষ্টি না হলেও মেঘের গর্ভ ছাড়াই মাঝেমধ্যে দূর থেকে বিদ্যুৎ চমকাচ্ছিল আর কুয়াশায় চারপাশটা ঢাকা ছিল। মেঘলা এক কাপ গরম চা হাতে নিয়ে আনমনে ছাদের সিঁড়ির দিকে পা বাড়াল।</p>
-                    <p>সিঁড়ির দরজাটা ঠেলে সে সবেমাত্র ছাদে পা রেখেছে—ঠিক তখনই অন্ধকারে কার গায়ে যেন তার ধাক্কা লাগায় চায়ের কাপটা হাত থেকে পড়ে চুরমার হয়ে গেল! চায়ে ভিজে যাওয়ার ভয়ে বা ভারসাম্য হারিয়ে মেঘলা সোজা গিয়ে পড়ল অর্ণবের ওপর! ঠিক সেই মুহূর্তে বাইরে আকাশ চিরে একটা তীব্র বিদ্যুৎ চমকে উঠল আর দুজনে একে অপরের চোখের দিকে তাকিয়ে রইল অপলক—কারোর মুখে কোনো কথা নেই।</p>
-                    <p>মেঘলা: সোরি, রিয়েলি সোরি! আমি বুঝতে পারিনি যে আপনি এখানে আছেন! আর এই ছেলে, আপনার কি হুশজ্ঞান আছে? দেখতে পাচ্ছেন না যে আমি আসছি? আমি না হয় খেয়াল করিনি, কিন্তু আপনি তো দেখতে পেতেন!</p>
-                    <p>অর্ণব: ইস রে! নিজে এসে গায়ে ধাক্কা দিল, আর দোষটা আমার ঘাড়ে! আমি কি দেখতে পাইনি নাকি? আপনি তো ঠিক এসে আমাদের ওপর পড়লেন! আমি কিছু দেখার আগেই তো পড়ে গেলেন, আর আমার শার্টটাও পুরো নোংরা করে দিলেন—স্টেশনের মতো আজও একই কান্ড!</p>
-                    <p>মেঘলা: (চোখ রাঙিয়ে) কিহ্‌! আমি ইচ্ছে করে করেছি নাকি? অন্ধকার ছাদে কে এভাবে ভূত সেজে দাঁড়িয়ে থাকে বলুন তো? একটু সাবধানে চলতে পারেন না?</p>
-                    <p>অর্ণব: বাহ! ছাদে আসার লাইসেন্স কি শুধু আপনার? আমি এখানে দাঁড়িয়ে ঠান্ডা হাওয়া খাচ্ছিলাম, আর আপনি হ্যারিকেনের মতো এসে আমাদের ওপর পড়লেন!</p>
-                    <p>এমনি করে আরও কিছু ক্ষণ মিষ্টি ঝগড়ার পর তারা নিজেদের গুছিয়ে নিল, আর অর্ণব বিবির মতো মুখ করে ছাদ থেকে নিচে নিজের ঘরে নেমে গেল।</p>
-                    <p>এর ঠিক কিছু ক্ষণ পর। অর্ণব হাতে দুই কাপ গরম চা নিয়ে আবার ছাদে উঠে এল। ছাদে এসে সে দেখল মেঘলা ছাদের এক কোণায় দাঁড়িয়ে আনমনে রাতের আকাশের দিকে তাকিয়ে আছে।</p>
-                    <p>অর্ণব নিঃশব্দে মেঘলার একদম কাছে গিয়ে ফিসফিস করে বলে উঠল—</p>
-                    <p>অর্ণব: এই নাও আম্মু, তোমার জন্য চা পাঠিয়ে দিয়েছে।</p>
-                    <p>কথাটা কান পর্যন্ত পৌঁছানো মাত্রই মেঘলা চমকে আঁতকে উঠল! এক অদ্ভুত ভয়ে তার বুক কেঁপে উঠল।</p>
-                    <p>মেঘলা: (বুক চেপে ধরে ভয়ে ভয়ে) আই... আপনি আমাকে এভাবে ডাকলেন কেন? আমি একটুও ভয় পাইনি! একদম না!</p>
-                    <p>অর্ণব: (একচোট হেসে) ইস রে! ছোটবাবু, তাই তো দেখছি! তুমি ভয় পেলে আমার আর কী বলো!</p>
-                    <p>মেঘলা: (ভ্রু কুঁচকে রেগে গিয়ে) আপনি আমাকে 'তুমি' বলছেন কেন? বড় বড় কথা বলছেন যে!</p>
-                    <p>অর্ণব: বাবা তো বলেই দিয়েছে যে তুমি আমার চেয়ে ৬ মাসের ছোট, আর তুমি আমার কাজিনও বটে! তাই 'তুমি' বলাটা তো একদম লজিক্যাল দোষের কিছু নয়, হেহ!</p>
-                    <p>মেঘলা: (মুখ বাঁকিয়ে) বাহ রে! বয়স এক মিনিট কম হলেই কি সবাই মুরুব্বি হয়ে যায় নাকি?</p>
-                    <p>তবে এই নিয়ে আর কথা বাড়াল না মেঘলা। দুজনে ছাদের রেলিংয়ের পাশে দাঁড়িয়ে চায়ে চুমুক দিতে দিতে আকাশের দিকে তাকিয়ে রইল। চারপাশের কুয়াশাঘেরা নিস্তব্ধতা যেন তাদের চারপাশটায় এক মায়াবী পরিবেশ তৈরি করেছে।</p>
-                    <p>চা খেতে খেতে মেঘলা একটু নরম গলায় বলল—</p>
-                    <p>মেঘলা: জানেন, আমার না এইরকম প্রকৃতি ভীষণ পছন্দ। আমার খুব ভালো লাগে! ছোটবেলা থেকেই আমি শহরে ছিলাম, তাই শহরের ওই যান্ত্রিকতার মাঝে এমন খাঁটি প্রাকৃতিক পরিবেশ কোনোদিন পাইইনি।</p>
-                    <p>অর্ণব চায়ের কাপে চুমুক দিয়ে মেঘলার দিকে তাকিয়ে মৃদু হেসে বলল—</p>
-                    <p>অর্ণব: হুম, আমারও এইরকম পরিবেশ খুব ভালো লাগে।</p>
-                    <p>তারপর একটু থেমে অর্ণব কৌতূহলী গলায় জিজ্ঞেস করল—</p>
-                    <p>অর্ণব: আচ্ছা, তুমি ক'দিন থাকছ এখানে? আর তোমার ফেভারিট ফুড কী, বলো তো?</p>
-                    <p>মেঘলা তখন আগ্রহভরে তার পছন্দের খাবার আর নানা জিনিসের কথা একমনে বলে যেতে লাগল। কিন্তু মজার ব্যাপার হলো, মেঘলা কথা বললেও অর্ণব আর চা বা অন্যদিকে তাকাচ্ছে না—সে এক পলক শুধু মেঘলার উজ্জ্বল মুখের দিকে আর চোখের গভীরতার দিকে তাকিয়ে রইল।</p>
-                    <p>কথা বলতে বলতে হঠাত করেই মেঘলার খেয়াল হলো যে অর্ণব কোনো কথা না বলে শুধু তার দিকেই তাকিয়ে আছে। সে একটু লজ্জা পেয়ে থমকে গেল।</p>
-                    <p>মেঘলা: এভাবে আমার দিকে অমন করে তাকিয়ে আছেন কেন বলুন তো? মুখে কোনো কথা নেই যে!</p>
-                    <p>অর্ণব: (চোখ সরিয়ে নিয়ে আমতা আমতা করে) কই? আমি তো চাঁদ দেখছি!</p>
-                    <p>মেঘলা: (চোখ গোল করে) ফাজলামো করেন! আকাশে তো কোনো চাঁদই নেই! পুরোটাই তো কুয়াশা আর ঘন মেঘে ঢাকা!</p>
-                    <p>অর্ণব: (একটু বাঁকা হেসে মেঘলার আরও কাছে তাকিয়ে) তা ঠিক, আকাশে চাঁদ না থাকলেও—আমি তো চাঁদ দেখতে পাচ্ছি! ঠিক আমার সামনেই দাঁড়িয়ে আছে!</p>
-                    <p>মেঘলা: (কান দুটো লাল হয়ে আসায় হকচকিয়ে গিয়ে) সামনে আছে মানে?! কী আবোলতাবোল বকছেন?</p>
-                    <p>ঠিক সেই মুহূর্তে ছাদের নিচে থেকে অর্ণবের বাবা মিলনের গলা ভেসে এল—</p>
-                    <p>মিলন: (নিচ থেকে ডেকে) এই অর্ণব! রাত অনেক হয়েছে, ঘরে আয়! আর মেঘলা থাকাও যদি ভালো লাগে, ঠান্ডা লাগার আগে ওকেও নিচে পাঠিয়ে দে!</p>
-                    <p>বাবার ডাক শুনে মেঘলা একটা স্বস্তির নিঃশ্বাস ফেলল, যেন অর্ণবের ওই কথার হাত থেকে সে কোনোমতে বেঁচে গেল! সে তড়িঘড়ি করে চায়ের কাপটা শেষ করে বলল—</p>
-                    <p>মেঘলা: চলুন, নিচে যাই। অনেক রাত হয়েছে।</p>
-                    <p>অর্ণব: (মনে মনে একটু হেসে) চলো যাই।</p>
-                    <p>এরপর দুজনেই ছাদ থেকে কথা বলতে বলতে পাশাপাশি সিঁড়ি দিয়ে নিচে নিজেদের ঘরের দিকে নেমে গেল।</p>
-                    <p>নিচে নামার পর ড্রয়িংরুমে এসে দেখা গেল চাচু মিলন আর চাচি আলো তখনো সোফায় বসে গল্প করছেন।</p>
-                    <p>আলো: কী রে দুজনে এতক্ষণ ছাদে কী করছিলি? ঠাণ্ডা তো হাড় কাঁপানো শুরু হয়েছে! যাও, তাড়াতাড়ি যে যার রুমে গিয়ে ফ্রেশ হয়ে ঘুমিয়ে পড়ো। কাল সকালেই তোদের চা বাগান ঘুরতে নিয়ে যাব।</p>
-                    <p>চাচার মুখে 'চা বাগান ঘোরার' কথা শুনতেই মেঘলার চোখদুটো খুশিতে চকচক করে উঠল। সে আর নিজের উচ্ছ্বাস চেপে রাখতে পারল না—</p>
-                    <p>মেঘলা: সত্যি চাচু?! কাল সকালেই চা বাগানে নিয়ে যাবে? ইয়েহ!</p>
-                    <p>অর্ণব দূরে দাঁড়িয়ে মেঘলার এই ছোট্ট বাচ্চার মতো খুশি হওয়াটা দেখছিল। তার মুখে একটা হালকা মিষ্টি হাসি চলে এল, যা সে দ্রুত লুকিয়ে ফেলল।</p>
-                    <p>অর্ণব: (একটু ভং করে) ইস! চা বাগানের নাম শুনে এমন লাফাচ্ছে যেন আস্ত একটা লুনার মিশনে যাচ্ছে! সকাল সকাল ঘুম থেকে উঠতে পারবে তো নাকি আবার ডেকে তুলতে তুলতে দুপুর হয়ে যাবে?</p>
-                    <p>মেঘলা অর্ণবের দিকে একটা রাগি চাহনি দিল।</p>
-                    <p>মেঘলা: সময়মতো ঠিক উঠে পড়ব, আপনাকে নিয়ে ভাবতে হবে না! চলুন চাচি, আমি ঘুমাতে গেলাম। শুভরাত্রি!</p>
-                    <p>সবাইকে শুভরাত্রি জানিয়ে মেঘলা নিজের রুমের দিকে চলে গেল। অর্ণবও নিজের রুমে এসে বিছানায় শুয়ে পড়ল। কিন্তু ছাদের সেই শেষ মুহূর্তের কথাগুলো আর মেঘলার মুখটা বারবার তার মাথার মধ্যে ঘুরপাক খেতে লাগল।</p>
-                    <p>অর্ণব বিছানায় এপাশ-ওপাশ করতে করতে আনমনে ভাবতে লাগল—</p>
-                    <p>“আমার তো আগে কখনও এমন টান অনুভব হয়নি কোনো মেয়েকে দেখে! একে দেখে আজ এমন কেন মনে হচ্ছে? তবে কি... একদিনেই আমি একে ভালোবেসে ফেলেছি?”</p>
-                    <p>বাইরে তখন ঝিঁঝি পোকার ডাক আর হিমেল বাতাসের শনশন শব্দ, আর অর্ণবের মনের ভেতর বইছে এক অচেনা ভালোলাগার গভীর হাওয়া।</p>
-                    <p>পরের দিন সকালে। ভোরের আলো সবেমাত্র পূর্ব আকাশে উঁকি দিয়েছে, চারপাশটায় হালকা কুয়াশার আস্তরণ। চা বাগানে ঘুরতে যাওয়ার চরম উত্তেজনায় মেঘলার রাতে ঠিকমতো ঘুমই হয়নি। সে সবার আগে ঘুম থেকে উঠে পড়ল।</p>
-                    <p>চা বাগানে যাওয়ার রোমাঞ্চে বুঁদ হয়ে সে সোজা চলে গেল চাচু মিলন আর অর্ণবের বাবাকে ডাকতে। একে একে সবাই ঘুম থেকে উঠে পড়ল, কিন্তু অর্ণবের তখনো কোনো পাত্তা নেই! সে তখনো গভীর ঘুমে মগ্ন।</p>
-                    <p>অর্ণবের আলো এসে মেঘলাকে বললেন—</p>
-                    <p>আলো: মেঘলা মা, অর্ণবকে গিয়ে একটু ডেকে দে তো বাবা! ও তো এখনও উঠেইনি।</p>
-                    <p>মেঘলা মুখ বাঁকিয়ে বিড়বিড় করতে করতে এগিয়ে গেল—</p>
-                    <p>মেঘলা: আন্টি, ও না কাল রাতে কত চ্যাপা মেরেছিল যে ও সকাল সকাল উঠতে পারবে না—এমনকি আমাকেই নাকি ডেকে তুলতে হবে! আর এখন কী হলো? নিজে দিব্যি নাক ডেকে ঘুমাচ্ছে দেখছি! দাঁড়ান, আজকেই ওকে ধরছি!</p>
-                    <p>মেঘলা সোজা অর্ণবের রুমের সামনে গিয়ে পৌঁছাল। দরজায় পর পর দুই-তিনবার নক করল। একটু পরেই দরজাটা ক্যাঁচ করে খুলে গেল।</p>
-                    <p>দরজা খুলতেই অর্ণব চোখ কচলাতে কচলাতে সামনে দাঁড়াল। রাতের সেই নীল শাড়ি পরে মেঘলা তখন একদম গুছিয়ে পরিপাটি হয়ে দাঁড়িয়ে আছে। সকালের মিষ্টি রোদে তার ডেসলুক আর মায়াবী চোখ দুটো যেন হরিণের চোখের মতো সুন্দর ও স্নিগ্ধ লাগছে! অর্ণব ঘুমচোখে এক পলক তার দিকে তাকিয়ে থমকে গেল।</p>
-                    <p>মেঘলা হাত দুটো কোমরে গুঁজে তেরছা চোখে তাকিয়ে রাগী গলায় বলে উঠল—</p>
-                    <p>মেঘলা: কী ব্যাপার! আপনি না কাল অনেক চ্যাপা মেরেছিলেন যে আমি ঘুম থেকে উঠতে পারব না? আর দেখুন, কে সবার আগে উঠে দাঁড়িয়ে আছে? বলুন তো এখন লজ্জা লাগছে কি না?</p>
-                    <p>অর্ণব ঘুমচোখে কোনো কথা না বলে অপলক তাকিয়ে রইল। মেঘলা একটু তাড়া দিয়ে বলল—</p>
-                    <p>মেঘলা: এভাবে তাকিয়ে না থেকে জলদি রেডি হতে বলুন আন্টিকে! আমরা কিন্তু অনেক দেরি করে ফেলছি!</p>
-                    <p>এরপর সবাই একে একে রেডি হয়ে ড্রয়িংরুমে এসে বসল। ঠিক হলো আজ মিলন (চাচু) আর বাকি সবাই মিলে চা বাগান ঘুরতে যাবে। কিন্তু ঠিক তখনই বিপত্তি বাধল! মিলনের শরীরটা হঠাৎ একটু খারাপ লাগায় তিনি বললেন যে তিনি আজ যেতে পারবেন না। ঠিক সেই মুহূর্তে মিলনের ফোনে একটা জরুরি কল এল।</p>
-                    <p>ফোন রিসিভ করে মিলন গম্ভীর মুখে কথা বলতে লাগলেন—</p>
-                    <p>মিলন: হ্যালো... ওয়ালাইকুমাসসালাম। ও আচ্ছা, ঠিক আছে।</p>
-                    <p>কিছু ক্ষণ কথা বলে মিলন ফোনটা রেখে বললেন—</p>
-                    <p>মিলন: আমার পক্ষে তোমাদের সাথে আজ আর যাওয়া সম্ভব হচ্ছে না। অফিসে একটা আর্জে ন্ট মিটিং এসে গেছে, আমাকে এক্ষুনি সেখানে যেতেই হবে।</p>
-                    <p>চাচার মুখে এই কথা শুনে মেঘলার মুখটা এক নিমেষে কান্নার মতো মলিন হয়ে গেল। সে মন খারাপ করে বিড়বিড় করল—</p>
-                    <p>মেঘলা: কি আর করা... তাহলে তো আর যাওয়া হলো না! অথচ আমার কত শখ ছিল!</p>
-                    <p>ঠিক তখনই অর্ণবের আলো এগিয়ে এলেন। মেঘলার মলিন মুখটা দেখে তিনি মায়াবী গলায় বললেন—</p>
-                    <p>আলো: আরে অর্ণব! দেখছিস না মেয়েটা কত সুন্দর করে সেজেগুজে রেডি হয়ে আছে যাওয়ার জন্য? তুই যা না ওকে নিয়ে! তুই তো ঘরেই বসে থাকবি, ওকে একা ছেড়ে দিলে তো ওর মনটাই খারাপ হয়ে যাবে রে!</p>
-                    <p>বাবাও সায় দিয়ে বলে উঠলেন—</p>
-                    <p>মিলন: হ্যাঁ বাবা অর্ণব, যা তুই ওকে নিয়ে ঘুরে আয়। তোর মা ঠিকই তো বলছে!</p>
-                    <p>মেঘলার দিকে তাকিয়ে মিলন বললেন—</p>
-                    <p>"মা মেঘলা, তুমি অর্ণবের সাথেই যাও সোনা, ও তোমাকে ঘুরিয়ে আনবে।"</p>
-                    <p>মেঘলা একটু ইতস্তত করে নরম গলায় বলল—</p>
-                    <p>মেঘলা: আচ্ছা চাচু...</p>
-                    <p>অর্ণব এক হাত পকেটে গুঁজে বাঁকা হাসল। তারপর জিজ্ঞেস করল—</p>
-                    <p>অর্ণব: তাহলে কি বাইক নিয়ে বের হব, নাকি গাড়ি বের করব?</p>
-                    <p>মেঘলা সাথে সঙ্গে উৎসাহ নিয়ে বলে উঠল—</p>
-                    <p>মেঘলা: বাইক! বাইকে করে ঘুরলে পাহাড়ি বাতাসে অনেক বেশি ভালো লাগবে! কারে যাওয়ার চেয়ে বাইকটাই বেস্ট!</p>
-                    <p>অর্ণব: (চোখ ছোট করে মুচকি হেসে) ঠিক আছে ম্যাডাম, আপনার হুকুমই মাথা পেতে নিলাম! চলুন তাহলে।</p>
-                    <p>আর কালক্ষেপণ না করে, মেঘলা আর অর্ণব দুজনে মিলে সেই কুয়াশাঘেরা সকালের স্নিগ্ধ রোদে বাইক নিয়ে চা বাগানের মেঠোপথের উদ্দেশ্যে রওনা হয়ে গেল!</p>
-                    <p>বাইকটা যখন শহরের কোলাহল ছেড়ে একদম নির্জন, সবুজ চা বাগানের মেঠোপথে এসে পৌঁছাল, তখন চারপাশের পরিবেশটা যেন আরও বেশি মায়াবী হয়ে উঠল। দুপাশে মাইলের পর মাইল শুধু উর্বর সবুজ চা পাতার সমারোহ, আর তার বুক চিরে চলে গেছে বুনো ফুলের ঘ্রাণ মাখা সরু রাস্তা। সকালের সোনাঝরা রোদ কুয়াশার বুক চিরে এসে পড়ছে মেঘলার মুখের ওপর।</p>
-                    <p>অর্ণব বাইকের গতিটা অনেক কমিয়ে দিল, যাতে চারপাশের এই সৌন্দর্য মেঘলা পুরোপুরি উপভোগ করতে পারে।</p>
-                    <p>হঠাৎ মেঘলা মুগ্ধ গলায় বলে উঠল—</p>
-                    <p>মেঘলা: উফ অর্ণবদা! জায়গাটা কি অসম্ভব সুন্দর! মনে হচ্ছে যেন কোনো রূপকথার রাজ্যে এসে পড়েছি। শহরের যান্ত্রিকতা ছেড়ে সত্যি যদি এখানে সারাজীবন কাটিয়ে দেওয়া যেত!</p>
-                    <p>অর্ণব বাইকটা একটা ফাঁকা জায়গার পাশে থামাল। ইঞ্জিন বন্ধ করার সাথে সাথে চারপাশটা একেবারে নিস্তব্ধ হয়ে গেল—শুধু দূরের কোনো ঝিরঝিরে পাতার মর্মর শব্দ আর পাখির মিষ্টি ডাক ভেসে আসছে।</p>
-                    <p>অর্ণব হেলমেটটা খুলে বাইকের হ্যান্ডেলে ঝুলিয়ে রাখল। তারপর একটু ঘুরে মেঘলার দিকে তাকাল। সকালের মিষ্টি রোদে মেঘলার মুখের ওপর এসে পড়া ছন্নছাড়া চুলগুলো বাতাসে উড়ছিল। অর্ণব মুগ্ধ চোখের পলক না ফেলে এক দৃষ্টিতে তাকিয়ে রইল তার দিকে।</p>
-                    <p>অর্ণব: (খুব নরম, নিচু গলায়) রূপকথার রাজ্য তো রূপকথার রাজকন্যা ছাড়া একদম অসম্পূর্ণ, মেঘলা...</p>
-                    <p>মেঘলা হঠাৎ অর্ণবের এমন অচেনা, গভীর গলার সুর শুনে হকচকিয়ে গেল। সে একটু লজ্জা পেয়ে চোখ নিচু করে ফেলল। গাল দুটো লজ্জায় এক নিমিষে লালচে হয়ে উঠল।</p>
-                    <p>মেঘলা: (আমতা আমতা করে) আ... আপনি হঠাৎ এসব কী বলছেন? ফাজলামো শুরু করেছেন আবার?</p>
-                    <p>অর্ণব এক পা এগিয়ে মেঘলার আরও কাছাকাছি এসে দাঁড়াল। তার চোখে তখন কোনো রাগ বা বিরক্তি নেই, বরং উপচে পড়া এক মায়াবী আকুলতা। সে ধীর পায়ে মেঘলার একদম মুখোমুখি এসে দাঁড়াল, যাতে দুজনের মাঝের দূরত্বটুকু প্রায় শূন্য হয়ে যায়।</p>
-                    <p>অর্ণব: ফাজলামো মনে হচ্ছে এটা? কাল রাত থেকে যখনই তোমার ওই চোখের দিকে তাকিয়েছি, তখনই কেমন যেন একটা নেশা ধরে গেছে। আচ্ছা, সত্যি করে বলো তো... কাল স্টেশনে ওই কালো বিড়ালটা যদি ধাক্কা না দিত, আর তুমি যদি ওইভাবে আমার বুকের ওপর আছড়ে না পড়তে—তাহলে কি আমার এই এলোমেলো হৃদস্পন্দন আমি কোনোদিন টের পেতাম?</p>
-                    <p>মেঘলার বুকের ভেতরটা তখন ধুকধুক করে কাঁপছে। এত কাছে অর্ণবকে সে কখনো দেখেননি। শীতের হিমেল বাতাসেও মেঘলার সারা শরীর যেন উত্তেজনায় গরম হয়ে উঠল। সে কাঁপাকাপা গলায় নিজেকে সামলানোর চেষ্টা করে বলল—</p>
-                    <p>মেঘলা: প... পাগলামি ছাড়ুন তো! রাস্তা ঘাটে কত মানুষ ধাক্কা খায়, তাই বলে কি...</p>
-                    <p>মেঘলার কথা শেষ করতে দিল না অর্ণব। সে আলতো করে নিজের একটা হাত বাড়িয়ে মেঘলার কানের পাশ দিয়ে ঝুলে থাকা সেই ছন্নছাড়া চুলগুলো আলতো হাতে সরিয়ে কানের পেছনে গুঁজে দিল। অর্ণবের হাতের ছোঁয়া লাগতেই মেঘলা কেঁপে উঠল, তার গলার স্বর যেন গলাতেই আটকে গেল।</p>
-                    <p>অর্ণব: পাগলামি তো এটাকে বলে না, মেঘলা। এটাকে বলে প্রথম দেখাতেই ভালোবেসে ফেলা। কাল রাতে যখন তুমি ছাদের কোণায় দাঁড়িয়ে আকাশের দিকে তাকিয়েছিলে, তখন মনে হচ্ছিল—সারা পৃথিবীর সমস্ত সৌন্দর্য সরিয়ে রেখে ভগবান শুধু তোমাকেই আমার জন্য সাজিয়ে পাঠিয়েছেন। আমার এই শুষ্ক জীবনে তুমি যেন এক ফালি ফাগুন হয়ে এসেছ। তুমি কি একটুও বুঝতে পারছ না, আমার এই পুরো দুনিয়াটা এখন শুধু তোমাকেই কেন্দ্র করে ঘুরছে?</p>
-                    <p>চারপাশের সবুজ চা বাগান, মাথার ওপরের নীল আকাশ আর হালকা কুয়াশার চাদর যেন এই ভালোবাসার সাক্ষ্য দেওয়ার জন্য থেমে গেল। মেঘলার চোখ দুটো খুশিতে আর অদ্ভুত এক লজ্জায় জলে ভিজে এল। সে আর নিজের অনুভূতি লুকিয়ে রাখতে পারল না। কাঁপাকাপা ঠোঁটে মৃদু হেসে অর্ণবের শার্টের হাতটা একটু খামচে ধরে আস্তে করে মাথাটা তার কাঁধে এলিয়ে দিল।</p>
-                    <p>মেঘলা: (নরম ফিসফিস করে) খুব পাজি আপনি... জেনেশুনে ইচ্ছে করে আমাকে পাগল করে দিচ্ছেন! যদি আগে জানতাম এমন একটা মানুষ আমার কপালে আছে, তবে আমি আরও অনেক আগেই চলে আসতাম এখানে...</p>
-                    <p>অর্ণব আর নিজেকে ধরে রাখতে পারল না। সে তার দুই হাত বাড়িয়ে পরম মায়ায় মেঘলাকে নিজের বুকের সাথে জড়িয়ে ধরল। মেঘলার মাথাটা তখন অর্ণবের প্রশস্ত বুকের ওপর রাখা, আর অর্ণব আলতো করে তার চিবুক ছুঁয়ে নিজের ভালোবাসার আবডালে তাকে ঢেকে নিল। পাহাড়ি ঠান্ডাকে ছাপিয়ে তাদের দুজনের শরীরের এই নৈকট্য আর উষ্ণতা পুরো পরিবেশটাকে আচ্ছন্ন করে ফেলল।</p>
-                    <p>অনেকক্ষণ একে অপরকে জড়িয়ে ধরে থাকার পর, অর্ণব মেঘলার কপালে একটা হালকা ছোঁয়া এঁকে দিল। মেঘলা লজ্জায় আরও বেশি কুঁকড়ে গিয়ে অর্ণবের বুকে মুখ লুকিয়ে ফেলল।</p>
-                    <p>অর্ণব: চলো, এবার ওই চায়ের দোকানটার দিকে যাই। পাহাড়ি এই ঠান্ডায় গরম এক কাপ চা না খেলে তো এই ঘোরাঘুরিটাই মাটি হয়ে যাবে!</p>
-                    <p>মেঘলা: (লাজুক হেসে মুখ তুলে) চলুন! আমারও দারুণ তেষ্টা পেয়েছে।</p>
-                    <p>এরপর দুজনে হাত ধরাধরি করে চা বাগানের ভেতরের ছোট্ট একটা মিষ্টি চায়ের টিনের ঘরের দিকে হেঁটে গেল। চারপাশে তখন শুধু সবুজ আর সবুজ। একটা কাঠের বেঞ্চে দুজনে পাশাপাশি বসল। দোকানের চুল্লি থেকে তখন সদ্য ফোটানো সুগন্ধি লাল চায়ের বাষ্প উড়ছে।</p>
-                    <p>দোকানি অর্ণব আর মেঘলার সামনে গরম চায়ের দুটো মাটির ভাঁড় বাড়িয়ে দিল।</p>
-                    <p>মেঘলা মাটির ভাঁড়টা দুই হাতে তুলে নিয়ে সামান্য ফুঁ দিয়ে চায়ে চুমুক দিল। চায়ের উষ্ণতায় তার ঠোঁটে একটা চমৎকার তৃপ্তির হাসি ফুটে উঠল।</p>
-                    <p>মেঘলা: উফ! এই চা বাগানের মাঝখানে বসে মাটির ভাঁড়ে করে এই গরম চা খাওয়ার মজাই আলাদা! মনে হচ্ছে স্বর্গের অমৃত খাচ্ছি।</p>
-                    <p>অর্ণব চায়ে চুমুক না দিয়ে শুধু পলকহীনভাবে মেঘলার মুখের দিকে তাকিয়ে রইল। সকালের আলোয় মেঘলার সেই চা খাওয়ার মিষ্টি ভঙ্গিটা তার হৃদয়ে গভীর দাগ কেটে যাচ্ছিল।</p>
-                    <p>অর্ণব: অমৃত তো খাচ্ছো, কিন্তু আসল অমৃত তো আমার সামনেই বসে আছে। যার পাশে থাকলে চা ছাড়াই নেশা হয়ে যায়!</p>
-                    <p>মেঘলা চায়ের ভাঁড় থেকে চোখ সরিয়ে লজ্জায় লাল হয়ে অর্ণবের কাঁধে একটা হালকা মৃদু ধাক্কা দিল।</p>
-                    <p>মেঘলা: ইস! শুরু হয়ে গেছে আবার? সারাদিন খালি ফাজলামো! চা ঠান্ডা হয়ে যাচ্ছে, চুপচাপ চা খান বলছি!</p>
-                    <p>অর্ণব: (চায়ে চুমুক দিয়ে হেসে) ফাজলামো কোথায় করলাম? একদম খাঁটি সত্যি কথা বললাম! আচ্ছা মেঘলা, এই চা বাগান ছেড়ে কি কখনো ফিরে যেতে ইচ্ছে করবে তোমার শহরের?</p>
-                    <p>মেঘলার মুখের হাসিটা এক পলকের জন্য ম্লান হয়ে এল। সে চায়ের ভাঁড়টার দিকে তাকিয়ে নরম গলায় বলল—</p>
-                    <p>মেঘলা: কে জানে... তবে একটা কথা সত্যি, এই কয়েকদিনের যে স্মৃতিগুলো তুমি আমাকে দিলে, তা আমি কোনোদিন ভুলব না। শহর যতই যান্ত্রিক হোক না কেন, আমার মনের একটা বড় অংশ এই চা বাগান আর... আর এই মানুষটার কাছেই আটকে থাকবে।</p>
-                    <p>অর্ণব আর থাকতে পারল না। সে টেবিলে চায়ের ভাঁড়টা রেখে মেঘলার হাতটা নিজের হাতের মুঠোয় তুলে নিল। চা বাগানের সবুজ পাতার ফাঁক দিয়ে তখন এক ফালি সোনাঝরা রোদ এসে সরাসরি তাদের দুজনের ওপর পড়েছে।</p>
-                    <p>চারপাশের সব কোলাহল ছাপিয়ে তাদের মনের ভেতরের এই নিবিড় মায়াবী রোমান্স যেন এক চিরস্থায়ী উপন্যাসের পাতা হয়ে চিরকালের মতো খোদাই হয়ে গেল।</p>
-                    <p>চা বাগানের সেই মিষ্টি সকালের পর, দুজনে মিলে আরও বেশ কিছু সুন্দর জায়গায় ঘুরল—পাহাড়ি ঝরনার ধার দিয়ে হাঁটা, কুয়াশাঘেরা মেঠোপথে বাইক ছোটানো আর মনের সুখে ছবি তোলা। সারাদিনের সেই রোমাঞ্চকর ঘোরাঘুরি শেষে বিকেল গড়িয়ে যখন তারা আবার বাইকে করে কিছুটা নির্জন, দেবদারু গাছ ঘেরা এক পাহাড়ি রোডের বাঁকে এসে পৌঁছাল, তখন চারপাশটায় সোনালী রোদের ঝিলিক।</p>
-                    <p>অর্ণব বাইকটা একটা ছায়াঘেরা গাছের নিচে থামাল। ইঞ্জিন বন্ধ করার সাথে সাথে চারপাশের বাতাসে কেবল ঝিঁঝি পোকার ডাক আর পাতার মর্মর শব্দ।</p>
-                    <p>বাইক থেকে নামার পর মেঘলার দিকে তাকিয়ে অর্ণব মুচকি হাসল।</p>
-                    <p>অর্ণব: কি ম্যাডাম, সারাদিনের ট্যুরে পাহাড়ি বাতাসে ক্লান্ত নাকি একটু রোমান্টিক হাওয়া গায়ে মাখতে ইচ্ছে করছে?</p>
-                    <p>মেঘলা চোখ ছোট করে বাঁকা হেসে জবাব দিল—</p>
-                    <p>মেঘলা: আমার এনার্জি দেখে কি আপনার ক্লান্ত মনে হচ্ছে নাকি? তবে হ্যাঁ, জায়গাটা দারুণ সুন্দর!</p>
-                    <p>কথাটা শেষ হতে না হতেই অর্ণব এক পা এগিয়ে এসে হঠাত করেই মেঘলাকে দুহাতে শক্ত করে নিজের বুকের সাথে জড়িয়ে ধরল! মেঘলা একটু চমকে গিয়ে তার শার্টের হাতা খামচে ধরল। চারপাশের নিস্তব্ধ পাহাড়ি পরিবেশ আর নরম আলোয় তাদের দুজনের হৃদস্পন্দন যেন এক তালে বাজতে লাগল।</p>
-                    <p>অর্ণব: (খুব নিচু, উষ্ণ গলায়) সারাদিন খালি ঝগড়া করলে তো হবে না, মেঘলা! এই নিরিবিলি পরিবেশে একটু আমার দিকে তাকিয়ে মন খুলে ভালোবাসার কথা বলবে না?</p>
-                    <p>মেঘলা লজ্জায় লাল হয়ে মাথা নিচু করতে চাইল, কিন্তু অর্ণব তার চিবুকটা আলতো করে উঁচিয়ে ধরল। ঠিক সেই মুহূর্তে দুজনের ঠোঁট একে অপরের খুব কাছাকাছি চলে এল—আর কোনো কথা নয়, পলক ফেলতে না ফেলতেই অর্ণব নিজের ঠোঁট দুটো মিলিয়ে দিল মেঘলার ঠোঁটের সাথে! সেই স্নিগ্ধ পাহাড়ি বাতাসে শুরু হলো এক চরম রোমাঞ্চকর, গভীর ও মায়াবী চুম্বনের মুহূর্ত। মেঘলার চোখ দুটো বন্ধ হয়ে এল, সে নিজের অজান্তেই অর্ণবের কাঁধ শক্ত করে খামচে ধরে এই উষ্ণতার মাঝে নিজেকে পুরোপুরি সঁপে দিল।</p>
-                    <p>কয়েক মুহূর্তের সেই নিবিড় ও মিষ্টি ছোঁয়া শেষে দুজনে যখন একটু দূরে সরে এল, তখন দুজনেরই নিশ্বাস ভারী হয়ে এসেছে। মেঘলা লজ্জায় লাল টকটকে হয়ে মুখ অন্য দিকে ঘুরিয়ে নেওয়ার চেষ্টা করল।</p>
-                    <p>মেঘলা: (আমতা আমতা করে, বুক কাঁপতে কাঁপতে) উফ... আপনি সত্যিই আস্ত একটা ডেঞ্জারাস মানুষ! রাস্তার মাঝে এভাবে... কেউ যদি দেখে ফেলত!</p>
-                    <p>অর্ণব: (চোখ ছোট করে বাঁকা হেসে) দেখুক না! পাহাড়ি পাখি আর গাছপালা ছাড়া তো এখানে আর কেউ নেই! আর হবু বর কি তার হবু বউকে একটু ভালোবাসবে না নাকি?</p>
-                    <p>মেঘলা আর নিজেকে ধরে রাখতে না পেরে অর্ণবের কাঁধে একটা হালকা কিল বসিয়ে দিল—</p>
-                    <p>মেঘলা: পাজি একটা! খালি সুযোগ খোঁজা হয়! আর একটু বেশি বাড়াবাড়ি করলে কিন্তু আমি আর আপনার সাথে এক পা-ও হাঁটব না বলে দিলাম!</p>
-                    <p>অর্ণব: (হাসতে হাসতে) আচ্ছা বাবা, মাফ করে দাও! আর রাগ করতে হবে না, চলো এবার একটু শান্ত হয়ে বসা যাক।</p>
-                    <p>এরপর দুজনে পাশাপাশি একটা পাথরের বেঞ্চে বসল। চা বাগানের স্নিগ্ধ হাওয়া আর রোমান্টিক পরিবেশে বসে তারা একে অপরের হাত ধরে মনের সুখে নানা রকম গল্প করতে লাগল—ছোটবেলার স্মৃতি, ভবিষ্যতের স্বপ্ন আর নিজেদের অজান্তেই গড়ে ওঠা এই ভালোবাসার গল্প।</p>
-                    <p>গল্প করতে করতে হঠাত করেই মেঘলা চোখ ছোট করে অর্ণবের দিকে তাকিয়ে একটা মিষ্টি ঝগড়া শুরু করল—</p>
-                    <p>মেঘলা: আচ্ছা অর্ণবদা, আপনার এই যে সারাদিন খালি হুকুম চালানোর স্বভাব না, এটা কিন্তু একদম সহ্য হয় না আমার! সেদিন স্টেশনে যেভাবে ধমক দিয়েছিলেন, এখনো আমার মনে আছে!</p>
-                    <p>অর্ণব: (ভ্রু উঁচিয়ে অবাক হওয়ার ভান করে) আমি ধমক দিয়েছিলাম?! বাহ! বিড়ালটা ধাক্কা দিল তোমাকে, তুমি এসে সোজা আমার বুকের ওপর পড়লে, আর দোষটা সব আমার ঘাড়ে চাপল? দিনদুপুরে এমন মিথ্যে অপবাদ দিলে তো আমি মানহানির কেস ঠুকে দেব!</p>
-                    <p>মেঘলা: (মুখ বাঁকিয়ে চোখ গোল করে) দেখেছ কাণ্ড! এখন আবার উল্টো আমার ঘাড়ে দোষ চাপানো হচ্ছে! আপনি যে আস্ত একটা রাগী ডাইনোসর, সেটা কি অস্বীকার করতে পারবেন?</p>
-                    <p>অর্ণব: ডাইনোসর বললাম আমি? বেশ তো! কাল রাতে যে আমাকে হ্যারিকেন বলে গালি দিয়েছিলে, সেটার হিসাব কে নেবে?</p>
-                    <p>দুজনের এই মিষ্টি ও খুনসুটিতে ভরপুর ঝগড়া দেখে পাহাড়ি বাতাসও যেন আরও একটু রোমান্টিক হয়ে উঠল। উপন্যাসের পাতায় যেমন প্রারম্ভেই একটা অদ্ভুত রোমান্টিক ফিল পাওয়া গিয়েছিল, ঠিক তেমনি এই পাহাড়ি পথের অন্তিম মুহূর্তে এসে তাদের এই ভালোবাসার উষ্ণতা ও মিষ্টি ঝগড়ার মধ্য দিয়ে পুরো গল্পটা এক স্বর্গীয় রূপ লাভ করল।</p>
-                    <p>এর পরের দিন সকালে সূর্য ওঠার আগেই পাহাড়ি কুয়াশা ভেদ করে তারা দুজনে আবার বেরিয়ে পড়ল নতুন এক গন্তব্যের উদ্দেশ্যে। চারপাশের নিস্তব্ধ প্রকৃতির মাঝে বাইক ছুটে চলেছে এক অচেনা পাহাড়ি ঝরনার দিকে। ঝরনার কাছাকাছি এসে তারা যখন পৌঁছাল, তখন চারপাশের পাথরে জলের পড়ার ঝিরঝিরে শব্দ আর ঠান্ডা স্নিগ্ধ বাতাসের ছোঁয়া তাদের মনকে এক নিমেষে ভরিয়ে দিল।</p>
-                    <p>ঝরনার ঠিক পাশেই একটা শ্যাওলা পড়া পাথরের ওপর পাশাপাশি বসল অর্ণব আর মেঘলা। চারপাশের এই একান্ত ও নির্জন পরিবেশে অর্ণব আর নিজেকে ধরে রাখতে পারল না। সে ধীরে ধীরে মেঘলার আরও কাছে ঘেঁষে বসল।</p>
-                    <p>অর্ণব: (খুব মায়াবী ও গভীর গলায়) জানো মেঘলা, কাল রাতের ওই ঝগড়া আর আজকের এই সকালের মাঝে তফাৎ একটাই—যত দিন যাচ্ছে, তোমাকে ছাড়া একটা মুহূর্তও আর ভালো কাটছে না।</p>
-                    <p>মেঘলা লজ্জা রাঙা মুখে নিচের দিকে তাকিয়ে মিষ্টি হেসে কিছু বলতে যাবে, ঠিক তখনই অর্ণব তার হাত দুটো ধরে নিজের মুখের কাছে টেনে নিল। আর কোনো কথা নয়—অর্ণব তার দুই বাহুতে মেঘলাকে শক্ত করে জড়িয়ে ধরে তার ঠোঁটে ঠোঁট মিলিয়ে দিল এক দীর্ঘ, অতলান্ত ও চরম রোমান্টিক চুম্বনে! সেই পাহাড়ি ঝরনার জলের ছাঁট আর ঠান্ডা বাতাসের মাঝে তাদের এই ভালোবাসার উষ্ণতা যেন সব সীমানা ছাড়িয়ে গেল। মেঘলা তার চোখ দুটো বন্ধ করে দুহাতে অর্ণবের শার্টের কলার শক্ত করে খামচে ধরে এই নিবিড় রোমান্সে নিজেকে পুরোপুরি হারিয়ে ফেলল।</p>
-                    <p>অনেকক্ষণ পর যখন তারা একে অপরের থেকে একটু দূরে সরে এল, তখন মেঘলার গাল দুটো লজ্জায় লাল টকটকে হয়ে আছে। সে নিশ্বাস ফেলতে ফেলতে ফিসফিস করে বলল—</p>
-                    <p>মেঘলা: আপনি সত্যিই আস্ত একটা শয়তান... সবসময় খালি এইভাবে আমাকে কাবু করে ফেলেন!</p>
-                    <p>অর্ণব: (চোখ টিপে বাঁকা হেসে) শয়তান তো শুধু তোমার জন্যই, রাজকন্যা!</p>
-                    <p>বলেই দুজনে একসঙ্গে খিলখিল করে হেসে উঠল। কিন্তু বেশিক্ষণ সেই হাসি স্থায়ী হলো না! ঝরনার ঠান্ডা জলে পা ডুবিয়ে কিছু ক্ষণ বসার পরেই তাদের মাঝে শুরু হয়ে গেল দারুণ এক তুলকালাম ঝগড়া!</p>
-                    <p>মেঘলা: (হঠাৎ চোখ রাঙিয়ে রেগে গিয়ে) আচ্ছা অর্ণবদা, আপনার এই খামখেয়ালি স্বভাবটা না আমার একদম সহ্য হয় না! আমি বললাম এক রাস্তা দিয়ে যেতে, আর আপনি আপনার জেদে জোর করে অন্য পাহাড়ি পথে বাইক নিয়ে চলে এলেন! যদি মাঝপথে বাইক আবার নষ্ট হতো, কী হতো তখন?</p>
-                    <p>অর্ণব: (ভ্রু কুঁচকে, বাঁকা হেসে) বাহ! হুকুম করার লাইসেন্স কি শুধু তোমার? আমি রাস্তা চিনে বাইক চালাই, আর তুমি খামোখা বিনা কারণে চ্যাটাং চ্যাটাং কথা শুনিয়ে মাথা গরম করছ! একটু কম কথা বললে কি তোমার মুখে ফোসকা পড়ে যায়?</p>
-                    <p>মেঘলা: (চোখ গোল করে, আরও তেঁতে উঠে) কিহ্‌! আমি চ্যাটাং চ্যাটাং কথা বলি?! আপনি যে আস্ত একটা জেদি ডাইনোসর, সেটা আজ আবার প্রমাণ করলেন! আপনার সাথে বাইরে ঘুরতে আসা মানেই আস্ত একটা আজাব ডেকে আনা!</p>
-                    <p>অর্ণব: (একচোট হেসে, রাগানোর সুরে) তাই নাকি? তাহলে পরের বার থেকে এই আজাবের পাল্লায় পড়ার শখ হলে নিজেই একা একা এসো চা বাগানে, আমি আর রিকি নিয়ে আসব না!</p>
-                    <p>মেঘলা: (মুখ বাঁকিয়ে নাক উঁচু করে) তাই নাকি? আমিও তো মরতে চাইনি আপনার সাথে আসতে! জোর করে আমাকে ধরে নিয়ে এসেছেন আপনি!</p>
-                    <p>দুজনের এই খুনসুটি ও চেঁচামেচিতে পাহাড়ি ঝরনার শব্দও যেন ঢাকা পড়ে গেল! কিছু ক্ষণ আগে রোমান্সে আচ্ছন্ন পরিবেশটা এক মুহূর্তে জমে উঠল তাদের এই মিষ্টি, মান অভিমান আর ঝগড়ার উত্তাপে। কিন্তু হাজার ঝগড়া করলেও অর্ণবের চোখের দিকে তাকালেই মেঘলার রাগ নিমেষে কোথায় যেন উড়ে যেত, আর অর্ণবও মেঘলার ওই রাগী ফোলা ফোলা মুখ দেখে মনে মনে হাসির জোয়ারে ভাসত।</p>
-                    <p>সারাদিনের সেই রোমাঞ্চকর ঘোরাঘুরি শেষে বিকেল গড়িয়ে যখন তারা আবার বাড়ির গেটে এসে পৌঁছাল, তখন চারপাশটায় আবার নামছে নরম আলো-আঁধারের খেলা।</p>
-                    <p>বাইক থেকে নেমে মেঘলার মুখের দিকে তাকিয়ে অর্ণব মৃদু হাসল।</p>
-                    <p>অর্ণব: কি ম্যাডাম, সারাদিনের ট্যুরে পা ব্যথা হয়ে গেছে নাকি? নাকি আরও কিছু ঘোরার বাকি আছে?</p>
-                    <p>মেঘলা নিজের ব্যাকপ্যাকটা ঠিক করতে করতে বাঁকা হেসে জবাব দিল—</p>
-                    <p>মেঘলা: পা ব্যথা হবে কেন? পাহাড়ি বাতাসে আমার এনার্জি ডাবলস হয়ে গেছে! তবে হ্যাঁ, সারাদিন যা ধকল গেছে—এখন যদি চাচার সামনে গিয়ে পামর না করি, তবে চলবে না!</p>
-                    <p>বাড়ির গেট খুলতেই অর্ণবের আলো বারান্দা থেকে এগিয়ে এলেন। তাদের দুজনকে একসাথে হাসিমুখে ফিরতে দেখে তার চোখের কোণে একটা স্নেহের ঝিলিক খেলে গেল।</p>
-                    <p>আলো: কিরে তোরা ফিরলি এতক্ষণে? সারাদিন কেমন ঘুরলি, বল তো শুনি! আর মেঘলা মা, তোর মুখ তো খুশিতে পুরো চকচক করছে দেখছি!</p>
-                    <p>মেঘলা একটু লজ্জা পেয়ে শালের আঁচলটা ঠিক করতে করতে মাটির দিকে তাকিয়ে রইল।</p>
-                    <p>মেঘলা: খুব ভালো ঘুরেছি আন্টি! অর্ণবদা আমাকে পুরো চা বাগান আর ঝরনা দেখিয়েছে। জায়গাটা সত্যিই ভীষণ সুন্দর!</p>
-                    <p>অর্ণব পকেটে হাত গুঁজে চোখ ফিরিয়ে বিড়বিড় করে বলল—</p>
-                    <p>অর্ণব: তা তো দেখাবেই, নইলে কি আর রক্ষা আছে!</p>
-                    <p>ঠিক তখনই ড্রয়িংরুম থেকে চাচু মিলন কফি হাতে বারান্দায় এসে যোগ দিলেন।</p>
-                    <p>মিলন: যাক, শুনে ভালো লাগল যে পাহাড়ি ভূতে ধরে নিয়ে যায়নি তোদের! হাত-মুখ ধুয়ে তাড়াতাড়ি ফ্রেশ হয়ে আয় সবাই, রাতে কিন্তু স্পেশাল ডিনার আছে—মেঘলার পছন্দের খাবার রান্না হয়েছে!</p>
-                    <p>চাচার কথা শুনে মেঘলার চোখ দুটো খুশিতে আরও চকচক করে উঠল—</p>
-                    <p>মেঘলা: সত্যি চাচু?! কী রান্না হয়েছে?</p>
-                    <p>আলো: সেটা ঘরে গিয়ে দেখবি চল!</p>
-                    <p>সবাই মিলে হাসিমুখে ভেতরে চলে গেল। রাতের খাবারের টেবিলে অর্ণব আর মেঘলার খুনসুটি আর চোখের ইশারায় লুকিয়ে থাকা সেই নতুন ভালোলাগা পুরো ঘরটাকে আরও প্রাণবন্ত করে তুলল।</p>
-                    <p>রাতের খাবার দাবারের পাট চুকে যাওয়ার পর চারপাশটায় আবার নিস্তব্ধতা নেমে এল। ঘরের ভেতরে তখন হালকা হলুদ ল্যাম্পপোস্টের আলো আর বাইরে ঝোড়ো কুয়াশার লুকোচুরি।</p>
-                    <p>মেঘলা একটু একা সময় কাটানোর জন্য ছাদের দিকে গেল। সে ভাবল ছাদেই একটু শান্তিতে দাঁড়িয়ে ঠান্ডা হাওয়া খাবে। কিন্তু ছাদে ওঠার পর চারপাশটা খুঁজেও সে অর্ণবের দেখা পেল না। ছাদের এক কোণায় দাঁড়িয়ে মেঘলা আনমনে রাতের কুয়াশাচ্ছন্ন আকাশটার দিকে ভাবছিল—লোকটা গেল কোথায় এত রাতে?</p>
-                    <p>ঠিক সেই মুহূর্তেই—ছাদের অন্ধকার ঘেরা এক কোণ থেকে হঠাৎ অর্ণব নিঃশব্দে এসে হাজির হলো মেঘলার ঠিক পেছনে!</p>
-                    <p>মেঘলা একটু টের পেতেই চমকে ঘুরে দাঁড়াতে চাইল, কিন্তু অর্ণব চোখের পলকে এক হাত দিয়ে মেঘলার সুদৃশ্য কোমরটা শক্ত করে নিজের দিকে টেনে ধরল, আর অন্য হাতটা সোজা ছাদের দেয়ালের ওপর রেখে মেঘলাকে একদম মাঝখানে বন্দী করে ফেলল!</p>
-                    <p>পিঠে ঠান্ডা দেয়াল আর সামনে অর্ণবের উষ্ণ নিঃশ্বাস—এই আকস্মিক রোমান্টিক আক্রমণে মেঘলার মাথার ভেতর যেন বিদ্যুৎ খেলে গেল! সে মুহূর্তের জন্য জমে গেল।</p>
-                    <p>মেঘলা: (বুক কাঁপতে কাঁপতে ভয়ে ও লজ্জায় ফিসফিস করে) উ... উফ! আপনি... আপনি এভাবে ভূত সেজে পেছন থেকে এসে কোমর জড়িয়ে ধরলেন কেন? আমার হার্ট অ্যাটাক হতো তো প্রায়! ছাড়ুন বলছি!</p>
-                    <p>অর্ণব মুখটা মেঘলার একটু কাছে নিয়ে এল। তার চোখের চাউনিতে তখন এক অদ্ভুত অধিকারবোধ আর গভীর ভালোবাসা ঠিকরে বের হচ্ছে।</p>
-                    <p>অর্ণব: (খুব নিচু, উষ্ণ গলায়) ভূত সেজেছি নাকি তোমাকেই পাহারা দিচ্ছি, সেটা ভালো করে একবার চোখ খুলে তাকিয়ে দেখো তো, ম্যাডাম! আর কোমর জড়িয়ে ধরব না তো কী করব? সারাদিন তো ছটফট করে কাটালে, একটু কাছে টানলেই যত যত আপত্তি তোমার!</p>
-                    <p>মেঘলা গাল দুটো লজ্জায় একেবারে টকটকে লাল হয়ে উঠেছে। সে অর্ণবের চোখের দিকে সরাসরি তাকাতে না পেরে চোখ নিচু করে দিল, কিন্তু মুখ দিয়ে রাগ দেখানোর ছোট্ট একটা চেষ্টা করল—</p>
-                    <p>মেঘলা: বেশি কথা বলবেন না বলছি! একটু শান্তিতে একা দাঁড়াব তারও উপায় নেই বুঝি? সারাদিন তো বাইকে বসিয়ে পিঠের বারোটা বাজিয়ে দিয়েছেন, আর এখানে এসে রোমান্টিক হিরো সাজা হচ্ছে? ছাড়ুন বলছি, কেউ যদি নিচে থেকে ওপরে চলে আসে!</p>
-                    <p>অর্ণব: (একচোট মৃদু হেসে, আরও একটু কাছে ঘেঁষে) আসুক না কেউ! আমার হবু বউয়ের সাথে দাঁড়িয়ে কথা বলছি, এতে কার কী বা বলার আছে? আর পিঠের বারোটা বাজিয়েছি বলে এখন আমার বুকে এসে মাথা রাখতে পারো, কোনো বাধা নেই!</p>
-                    <p>মেঘলা: (চোখ গোল করে রাগী রাগি ভাব দেখিয়ে) নির্লজ্জ একটা ছেলে তো! একটুও রোমান্স বোঝে না, খালি ফাজলামো! ছাড়ুন বলছি, আমার দম আটকে আসছে!</p>
-                    <p>অর্ণব: (চোখ ছোট করে বাঁকা হেসে) ছাড়ব না তো! কী করবে বলো? দেখি তোমার কত জোর! সারাদিন চা বাগানে ঘুরেও তোমার রাগ একটুও কমল না, হ্যারিকেন কোথাকার!</p>
-                    <p>মেঘলা আর নিজেকে সামলাাতে না পেরে অর্ণবের কাঁধে একটা ছোট্ট ঘুষি বসিয়ে দিল—</p>
-                    <p>মেঘলা: পাজি একটা! আমাকে হ্যারিকেন বলা হচ্ছে? আজ রাতে আর চা দেবে না তোমাকে বলে দিলাম!</p>
-                    <p>অর্ণব মেঘলার সেই হালকা কিল খাওয়া গায়ে মেখে আরও নরম হাসল। দেয়াল আর অর্ণবের দুহাতের সেই নিবিড় বলয়ের মাঝে দাঁড়িয়ে মেঘলা তখন বুঝতে পারল, হাজার ঝগড়া আর বকাবকি করলেও এই মানুষটার ওই চোখের মায়া সে আর কখনোই কাটাতে পারবে না।</p>
-                    <p>হালকা হেসে অর্ণব তখন মেঘলার আরও একটু কাছে মুখ নিয়ে ফিসফিস করে বলে উঠল—</p>
-                    <p>অর্ণব: আচ্ছা, তোমার ফোন নাম্বার তো নেওয়া হলো না! সারাদিন তোমার কথা ভাবতে ভাবতে তোমার নাম্বার নিতেই ভুলে গেছি।</p>
-                    <p>মেঘলা একটু চোখ বড় করে, বাঁকা হেসে বলল—</p>
-                    <p>মেঘলা: সারাদিন বুঝি উরে বাবা! এত ভালোবাসা!</p>
-                    <p>অর্ণব: হুম, তাই তো বটে! আচ্ছা, আর না বকে নাম্বার দাও তো জলদি!</p>
-                    <p>মেঘলা তখন মৃদু হেসে নিজের ফোন নম্বরটা অর্ণবের হাতে তুলে দিল। অর্ণব দ্রুত ফোনে নাম্বারটা সেভ করে একটা মিষ্টি হাসি দিল।</p>
-                    <p>ঠিক তখনই—ছাদের ঠিক দরজার গোড়ায় একটা জুতোর শব্দ শোনা গেল!</p>
-                    <p>আলো: (নিচ থেকে সিঁড়িতে উঠতে উঠতে ডাকলেন) এই অর্ণব! মেঘলা! তোরা দুজনে কি এত রাতে ভূত তাড়াতে গেছিস নাকি? নিচে আয় বলছি, একটা জরুরি ব্যাপার আছে!</p>
-                    <p>মায়ের এই আকস্মিক পদশব্দ ও ডাকে ছাদের সেই মায়াবী রোমান্টিক আবহাওয়া মুহূর্তের মধ্যে ওলোটপালট হয়ে গেল! অর্ণব এক ঝটকায় মেঘলার কোমর থেকে হাত সরিয়ে দুই হাত পকেটে গুজল, আর মেঘলা ভয়ে কেঁপে উঠে এক লাফে অর্ণব থেকে অন্তত তিন ফুট দূরে সরে দাঁড়িয়ে কোনোমতে নিজের শালটা ঠিক করে নিল। তাদের দুজনের মুখ তখন লজ্জায় ও ভয়ে থমথমে!</p>
-                    <p>মেঘলা: (ফিসফিস করে কাঁপাকাপা গলায়) বলছিলাম না কেউ ওপরে চলে আসবে! এবার আন্টি দেখলেই তো আস্ত আস্ত চিবিয়ে খাবো!</p>
-                    <p>অর্ণব: (একটু অপ্রস্তুত হয়ে নিজেকে সামলে গম্ভীর গলায়) ধুর! এত বাজে টাইমে আসার আর কাউকে পেলেন না মা!</p>
-                    <p>তারা দুজনে তাড়াহুড়ো করে সিঁড়ি দিয়ে নিচে ড্রয়িংরুমে নেমে এল। এসে দেখল চাচু মিলন আর চাচি আলো দুজনের মুখই ভীষণ গম্ভীর। টেবিলে একটা খাম রাখা।</p>
-                    <p>মেঘলা: (একটু ভয় পেয়ে) কী হয়েছে চাচু? এভাবে ডাকছ কেন সবাই মিলে? আর মুখ এমন কেন সবার?</p>
-                    <p>মিলন একটা লম্বা দীর্ঘশ্বাস ফেলে সোফায় বসলেন। তারপর ভীষণ গম্ভীর ও চিন্তিত গলায় বললেন—</p>
-                    <p>মিলন: একটা বড় বিপদ এসে গেছে, মেঘলা। তোর বাবা একটু আগে আমাকে ফোন করেছিল।</p>
-                    <p>অর্ণব: (ভ্রু কুঁচকে) কাকা ফোন করেছিল মানে? হঠাৎ কী হয়েছে বাবা?</p>
-                    <p>আলো: (চোখে জল নিয়ে) মেঘলার বাবা অর্থাৎ তোর মেজো কাকা কোনো সাধারণ লসের মুখে পড়েনি রে! এটা পরিষ্কার একটা গভীর ষড়যন্ত্র! বিজনেসে হিংসে করে কেউ ওর কোম্পানির সব সিগনেচার ফোরড করে ব্যাংক অ্যাকাউন্টগুলো হ্যাকিংয়ের মতো করে ফ্রিজ করিয়ে দিয়েছে, আর শহরের তাদের মেইন অফিসটা ও বাড়িটা পর্যন্ত জালিয়াতির মাধ্যমে ব্যাংকের জিম্মায় চলে যাওয়ার ভুয়া নোটিশ ঝুলিয়ে দিয়েছে! কাকা এখন পুরোপুরি একটা মস্ত বড় ফাঁদে আটকা পড়ে গেছে!</p>
-                    <p>খবরটা শোনার সাথে সাথে মেঘলার মাথার ওপর যেন আস্ত আকাশ ভেঙে পড়ল! সে চোখের পলকে শক্ত হয়ে দাঁড়িয়ে রইল। তার পা দুটো যেন আর ঠিকমতো কাজ করছে না।</p>
-                    <p>মেঘলা: (কাঁপা কাঁপা গলায়, ফ্যালফ্যাল করে তাকিয়ে) ষড়যন্ত্র?! বাবা তো খুব সৎভাবে ব্যবসা পরিচালনা করত, তবে কে এমন করল বাবার সাথে? বাবা তো শেষ হয়ে গেল চাচু! এ আপনি কী বলছেন! কাল সকালেই তো মা-বাবা আমাকে ট্রেনে তুলে দিল, তখন তো সব ঠিক ছিল! হঠাৎ এক রাতের মধ্যে এ কেমন ভয়ানক খেলা শুরু হলো?!</p>
-                    <p>মেঘলার চোখ দিয়ে অঝোরে জল গড়িয়ে পড়তে লাগল। সে আর নিজেকে সামলাাতে না পেরে সোফায় বসে পড়ে দুহাতে মুখ ঢেকে ভেঙে পড়ে কেঁদে ফেলল।</p>
-                    <p>অর্ণব এতক্ষণ স্তব্ধ হয়ে দাঁড়িয়েছিল। কিন্তু ষড়যন্ত্রের কথা শোনার পর তার চোয়ালের পেশী শক্ত হয়ে উঠল, চোখের দৃষ্টিতে পলকে এক ভয়ঙ্কর জেদ আর আগুন জ্বলে উঠল।</p>
-                    <p>কারণ একটা সত্য শুধু অর্ণবের বাবা-মা ছাড়া আর কেউ জানত না—অর্ণব হলো বাংলাদেশ ইন্টেলিজেন্স ডিপার্টমেন্টের হেড চিফ! দেশের সবথেকে বড় বড় গোপন ও স্পর্শকাতর কেসগুলো সে নিজের হাতে হ্যান্ডেল করে, যা সাধারণ মানুষের তো বটেই, এমনকি তার নিজের পরিবারের বাইরেও কেউ কখনো জানতে পারেনি। এই আকস্মিক ষড়যন্ত্রের পেছনে যে অন্য কোনো বড় মাপের অপরাধী চক্রের হাত রয়েছে, তা অর্ণব এক মুহূর্তেই বুঝতে পারল।</p>
-                    <p>অর্ণব আর এক মুহূর্তও দেরি না করে সোজা গিয়ে মেঘলার ঠিক পাশে বসল। তারপর আলতো করে নিজের একটা হাত মেঘলার কাঁপতে থাকা কাঁধের ওপর রাখল। তার কন্ঠস্বর তখন এতটাই ভারী ও ঠান্ডা ছিল যে ঘরের বাকিরাও চমকে উঠল।</p>
-                    <p>অর্ণব: ( খুব শক্ত, দৃঢ় ও অভয় দেওয়া গলায়) কেঁদো না, মেঘলা। এটা সাধারণ কোনো সমস্যা নয়, একটা বড় খেলা শুরু হয়েছে। কিন্তু অপরাধী যত শক্তিশালী বা আড়ালেই থাকুক না কেন—অর্ণব বেঁচে থাকতে তোর বাবার গায়ে কেউ একটা আঁচড়ও বসাতে পারবে না। ইন্টেলিজেন্সের সমস্ত পাওয়ার ব্যবহার করে এই ষড়যন্ত্রের জাল এক সপ্তাহের মধ্যে ছিঁড়ে কাকা হারানো সব সম্মান আর ইজ্জত আমি উদ্ধার করবই!</p>
-                    <p>মেঘলা ভেজা চোখে অর্ণবের দিকে তাকাল। কাল স্টেশনে যে ছেলেটার সাথে তার বিন্দুমাত্র বনিবনা হয়নি, আজ বিপদের দিনে সেই ছেলেটার চোখের ভেতর এক অদ্ভুত ও ভয়ংকর দৃঢ়তা দেখে তার বুকটা কেঁপে উঠল। চারপাশের এই অপ্রত্যাশিত রোমাঞ্চ, মারাত্মক ষড়যন্ত্র আর অর্ণবের আসল পরিচয়—সব মিলিয়ে তাদের ভালোবাসার গল্পটা এবার এক রক্তগরম লড়াইয়ের মুখে এসে দাঁড়াল!</p>
-                    <p>এর পরেই অর্ণব আর এক মুহূর্তও সময় নষ্ট করল না। সে পকেট থেকে নিজের সিক্রেট স্যাটেলাইট ফোনটা বের করে সোজা কল দিল তার স্পেশাল ইন্টেলিজেন্স টিমের হেডকোয়ার্টারে। লাইনটা রিসিভ করতেই অর্ণবের গলার স্বর হয়ে উঠল বরফের মতো ঠান্ডা ও কমান্ডিং—</p>
-                    <p>অর্ণব: হ্যালো আরিয়ান! একটা হাই-প্রফাইল কেস আছে। তুমি তোমার টিমকে নিয়ে এক্ষুনি আমার বাড়িতে চলে এসো। আর হ্যাঁ, স্পেশাল জেনেসিস (GENESIS) ও আধুনিক হ্যাকিং গিয়ার্সগুলো সঙ্গে নিয়ে আসবি! আর কোনো দেরি নয়, এক্ষুনি মুভ করো!</p>
-                    <p>ফোন রেখেই অর্ণব গম্ভীর মুখে জানালার দিকে তাকিয়ে রইল। মাত্র কুড়ি মিনিট পর—বাইরে হঠাৎ আকাশ কাঁপানো একটা ভারী অর্গ্যানিক হুংকার শোনা গেল!</p>
-                    <p>বাড়ির সামনের খোলা বাগানে ঝড়ের বেগে ল্যান্ড করল বাংলাদেশ ইন্টেলিজেন্সের অত্যাধুনিক অ্যাসল্ট হেলিকপ্টার! হেলিকপ্টারের ব্লেডের প্রচণ্ড বাতাসে চারপাশের কুয়াশা আর ধুলোবালি উড়ে একাকার হয়ে গেল।</p>
-                    <p>হেলিকপ্টারের দরজা খুলে একে একে নিচে নেমে এল অর্ণবের সেই বিশ্বস্ত ও দুর্ধর্ষ ৬ জন হিরো—যাদের নাম শুনলে আন্ডারওয়ার্ল্ডের বড় বড় ডনদেরও বুক কেঁপে ওঠে!</p>
-                    <p>১. আরিয়ান - ইন্টেলিজেন্সের সবচেয়ে ব্রিলিয়ান্ট ও মাস্টারমাইন্ড হ্যাকিং এক্সপার্ট, যে সেকেন্ডের মধ্যে যেকোনো ফায়ারওয়াল বা ডিফেন্স সিস্টেম ক্র্যাক করে দিতে পারে।</p>
-                    <p>২. মাহিন - ডেডলি স্নাইপার এক্সপার্ট, যার নিখুঁত নিশানা থেকে পালানোর কোনো উপায় থাকে না, মাইল দূর থেকেও টার্গেট ফিনিশ করতে সিদ্ধহস্ত।</p>
-                    <p>৩. নিরব - ক্লোজ কম্ব্যাট ও ফিজিক্যাল স্ট্র্যাটেজি স্পেশালিস্ট।</p>
-                    <p>৪. আবির - টেকনিক্যাল গ্যাজেট ও ওয়েপন এক্সপার্ট।</p>
-                    <p>৫. সাকিব - আন্ডারকাভার অপারেশন ও ইনভেস্টিগেশন মাস্টার।</p>
-                    <p>৬. নাঈম - ট্যাকটিক্যাল স্ট্র্যাটেজি ও ডিফেন্স এক্সপার্ট।</p>
-                    <p>সবাই একে একে সুশৃঙ্খলভাবে জেনেসিস (GENESIS) জাঁকজমকপূর্ণ টেকনিক্যাল জেনেসিস ট্রাঙ্ক ও ভারী অস্ত্রশস্ত্র হাতে নিয়ে অর্ণবের বাড়ির সামনের উঠানে এসে দাঁড়াল।</p>
-                    <p>দরজায় দাঁড়িয়ে থাকা অর্ণবের বাবা মিলন আর আলো এই দৃশ্য দেখে থমকে গেলেন! তারা জানত অর্ণব ইন্টেলিজেন্সের চিফ, কিন্তু তার এই বিশাল টিমকে এভাবে চোখের সামনে অস্ত্র ও টেকনিক্যাল জেনেসিস জাদুকরী সরঞ্জাম নিয়ে হাজির হতে দেখে তারা সবাই স্তব্ধ হয়ে গেলেন।</p>
-                    <p>মেঘলা চোখ বড় বড় করে জানলার কাঁচের ভেতর দিয়ে বাইরে তাকিয়ে দেখল—যে মানুষটাকে সে এতদিন একটা সাধারণ রাগী ছেলে বলে ভেবেছিল, সেই অর্ণব আজ পুরো দেশের একচ্ছত্র শক্তির প্রতীক!</p>
-                    <p>অর্ণব সবার দিকে একবার ঠান্ডা দৃষ্টি বুলিয়ে গম্ভীর গলায় বলল—</p>
-                    <p>অর্ণব: সবাই ভেতরে এসো। ড্রয়িংরুমে সময় নষ্ট করার সময় নেই।</p>
-                    <p>সবাই যখন অর্ণবকে অনুসরণ করে লিভিং রুমের দিকে এগোচ্ছিল, ঠিক তখনই অর্ণবের নজর পড়ল সোফায় বসে থাকা মেঘলার ওপর, যে তখনো ভয়ে আর কান্নায় থরথর করে কাঁপছে। অর্ণব এক মুহূর্ত থেমে মেঘলার দিকে তাকিয়ে ঠান্ডা অথচ আদেশের সুরে বলে উঠল—</p>
-                    <p>অর্ণব: মেঘলা, তুমিও এসো।</p>
-                    <p>মেঘলা চোখ বড় বড় করে নিজের দিকে আঙুল দেখিয়ে হকচকিয়ে গেল। সে দ্রুত চোখের জল মুছে অবাক গলায় বলে উঠল—</p>
-                    <p>মেঘলা: হা... আমি?! আমার কি কাজ ওখানে? আমি তো এইসবার কিছুই বুঝি না!</p>
-                    <p>অর্ণব তার দিকে এক পা এগিয়ে ভ্রু কুঁচকে কড়া গলায় বলল—</p>
-                    <p>অর্ণব: কাজের কথা পরে বোঝাচ্ছি, এখন বেশি কথা না বাড়িয়ে বলছি—আসো আমার সাথে!</p>
-                    <p>মেঘলা আর কোনো কথা বাড়াল না। অর্ণবের চোখের ওই গম্ভীর ও জোরালো কমান্ডিং রূপ দেখে সে কিছুটা ভয় পেলেও নিঃশব্দে সোফা ছেড়ে উঠে দাঁড়াল। সে মনে মনে বিড়বিড় করতে লাগল—“লোকটা আস্ত একটা ডাঙ্গুরের মতো হুকুম চালায়! কিন্তু এখন না গেলে নির্ঘাত আস্ত গিলে খাবে আমাকে!”</p>
-                    <p>অর্ণব সবাইকে নিয়ে বাড়ির ড্রয়িংরুমের একটা কর্নারে থাকা পুরোনো অ্যান্টিক বুকসেলফের কাছে গেল। সে বইয়ের তাকে সাজানো একটা বিশেষ বইয়ের ওপর হাত রাখতেই ক্যাঁচক্যাচ শব্দ করে বুকসেলফটা একপাশে সরে গেল! আর তার পেছনে বেরিয়ে এল দেশের সবচেয়ে সুরক্ষিত আন্ডারগ্রাউন্ড সিক্রেট রুমের ভারী রিইনফোর্সড স্টিলের দরজা!</p>
-                    <p>অর্ণব তার বায়োমেট্রিক স্ক্যানার ও সিক্রেট পাসওয়ার্ড দিয়ে দরজাটা খুলে ফেলল। ভারী স্টিলের দরজা খুলতেই ভেতর থেকে ঠান্ডা এসি হাওয়া আর অত্যাধুনিক সুপারকম্পিউটার ও ডিজিটাল স্ক্রিনের নীল আলো ঠিকরে বের হয়ে এল!</p>
-                    <p>মেঘলা তো আন্ডারগ্রাউন্ড এই হাই-টেক সিক্রেট রুম দেখে রীতিমতো থ হয়ে গেল! তার চোখ দুটো কপালে উঠেছে—সে ভাবতেই পারছে না একটা সাধারণ বাড়ির নিচে এমন আস্ত একটা জেমস বন্ড স্টাইলের ইন্টেলিজেন্স বেসমেন্ট থাকতে পারে!</p>
-                    <p>সবাই একে একে সেই আন্ডারগ্রাউন্ড সিক্রেট রুমে প্রবেশ করল। রুমটার মাঝখানে রাখা বিশাল একটা গ্লাস কনফারেন্স টেবিল। চারপাশে জ্বলজ্বল করছে স্যাটেলাইট মনিটর, রাডার স্ক্রিন আর হ্যাকিংয়ের বিভিন্ন কোডিং।</p>
-                    <p>সবাই যে যার জায়গায় বসার পর শুরু হলো অপারেশনাল মিটিং।</p>
-                    <p>আরিয়ান নিজের জেনেসিস ল্যাপটপটা টেবিলে অন করে স্ক্রিনে মেঘলার বাবার কোম্পানির সার্ভার ও ব্যাংকের ফ্রিজ হওয়া অ্যাকাউন্টগুলোর ডাটা প্রজেক্টরে ভাসিয়ে তুলল।</p>
-                    <p>আরিয়ান: বস, আমি প্রাথমিক স্ক্যান শেষ করেছি। অ্যাকাউন্টগুলো শুধু ফ্রিজই করা হয়নি, বরং একটা অত্যন্ত শক্তিশালী ট্রোজান হ্যাকিং ম্যালওয়্যার পুরো সিস্টেমের মেইন সার্ভারে প্রবেশ করিয়ে কোম্পানির সব লিগ্যাল ডকুমেন্ট ও সিগনেচার ডিজিটালি ক্লোন করা হয়েছে। এটা কোনো সাধারণ হ্যাকার বা চোরের কাজ নয়। এর পেছনে আন্ডারওয়ার্ল্ডের কোনো মারাত্মক সিন্ডিকেট বা সরকারের ভেতরের কেউ হাত রয়েছে!</p>
-                    <p>মাহিন নিজের স্নাইপার কেসটা টেবিলে একপাশে রেখে ঠান্ডা গলায় যোগ করল—</p>
-                    <p>মাহিন: ঠিক বলেছ আরিয়ান। আমি স্যাটেলাইট ফিডে খেয়াল করেছি, গত ২৪ ঘণ্টায় ওই এলাকার আশপাশে দুটো সন্দেহজনক বুলেটপ্রুফ ভেহিকল ঘোরাফেরা করছিল। চাইলে আমি এখনই স্পট আউট করে ওদের রুট ট্র্যাক করতে পারি।</p>
-                    <p>নিরব ও আবির একসাথে বলে উঠল—</p>
-                    <p>নিরব ও আবির: বস, আমাদের পারমিশন দিন। ফিজিক্যাল রেড দিয়ে আসামীদের কলার ধরে এই আন্ডারগ্রাউন্ডে নিয়ে আসি! ওদের হাত-পা ভেঙে দিলে মুখ এমনিতেই খুলবে।</p>
-                    <p>রুমের এক কোণায় দাঁড়িয়ে মেঘলা এই ভয়ঙ্কর সব কথা শুনছিল। তার বুকটা তখন কাঁপছে—সে বুঝতে পারল তার বাবার কোম্পানি ও জীবন বাঁচাতে কত বড় একটা যুদ্ধের মুখোমুখি এসে দাঁড়িয়েছে সে! সে অর্ণবের দিকে তাকাতে দেখল, অর্ণব একদম নির্বিকার ও পাথরসম কঠিন মুখে পুরো পরিস্থিতি মনিটর করছে।</p>
-                    <p>অর্ণব তার হাত দুটো টেবিলের ওপর রেখে সবার দিকে তীক্ষ্ণ দৃষ্টি ফেলল। তার কন্ঠস্বর পুরো রুমে এক বরফশীতল পিনপতন নীরবতা এনে দিল—</p>
-                    <p>অর্ণব: রাগ বা উগ্রতা দেখিয়ে লাভ নেই, নিরব। আমাদের ঠান্ডা মাথায় নিখুঁত প্রমাণ জোগাড় করতে হবে। আদালত বা আইনের চোখে তাদের এই জালিয়াতি এমনভাবে প্রমাণ করতে হবে, যেন অপরাধীরা বাঁচার বিন্দুমাত্র সুযোগ না পায়।</p>
-                    <p>অর্ণব এবার ঘুরে সরাসরি মেঘলার দিকে তাকাল। মেঘলার চোখে তখন আতঙ্ক আর উৎকণ্ঠার ছাপ স্পষ্ট। অর্ণব একটু নরম অথচ অত্যন্ত দৃঢ় গলায় তাকে আশ্বস্ত করে বলল—</p>
-                    <p>অর্ণব: ভয় পেয়ো না, মেঘলা। তোমার বাবাকে আমি কোনো ক্ষতি হতে দেব না। এই আন্ডারগ্রাউন্ড রুম থেকেই আমি এই কেসের অপারেশন নিজে লিড করব। অপরাধী যতই প্রভাবশালী হোক না কেন, জেলের অন্ধকার কুঠুরিতে তাদের জায়গা হবেই।</p>
-                    <p>মেঘলার দুই চোখ তখন কৃতজ্ঞতায় জলে ভিজে এল। অর্ণবের এই সাহসী ও আস্থার বাণী তার সমস্ত ভয় এক নিমেষে ধুয়ে মুছে দিল। সে অর্ণবের চোখের দিকে তাকিয়ে বুঝল, এই মানুষটাকে সে যতটা রাগী ভেবেছিল, তার চেয়েও হাজার গুণ বেশি সুরক্ষাকবচ হয়ে সে তার পাশে দাঁড়িয়ে আছে।</p>
-                    <p>অর্ণব আবার স্ক্রিনের দিকে তাকিয়ে আরিয়ানের উদ্দেশ্যে কমান্ড দিল—</p>
-                    <p>অর্ণব: আরিয়ান, ফাইনাল হ্যাকিং ট্রেসিং অন করো। আগামী ১২ ঘণ্টার মধ্যে ওই মাস্টারমাইন্ডের আসল লোকেশন আমার স্ক্রিনে চাই! মিশন শুরু হয়ে গেছে, জেন্টলম্যান!</p>
-                    <p>আন্ডারগ্রাউন্ড সিক্রেট রুমের নীল আলোয় ঘেরা সেই থমথমে পরিবেশে অর্ণবের কমান্ড পাওয়া মাত্রই আরিয়ান তার জেনেসিস ল্যাপটপের কীবোর্ডে আঙুল চালাতে শুরু করল। মুহূর্তের মধ্যে বিশাল ডিজিটাল স্ক্রিন জুড়ে অজস্র কোডিং আর স্যাটেলাইট ম্যাপের গ্রিড নড়ে উঠল।</p>
-                    <p>আরিয়ান: (চটজলদি টাইপ করতে করতে) বস, ফায়ারওয়াল প্রায় ক্র্যাক হয়ে গেছে। হ্যাকারদের ডেটা ট্রাফিক আমাদের সার্ভারে রিডাইরেক্ট করা হচ্ছে... জাস্ট ফাইভ সেকেন্ডস!</p>
-                    <p>পুরো রুমে পিনপতন নীরবতা। সবাই অধীর আগ্রহে স্ক্রিনের দিকে তাকিয়ে আছে। ঠিক তখনই স্ক্রিনে ভেসে উঠল একটা গোপন আন্ডারগ্রাউন্ড ল্যাবের লোকেশন এবং একটি রিয়েল-টাইম ভিডিও ফিড!</p>
-                    <p>ভিডিওতে দেখা গেল, অন্ধকার একটা গোডাউনের মতো জায়গায় মেঘলার বাবাকে চেয়ারের সাথে হাত-পা বাঁধা অবস্থায় বসিয়ে রাখা হয়েছে। আর সামনে দাঁড়িয়ে আছে শহরের অন্যতম কুখ্যাত আন্ডারওয়ার্ল্ড ডন ও দুর্নীতিবাজ বিজনেস টাইকুন—রহিম চৌধুরী! তার পাশে দাঁড়িয়ে রয়েছে কয়েকজন অস্ত্রধারী ক্যাডার।</p>
-                    <p>রহিম চৌধুরী কুৎসিত হাসতে হাসতে মেঘলার বাবার মুখের সামনে ঝুঁকে পড়ে বলল—</p>
-                    <p>রহিম চৌধুরী: কী হে চৌধুরী সাহেব? বড় বড় কথার ব্যবসা তো অনেক করলেন! এখন কোম্পানির সব শেয়ার আমার নামে সাইন করে দিলেই কেবল আপনার মেয়ে আর আপনার প্রাণ রক্ষা পাবে। নইলে এই জনপদের কেউ আর আপনার খোঁজও পাবে না!</p>
-                    <p>স্ক্রিনে নিজের বাবার এমন করুণ অবস্থা দেখে মেঘলার বুক ফেটে কান্নায় আর্তনাদ বেরিয়ে এল। সে আর নিজেকে সামলাাতে না পেরে দৌড়ে গিয়ে সরাসরি গ্লাস কনফারেন্স টেবিলের সামনে দাঁড়িয়ে কাঁপাকাপা গলায় অর্ণবের শার্টের কলার খামচে ধরে ফেলল—</p>
-                    <p>মেঘলা: (চোখে উপচে পড়া জল আর চরম কান্নায় ভেঙে পড়ে) অর্ণবদা! দেখো... ওরা বাবাকে কীভাবে বেঁধে রেখেছে! তুমি প্লিজ কিছু একটা করো! আমার বাবাকে বাঁচাও... আমি সহ্য করতে পারছি না!</p>
-                    <p>অর্ণব এতক্ষণ খুব ঠান্ডা মাথায় স্ক্রিন দেখছিল। কিন্তু মেঘলার এই অসহায় কান্না আর তার হাতের ছোঁয়া অর্ণবের বুকের ভেতরকার সমস্ত সংযম এক মুহূর্তে ঝড়ের বেগে ওলটপালট করে দিল। সে অত্যন্ত মায়ায় ও শক্ত করে নিজের হাত দিয়ে মেঘলার কাঁপতে থাকা হাত দুটো ধরে নিজের মুঠোয় পুরল। তার চোখের সেই বরফশীতল দৃষ্টি মুহূর্তের মধ্যে এক ভয়ংকর আগুনে রূপ নিল।</p>
-                    <p>অর্ণব চেয়ার ছেড়ে ধীর পায়ে উঠে দাঁড়াল। তার দীর্ঘদেহী চেহারায় তখন একচ্ছত্র ক্ষোভ আর আওয়ার অফ অথরিটি ঠিকরে বের হচ্ছে। সে অর্ণবের চোখের জল নিজের আঙুল দিয়ে আলতো করে মুছে দিয়ে অত্যন্ত শান্ত অথচ প্রতিজ্ঞাবদ্ধ গলায় বলল—</p>
-                    <p>অর্ণব: কেঁদো না, মেঘলা। আমি কথা দিয়েছি যখন, তখন ওই নরপিশাচদের হাত থেকে তোর বাবাকে ফিরিয়ে আনাই শুধু নয়—ওদের আস্ত সাম্রাজ্য গুঁড়িয়ে দেব। এটা শুধু একটা প্রফেশনাল মিশন নয়, এটা অর্ণবের ভালোবাসার প্রতিশোধ!</p>
-                    <p>বলেই অর্ণব ঘুরে দাঁড়াল তার টিমের দিকে। তার গলার স্বর এবার পুরো রুমে বজ্রের মতো গর্জে উঠল—</p>
-                    <p>অর্ণব: নিলয় আর মাহিন! আপনাদের স্নাইপার রাইফেলে স্পেশাল সাপ্রেসার লোড করো। আবির, নিরব, সাকিব এবং নাঈম—অ্যাসাল্ট গিয়ার্স ও হেভি ওয়েপন রেডি করো! জেনেসিস চপার স্ট্যান্ডবাই রাখো। ঠিক ত্রিশ মিনিট পর আমরা ওই লোকেশনে গ্রাউন্ড জিরো স্ট্রাইক করব! কেউ বেঁচে ফিরবে না!</p>
-                    <p>টিমের সবাই একযোগে গর্জে উঠল—"রিসপন্সড, বস!"</p>
-                    <p>অর্ণবের এই ভয়ংকর ও দুর্ধর্ষ রূপ দেখে মেঘলা এক পলক তাকিয়ে রইল। সে বুঝতে পারল, এই মানুষটা শুধু কথায় নয়, প্রয়োজনে পুরো দুনিয়া ওলটপালট করে দিতে পারে।</p>
-                    <p>মাত্র কুড়ি মিনিটের মধ্যে অপারেশনাল প্রস্তুতি শেষ! আন্ডারগ্রাউন্ড সিক্রেট রুমের আর্মারি থেকে অর্ণব নিজে তুলে নিল তার সিগনেচার স্পেশাল অ্যাসল্ট রাইফেল ও ট্যাকটিক্যাল জ্যাকেট।</p>
-                    <p>বাইরে তখন ঝোড়ো হাওয়া আর কুয়াশা ভেদ করে ল্যান্ড করেছে দুটো ব্ল্যাক-হক জেনেসিস অ্যাসল্ট কপ্টার। অর্ণব, আরিয়ান, মাহিন, নিরব, আবির, সাকিব আর নাঈম—সবাই একে একে কপ্টারে গিয়ে বসে পড়ল।</p>
-                    <p>রাত তখন প্রায় গভীর। কুয়াশা আর অন্ধকারের চাদরে মোড়া কুখ্যাত সেই আন্ডারগ্রাউন্ড ল্যাব বা গোডাউনের ওপর ঠিক সময়ে গিয়ে ল্যান্ড করল দুটো ব্ল্যাক-হক জেনেসিস অ্যাসল্ট কপ্টার। হেলিকপ্টার থেকে মাটি ছোঁয়ার সাথে সাথেই অর্ণব ও তার টিম নামল।</p>
-                    <p>আগে থেকে আকাশপথে সিগন্যাল দেওয়া থাকলেও, শত্রুরা যাতে কোনোভাবেই টের না পায় যে তাদের সিস্টেম ব্লক বা জ্যাম করে দেওয়া হয়েছে—তাই হেলিকপ্টার থেকে নামার ঠিক মুহূর্তেই আরিয়ান রিমোট কন্ট্রোলের সাহায্যে সেই নির্দিষ্ট এলাকার সমস্ত ওয়াইফাই, লোকাল নেটওয়ার্ক এবং কমিউনিকেশন সিস্টেম এক ঝটকায় জ্যাম করে দিল! ফলস্বরূপ, ভেতরের অপরাধীরা কোনো রকম অ্যালার্ম বাজানোর বা বাইরে যোগাযোগ করার বিন্দুমাত্র সুযোগ পেল না।</p>
-                    <p>অর্ণব: (খুব ঠান্ডা ও মারাত্মক গলার স্বরে) নিরব, আবির—মুভ ফাস্ট! বিল্ডিংয়ের পেছনের সবকটি এক্সিট গেট আর পলায়নের রাস্তাগুলো প্যারা কমান্ডোদের দিয়ে ব্লক করে দাও। কেউ যেন এক পা-ও বাইরে পালাতে না পারে!</p>
-                    <p>অর্ণবের হুকুম পাওয়া মাত্রই এক কোম্পানি এলিট প্যারা কমান্ডো নিখুঁত ট্যাকটিক্যাল পজিশনে পুরো বিল্ডিংয়ের চারপাশ ঘিরে ফেলল। গোডাউনের ভেন্টিলেশন, ছাদ এবং পেছনের সমস্ত পলায়ন পথ তাদের ভারী অস্ত্রশস্ত্রের সুনির্দিষ্ট নিয়ন্ত্রণে চলে এল।</p>
-                    <p>এরপর অর্ণব, মাহিন, সাকিব আর নাঈম মিলে সরাসরি সামনের প্রধান দরজা দিয়ে ভেতরে প্রবেশ করল। ভেতরে তখন আবছা নীল আলো আর অপরাধীদের গুঞ্জরণ শোনা যাচ্ছে। প্যারা কমান্ডোরা অত্যন্ত নিঃশব্দে ও নিখুঁত কায়দায় ভেতরের প্রতিটি কর্নার সিকিউর করতে শুরু করল।</p>
-                    <p>এগিয়ে যেতে যেতে হঠাৎ একটা বিশাল করিডরের মাথায় এসে তাদের পথ আটকে দাঁড়াল এক বিরাট বাধা—একটি আল্ট্রা-সিকিউরড ভারী লোহার দরজা! সাধারণ কোনো চাবি বা পাসওয়ার্ড দিয়ে সেটি খোলার জো নেই; এটি পুরোপুরি বুলেটপ্রুফ, উন্নত স্ট্রাকচারাল অ্যালয় এবং হাইড্রোলিক লকিং সিস্টেমে তৈরি আস্ত এক দুর্ভেদ্য দেওয়াল।</p>
-                    <p>মাহিন সামনে এসে দরজাটা একবার হাত দিয়ে ছুঁয়ে দেখে গম্ভীর গলায় বলল—</p>
-                    <p>মাহিন: বস, এটা তো সাধারণ কোনো লক নয়। রিইনফোর্সড স্ট্রং মেটাল এবং হাইড্রোলিক বোল্ট দিয়ে সিল করা। অর্ডিনারি ব্লাস্টে বা হ্যাকিংয়ে এটা খুলতে টাইম লাগবে।</p>
-                    <p>অর্ণব বিন্দুমাত্র সময় নষ্ট না করে নিজের ট্যাকটিক্যাল জ্যাকেট থেকে একটা স্পেশাল হাই-টেক প্লাজমা কাটার ডিভাইস বের করে ফেলল। তার চোখের দৃষ্টি তখন লক্ষ্যস্থিরে একদম স্থির।</p>
-                    <p>অর্ণব: টাইম নষ্ট করার সময় নেই, মাহিন। কাকা ভেতরে জীবনের সাথে লড়াই করছে।</p>
-                    <p>অর্ণব নিজেই প্লাজমা কাটার অন করে সেই ভারী ও অত্যন্ত মজবুত স্ট্রাকচারাল লোহার দরজার ঠিক মাঝবরাবর কাটার চালাতে শুরু করল। আগুনের ফুলকি আর তীব্র স্পার্কের রোশনাইয়ে পুরো করিডরটা আলোকিত হয়ে উঠল।</p>
-                    <p>প্লাজমা কাটারের তীব্র আলো আর ধাতব স্পার্কের ঝলকানিতে মুহূর্তের মধ্যে সেই ভারী ও দুর্ভেদ্য দরজাটা মাঝখান থেকে গলে নিচে হুড়মুড় করে ভেঙে পড়ল। অর্ণব এক লাথি মেরে দরজার বাকি অংশটুকু সরিয়ে ফেলল।</p>
-                    <p>অর্ণব: (কমান্ডিং গলায়) মুভ! ভেতরে ঢোকো সবাই!</p>
-                    <p>অর্ণব সবার আগে অস্ত্র হাতে ভেতরে প্রবেশ করল। তার পেছনেই মাহিন, সাকিব আর নাঈম পজিশন নিয়ে ঢুকে পড়ল। বিশাল সেই গোপন আন্ডারগ্রাউন্ড ল্যাবের ভেতরের পরিবেশটা তখন আরও বেশি থমথমে।</p>
-                    <p>ঠিক মাঝখানে চেয়ারের সাথে হাত-পা বাঁধা অবস্থায় এখনো অজ্ঞান হয়ে পড়ে আছেন মেঘলার বাবা। আর তার ঠিক পাশেই দাঁড়িয়ে ছিল রহিম চৌধুরীর দুই ক্যাডার। দরজার শব্দ পেয়ে তারা চমকে ঘুরে দাঁড়াতে গেলেই—মাহিন আর অর্ণবের একে অপরের দিকে তাকানোর এক ইশারায় নিমেষেই সব শেষ!</p>
-                    <p>মাহিন: (স্নাইপার দিয়ে নয়, ক্লোজ কম্ব্যাটে পিস্তলের বাটে বাড়ি মেরে) হুশ!</p>
-                    <p>এক সেকেন্ডের মধ্যেই দুই ক্যাডার মাটিতে লুটিয়ে পড়ল। অর্ণব বিন্দুমাত্র সময় নষ্ট না করে এগিয়ে গিয়ে মেঘলার বাবাকে চেয়ার থেকে দ্রুত মুক্ত করে ফেলল।</p>
-                    <p>অর্ণব: (হাতে স্যাটেলাইট কমিউনিকেটর অন করে) আরিয়ান! আমাদের পজিশন সিকিউরড। কাকা আনকনশাস, ওকে ইমিডিয়েট মেডিকেল সাপোর্টের জন্য কপ্টারে শিফট করতে বলো।</p>
-                    <p>আরিয়ান: (ওপ্রান্ত থেকে রিমোটলি) গট ইট, বস! প্যারামেডিক টিম স্ট্যান্ডবাই আছে। আপনারা শুধু ওখান থেকে দ্রুত বের হয়ে আসুন!</p>
-                    <p>ঠিক তখনই আন্ডারগ্রাউন্ড ল্যাবের অন্য একটা গোপন দরজা খুলে রহিম চৌধুরী তেড়েফুঁড়ে বের হয়ে এল। হাতে ধরা একটা মারণাস্ত্র, মুখে কুৎসিত হাসি আর চোখে চরম আতঙ্ক। সে বুঝতে পেরেছে বাইরে পুলিশ ও প্যারা কমান্ডোদের ঘেরাটোপ ভেদ করে পালানোর আর কোনো রাস্তা নেই। সে সরাসরি অর্ণবের দিকে তাকাল।</p>
-                    <p>রহিম চৌধুরী: (দাঁত কিড়মিড় করে) তোরা ভেবেছিস আমাকে এভাবে আটকে ফেলবি? ওই বুড়োকে আর বাঁচিয়ে নিয়ে যেতে পারব না আমি! আজ তোদের সবাইকে শেষ করে দেব!</p>
-                    <p>রহিম চৌধুরী ট্রিগার টানার ঠিক আগ মুহূর্তেই—অর্ণব এক ফ্রেমে পজিশন নিয়ে চোখের পলকে ফায়ার করল! সরাসরি রহিম চৌধুরীর হাতের অস্ত্রটায় গিয়ে গুলি লাগল, আর ছিটকে দূরে পড়ে গেল বন্দুকটা। পরমুহূর্তেই নিরব আর আবির পেছন থেকে ঝাঁপিয়ে পড়ে রহিম চৌধুরীকে মাটিতে আছড়ে ফেলে হাতকড়া পরিয়ে দিল।</p>
-                    <p>অর্ণব: (রহিম চৌধুরীর ঠিক সামনে গিয়ে বরফশীতল দৃষ্টিতে) অপরাধ যত বড়ই হোক না কেন, অর্ণবের হাত থেকে কেউ বাঁচতে পারে না। তোর এই পুরো সাম্রাজ্য আজ চিরকালের মতো ধূলিসাৎ হয়ে গেল!</p>
-                    <p>এর ঠিক এক ঘণ্টা পর।</p>
-                    <p>বাইরে তখন সকালের নরম রোদ উঁকি দিতে শুরু করেছে। পুলিশের সাইরেন আর প্যারা কমান্ডোদের মার্চপাস্টের শব্দে চারপাশের পরিবেশ একদম শান্ত ও সুরক্ষিত।</p>
-                    <p>অর্ণবদের জেনেসিস কপ্টারটা যখন মেঘলার বাড়ির সামনের উঠানে এসে ল্যান্ড করল, তখন বাড়ির ভেতর থেকে দৌড়ে বেরিয়ে এল মেঘলা। তার চোখে তখন উপচে পড়া জল, বুক কাঁপছে চরম উৎকণ্ঠায়।</p>
-                    <p>কপ্টারের দরজা খুলতেই দেখা গেল, প্যারামেডিকরা মেঘলার বাবাকে নিরাপদে স্ট্রেচারে করে নামিয়ে আনছে। বাবাকে সুস্থ ও জীবন্ত অবস্থায় চোখের সামনে দেখতে পেয়ে মেঘলার কান্না আর বাঁধ মানল না। সে দৌড়ে গিয়ে সরাসরি বাবার বুকে জড়িয়ে ধরে কান্নায় ভেঙে পড়ল।</p>
-                    <p>মেঘলা: বাবা! বাবা গো... তুমি একদম ঠিক আছ তো? আমি তো ভেবেছিলাম...</p>
-                    <p>মেঘলার বাবা মেঘলার মাথায় পরম স্নেহে হাত বুলিয়ে চোখের জল মুছে দিয়ে বললেন—</p>
-                    <p>মেঘলার বাবা: আমি ঠিক আছি, মা! অর্ণব না থাকলে আজ হয়তো তোদের আর মুখ দেখতে পেতাম না... ও আমাদের জীবন বাঁচিয়েছে।</p>
-                    <p>মেঘলা ধীরে ধীরে মুখ ফিরিয়ে সোজা দাঁড়িয়ে তাকাল কপ্টারের দরজার দিকে। সেখানে ট্যাকটিক্যাল জ্যাকেট পরা, হাতে স্পেশাল অ্যাসল্ট রাইফেল নিয়ে গম্ভীর মুখে দাঁড়িয়ে আছে অর্ণব। সকালের সোনাঝরা রোদে অর্ণবের সেই দীর্ঘদেহী চেহারায় তখন এক অপার্থিব বীরত্ব আর বিজয়ের দীপ্তি ঠিকরে বের হচ্ছে।</p>
-                    <p>মেঘলা আর এক সেকেন্ডও দেরি করল না। সে ঠিক ঠিক পায়ে দৌড়ে গিয়ে সরাসরি অর্ণবের বুকে গিয়ে সজোরে জড়িয়ে ধরল! তার কান্নায় ভেজা মুখটা তখন অর্ণবের প্রশস্ত বুকে গোঁজা।</p>
-                    <p>মেঘলা: (কান্নাজড়িত থরথর কণ্ঠে) তুমি সত্যি একটা জাদুকর, অর্ণবদা! তুমি কথা রেখেছ... বাবাকে ফিরিয়ে এনেছ আমার কাছে! আমি জীবনেও ভাবিনি তুমি এত বড় একজন...</p>
-                    <p>অর্ণব তার দুই শক্ত বাহু দিয়ে মেঘলাকে নিজের সাথে একদম শক্ত করে জড়িয়ে ধরে তার মাথায় হাত বুলিয়ে মৃদু হাসল। চারপাশের সব কোলাহল, লড়াই আর ষড়যন্ত্র পেছনে ফেলে সেই মিষ্টি সকালের রোদে তাদের ভালোবাসার গল্পটা এক নতুন পরিণতি পেল।</p>
-                    <p>পরের দিন বিয়ের দিন। চারদিকে যেন উৎসবের আমেজ। বাড়িভর্তি মানুষের কোলাহল, হাসি-আনন্দ আর বিয়ের ব্যস্ততায় পুরো বাড়ি মুখর। অর্ণবের সেই ইন্টেলিজেন্স টিমের ৬ জন সদস্যও আজ স্পেশাল দাওয়াতে উপস্থিত। আজ আর কোনো মিশন নয়, বরং তাদের লিডারের জীবনের সবচেয়ে সুন্দর দিনের সাক্ষী হতে এসেছে তারা। সবার উপস্থিতিতে, হাসি-ঠাট্টা আর আনন্দের মধ্য দিয়ে খুব সুন্দরভাবে অর্ণব আর মেঘলার বিয়ে সম্পন্ন হলো।</p>
-                    <p>বিয়ের পরের দিন। বাড়ির সবাই মিলে ঠিক করল আশপাশে কোথাও ঘুরতে যাবে। অর্ণব আর মেঘলাও সবার সাথে বেরিয়ে পড়ল। সবাই যখন নিজেদের মতো গল্পগুজব আর ঘোরাঘুরিতে ব্যস্ত, ঠিক সেই সুযোগে অর্ণব পেছন থেকে এসে হঠাৎ মেঘলাকে জড়িয়ে ধরল।</p>
-                    <p>অর্ণব ফিসফিস করে বলল, "এই যে ম্যাম, আমার সাথে আসুন তো!"</p>
-                    <p>মেঘলা চমকে গিয়ে এদিক-ওদিক তাকিয়ে কিছুটা বিরক্তি আর লজ্জার সুরে বলল, "উফ! আজব তো! আশেপাশে কত মানুষজন আছে, এভাবে কি কেউ জড়িয়ে ধরে? পাগল নাকি!"</p>
-                    <p>অর্ণব একগাল হেসে নির্লিপ্ত ভঙ্গিতে বলল, "লোকে দেখলে তো আমার কী! আমি তো আর অন্য কাউকে না, আমার নিজের বউকে জড়িয়ে ধরেছি।"</p>
-                    <p>মেঘলা চোখ পাকিয়ে কিছু একটা বলতে যাবে, তার আগেই অর্ণব বলে উঠল, "বেশি কথা না বলে চুপচাপ আমার বাইকে ওঠো।"</p>
-                    <p>মেঘলা আর কথা না বাড়িয়ে বাইকে উঠে বসল। বিকেল গড়িয়ে তখন সন্ধ্যা নামার প্রস্তুতি চলছে। সূর্যটা ধীরে ধীরে পশ্চিম আকাশে হেলে পড়ছে। অর্ণব মেঘলাকে নিয়ে আঁকাবাঁকা পাহাড়ি রাস্তা ধরে পাহাড়ের ওপরের দিকে উঠতে লাগল।</p>
-                    <p>কিছুক্ষণ পর তারা পাহাড়ের চূড়ায় একটা শান্ত জায়গায় পৌঁছাল। সেখানে একটা কাঠের বেঞ্চে গিয়ে বসল দুজনে। চারপাশের পরিবেশটা জাদুকরী—আকাশে সূর্যের সোনালি আর হলুদ আভা, চারদিকটা যেন মায়াবী আলোয় ডুবে আছে। হালকা কুয়াশা নামতে শুরু করেছে, সাথে মিষ্টি একটা শীত শীত ভাব।</p>
-                    <p>মেঘলা শান্ত হয়ে অর্ণবের কোলের ওপর মাথা রেখে শুলো। অর্ণব খুব আদরের সাথে মেঘলার চুলে বিলি কেটে দিচ্ছে। চারদিকে এক অদ্ভুত নীরবতা, শুধু তাদের দুজনের নিশ্বাস আর প্রকৃতির শব্দ।</p>
-                    <p>হঠাৎ নীরবতা ভেঙে অর্ণব গভীর গলায় বলে উঠল, "জানো মেঘলা, তোমাকে যেদিন প্রথম ওই স্টেশনে হেঁটে আসতে দেখেছিলাম, সেদিন এক নজরেই ভালোবেসে ফেলেছিলাম তোমায়। আর তুমি যখন হোঁচট খেয়ে আমার ওপর পড়ে গেলে... তোমার ওই চোখ দুটো দেখে মনে হয়েছিল, তুমি শুধু আমার জন্যই। তোমার চোখে আমি এত মায়া দেখেছি... কত মায়াবী চোখ তোমার!"</p>
-                    <p>অর্ণবের কথা শুনে মেঘলার গাল লজ্জায় লাল হয়ে গেল। সে কিছুক্ষণ চুপ থেকে অর্ণবের চোখের দিকে তাকিয়ে আলতো হেসে বলল, "আমিও তোমাকে প্রথম দেখাতেই কেন যেন এক অদ্ভুত টান অনুভব করেছিলাম। তোমার মতো এমন কাউকে যে আগে কখনো দেখিনি..."</p>
-                    <p>পাহাড়ের চূড়ায় সেই পড়ন্ত বিকেলে তাদের এমন আরও অনেক না-বলা কথা, খুনসুটি আর ভালোবাসার গল্প হলো। দুজনের প্রতিটি কথায় যেন মিশে ছিল একে অপরের প্রতি অনন্ত প্রেম আর নির্ভরতা।</p>
-                    <p>অবশেষে গোধূলির আলো যখন প্রায় নিভে আসছে, অর্ণব মেঘলার কপালে আলতো করে চুমু খেয়ে ফিসফিস করে বলল, "আমি তোমাকে খুব ভালোবাসি মেঘলা।" অর্ণব: আমার এ পুরো হৃদয় জুড়ে তুমি,,,!</p>
-                `;
-            }
+function hideAllViews() {
+    let views = document.getElementsByClassName('subject-view');
+    for (let i = 0; i < views.length; i++) {
+        views[i].style.display = 'none';
+        views[i].classList.remove('animate-view');
+    }
+    let buttons = document.querySelectorAll('.sidebar ul li button');
+    buttons.forEach(btn => btn.classList.remove('active'));
+}
 
-            // Switch views smoothly
-            home.style.display = 'none';
-            reader.style.display = 'block';
-            
-            // Auto close sidebar on selection for better mobile experience
-            document.getElementById('sidebar').classList.remove('open');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+function closeSidebarOnMobile() {
+    if (window.innerWidth < 900) {
+        document.getElementById('sidebar').classList.remove('open');
+        document.getElementById('overlay').style.display = 'none';
+    }
+}
+
+function showHome(evt) {
+    hideAllViews();
+    let homeView = document.getElementById('home-view');
+    homeView.style.display = 'block';
+    void homeView.offsetWidth;
+    homeView.classList.add('animate-view');
+    let btn = document.getElementById('btn-home-view');
+    if(btn) btn.classList.add('active');
+    closeSidebarOnMobile();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showMyNotes(evt) {
+    hideAllViews();
+    let notesView = document.getElementById('my-notes-view');
+    notesView.style.display = 'block';
+    void notesView.offsetWidth;
+    notesView.classList.add('animate-view');
+    let btn = document.getElementById('btn-my-notes-view');
+    if(btn) btn.classList.add('active');
+    backToSubjectsGrid();
+    closeSidebarOnMobile();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showOthers(evt) {
+    hideAllViews();
+    let othersView = document.getElementById('others-view');
+    othersView.style.display = 'block';
+    void othersView.offsetWidth;
+    othersView.classList.add('animate-view');
+    let btn = document.getElementById('btn-others-view');
+    if(btn) btn.classList.add('active');
+    closeSidebarOnMobile();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showTeachers() {
+    hideAllViews();
+    let techView = document.getElementById('teachers-view');
+    techView.style.display = 'block';
+    void techView.offsetWidth;
+    techView.classList.add('animate-view');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showAttendance() {
+    hideAllViews();
+    let attView = document.getElementById('attendance-view');
+    attView.style.display = 'block';
+    void attView.offsetWidth;
+    attView.classList.add('animate-view');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showClockCountdown() {
+    hideAllViews();
+    let clockView = document.getElementById('clock-countdown-view');
+    clockView.style.display = 'block';
+    void clockView.offsetWidth;
+    clockView.classList.add('animate-view');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* লাইভ ঘড়ি ও কাউন্টডাউন টাইমার ফাংশন */
+setInterval(() => {
+    const now = new Date();
+    let hours = now.getHours();
+    let minutes = now.getMinutes();
+    let seconds = now.getSeconds();
+    let ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    let timeStr = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')} ${ampm}`;
+    let dateStr = now.toLocaleDateString('bn-BD', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    let clockElem = document.getElementById('liveClockDisplay');
+    let dateElem = document.getElementById('liveDateDisplay');
+    if (clockElem) clockElem.innerText = timeStr;
+    if (dateElem) dateElem.innerText = dateStr;
+
+    let examDate = new Date('2026-06-15T09:00:00');
+    let diff = examDate - now;
+    let countdownElem = document.getElementById('examCountdownDisplay');
+    if (countdownElem) {
+        if (diff > 0) {
+            let days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            let hrs = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            let mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            let secs = Math.floor((diff % (1000 * 60)) / 1000);
+            countdownElem.innerText = `${days} দিন ${hrs} ঘণ্টা ${mins} মিনিট ${secs} সেকেন্ড বাকি`;
+        } else {
+            countdownElem.innerText = "পরীক্ষা শুরু হয়ে গেছে!";
         }
+    }
+}, 1000);
 
-        // Back to Home Page
-        function goHome() {
-            document.getElementById('readerContent').style.display = 'none';
-            document.getElementById('homeContent').style.display = 'block';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+function showSubject(subjectId, evt) {
+    hideAllViews();
+    let targetView = document.getElementById(subjectId);
+    if (targetView) {
+        targetView.style.display = 'block';
+        void targetView.offsetWidth;
+        targetView.classList.add('animate-view');
+        let activeBtn = document.getElementById('btn-' + subjectId);
+        if (activeBtn) {
+            activeBtn.classList.add('active');
         }
-    </script>
+    }
+    closeSidebarOnMobile();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function openSubjectChapters(subjectKey, subjectName) {
+    document.getElementById('notesSubjectGrid').style.display = 'none';
+    let container = document.getElementById('subjectChapterContainer');
+    container.style.display = 'block';
+    document.getElementById('selectedSubjectTitle').innerText = subjectName + ' অধ্যায়সমূহ ও নোটস';
+    let chapterListArea = document.getElementById('chapterListArea');
+    chapterListArea.innerHTML = "";
+    let chapters = subjectChaptersData[subjectKey] || ["অধ্যায় ১: সাধারণ আলোচনা", "অধ্যায় ২: বিস্তারিত পাঠ"];
+    chapters.forEach((chap, index) => {
+        let storageKey = 'note_' + subjectKey + '_chap_' + index;
+        let savedNoteText = localStorage.getItem(storageKey) || "";
+        let box = document.createElement('div');
+        box.className = 'chapter-note-box';
+        box.innerHTML = `
+            <h4>${chap}</h4>
+            <textarea class="chapter-textarea" id="${storageKey}" placeholder="এই অধ্যায়ের গুরুত্বপূর্ণ নোট বা পয়েন্ট এখানে লিখুন...">${savedNoteText}</textarea>
+            <button class="save-note-btn" onclick="playSound(); saveSpecificNote('${storageKey}')">নোট সেভ করো</button>
+            <div style="clear: both;"></div>
+        `;
+        chapterListArea.appendChild(box);
+    });
+}
+
+function backToSubjectsGrid() {
+    document.getElementById('subjectChapterContainer').style.display = 'none';
+    document.getElementById('notesSubjectGrid').style.display = 'grid';
+}
+
+function saveSpecificNote(keyId) {
+    let textVal = document.getElementById(keyId).value;
+    localStorage.setItem(keyId, textVal);
+    alert('সফলভাবে নোট সেভ করা হয়েছে!');
+}
+
+function filterSidebarMenu() {
+    let input = document.getElementById('liveSearchInput').value.toLowerCase();
+    let list = document.getElementById('sidebarMenuList');
+    let items = list.getElementsByTagName('li');
+    for (let i = 0; i < items.length; i++) {
+        let text = items[i].textContent.toLowerCase();
+        if (text.includes(input)) {
+            items[i].style.display = "";
+        } else {
+            items[i].style.display = 'none';
+        }
+    }
+}
+
+function openSubjectModal() {
+    document.getElementById('subjectModal').style.display = 'flex';
+}
+
+function closeSubjectModal() {
+    document.getElementById('subjectModal').style.display = 'none';
+}
+
+function openRoutineModal() {
+    document.getElementById('routineModal').style.display = 'flex';
+}
+
+function closeRoutineModal() {
+    document.getElementById('routineModal').style.display = 'none';
+}
+
+function closeModalOnOutsideClick(event, modalId) {
+    if (event.target.id === modalId) {
+        document.getElementById(modalId).style.display = 'none';
+    }
+}
+
+function selectFromModal(subjectId) {
+    closeSubjectModal();
+    if (subjectId === 'home-view') {
+        showHome();
+    } else if (subjectId === 'my-notes-view') {
+        showMyNotes();
+    } else if (subjectId === 'others-view') {
+        showOthers();
+    } else {
+        showSubject(subjectId);
+    }
+}
+
+function resetPortal() {
+    document.getElementById('liveSearchInput').value = "";
+    filterSidebarMenu();
+    showHome();
+}
+
+let lastScrollTop = 0;
+window.onscroll = function() {
+    let scrollBtn = document.getElementById('scrollTopBtn');
+    let floatingGroup = document.getElementById('floatingActionGroup');
+    let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+    if (currentScroll > 200) {
+        scrollBtn.style.display = 'flex';
+    } else {
+        scrollBtn.style.display = 'none';
+    }
+
+    if (currentScroll > lastScrollTop && currentScroll > 100) {
+        floatingGroup.classList.add('hidden');
+    } else {
+        floatingGroup.classList.remove('hidden');
+    }
+    lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+};
+
+function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ম্যাথ পাজল গেম লজিক */
+const mathPuzzlesData = [
+    { level: 1, question: "পরের সংখ্যাটি কত হবে? ২, ৪, ৬, ৮, ...", answers: ["১০", "10"], hint: "প্রতিবার ২ করে বাড়ছে।" },
+    { level: 2, question: "একটি গাছে ১০টি পাখি ছিল, গুলি করার পর ২টি মারা গেল, গাছে কয়টি রইল?", answers: ["০", "0"], hint: "শব্দ শুনে বাকিরা উড়ে গেছে!" },
+    { level: 3, question: "৫ এর সাথে কত যোগ করলে ১২ হবে?", answers: ["৭", "7"], hint: "১২ থেকে ৫ বিয়োগ করো।" },
+    { level: 4, question: "পাঁচটি আম থেকে ২টি আম নিয়ে নিলে তোমার কাছে কয়টি আম থাকবে?", answers: ["২", "2"], hint: "যেহেতু তুমি নিয়ে নিয়েছ!" },
+    { level: 5, question: "মাস্টারমাইন্ড চ্যালেঞ্জ: ৩ এর তিনগুণ থেকে ৪ বাদ দিলে কত থাকে?", answers: ["৫", "5"], hint: "প্রথমে ৩ গুণ করো, তারপর ৪ বাদ দাও।" }
+];
+let currentPuzzleIndex = 0;
+
+function openMathPuzzleGame() {
+    hideAllViews();
+    let container = document.getElementById('math-puzzle-view');
+    if (!container) {
+        createPuzzleView();
+    }
+    container = document.getElementById('math-puzzle-view');
+    container.style.display = 'block';
+    container.classList.add('animate-view');
+    loadPuzzle();
+    closeSidebarOnMobile();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function createPuzzleView() {
+    let mainContent = document.querySelector('.main-content');
+    let puzzleDiv = document.createElement('div');
+    puzzleDiv.id = 'math-puzzle-view';
+    puzzleDiv.className = 'subject-view card';
+    puzzleDiv.innerHTML = `
+        <h1>ম্যাথ পাজল ও ব্রেন টিজার গেম</h1>
+        <p style="color: var(--text-sub); font-size: 0.9rem; margin-bottom: 15px;">মাথা খাটাও এবং সঠিক উত্তর দিয়ে লেভেল পার করো!</p>
+        <div class="hover-card" style="padding: 15px;">
+            <h3 id="puzzleLevelTitle" style="color: #38bdf8; font-size: 1rem; margin-bottom: 8px;"></h3>
+            <p id="puzzleQuestionText" style="font-size: 1.05rem; margin-bottom: 12px; color: var(--text-main);"></p>
+            <input type="text" id="puzzleAnswerInput" class="sidebar-search-input" placeholder="তোমার উত্তর এখানে লেখো..." style="margin-bottom: 10px;">
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <button class="save-note-btn" onclick="playSound(); checkPuzzleAnswer()" style="float: none; margin-top: 0;">উত্তর জমা দাও</button>
+                <button class="back-to-notes-btn" onclick="playSound(); showHint()" style="margin-bottom: 0; padding: 8px 14px;">হিন্ট দেখাও</button>
+            </div>
+            <p id="puzzleFeedback" style="margin-top: 10px; font-weight: bold; font-size: 0.9rem;"></p>
+        </div>
+    `;
+    mainContent.appendChild(puzzleDiv);
+}
+
+function loadPuzzle() {
+    if (currentPuzzleIndex >= mathPuzzlesData.length) {
+        currentPuzzleIndex = 0;
+    }
+    let p = mathPuzzlesData[currentPuzzleIndex];
+    document.getElementById('puzzleLevelTitle').innerText = 'লেভেল ' + p.level + '/' + mathPuzzlesData.length;
+    document.getElementById('puzzleQuestionText').innerText = p.question;
+    document.getElementById('puzzleAnswerInput').value = "";
+    document.getElementById('puzzleFeedback').innerText = "";
+}
+
+function checkPuzzleAnswer() {
+    let userAns = document.getElementById('puzzleAnswerInput').value.trim();
+    let p = mathPuzzlesData[currentPuzzleIndex];
+    let feedback = document.getElementById('puzzleFeedback');
+    if (p.answers.includes(userAns)) {
+        feedback.style.color = '#34d399';
+        feedback.innerText = 'দারুণ! উত্তর সঠিক হয়েছে। পরের লেভেলে যাচ্ছি...';
+        setTimeout(() => {
+            currentPuzzleIndex++;
+            loadPuzzle();
+        }, 1500);
+    } else {
+        feedback.style.color = '#ef4444';
+        feedback.innerText = 'ভুল হয়েছে! আবার চেষ্টা করো বা হিন্ট নাও।';
+    }
+}
+
+function showHint() {
+    let p = mathPuzzlesData[currentPuzzleIndex];
+    let feedback = document.getElementById('puzzleFeedback');
+    feedback.style.color = '#fbbf24';
+    feedback.innerText = 'হিন্ট: ' + p.hint;
+}
+</script>
 </body>
 </html>
