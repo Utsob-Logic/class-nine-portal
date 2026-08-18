@@ -732,7 +732,7 @@ h1 {
 }
 .back-to-notes-btn:hover { transform: translateX(-3px); }
 
-/* NM AI চ্যাটবট স্টাইল */
+/* ফ্লোটিং চ্যাট উইজেট বাটন */
 .ai-chatbot-widget {
     position: fixed;
     bottom: 25px;
@@ -743,94 +743,243 @@ h1 {
     background: linear-gradient(135deg, #06b6d4, #3b82f6);
     color: white;
     border: none;
-    width: 55px; height: 55px;
+    width: 60px; height: 60px;
     border-radius: 50%;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     cursor: pointer;
     box-shadow: 0 10px 25px rgba(6, 182, 212, 0.5);
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding: 5px;
 }
-.ai-chat-box {
+.ai-toggle-btn span {
+    font-size: 9px;
+    font-weight: bold;
+    margin-top: 2px;
+}
+
+/* ফুল স্ক্রিন চ্যাট ইন্টারফেস ওভারলে */
+.ai-chat-interface-overlay {
     display: none;
-    position: absolute;
-    bottom: 70px;
-    left: 0;
-    width: 330px;
-    max-height: 450px;
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    border: 1px solid var(--glass-border);
-    border-radius: 16px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: var(--bg-gradient);
+    z-index: 4000;
     flex-direction: column;
+}
+.ai-chat-interface-overlay.open {
+    display: flex;
+}
+
+/* চ্যাট লেআউট (জেমিনি স্টাইল বামে সাইডবার + ডানে প্যানেল) */
+.ai-chat-app-container {
+    display: flex;
+    width: 100%;
+    height: 100%;
     overflow: hidden;
 }
-.ai-chat-box.open { display: flex; }
-.ai-chat-header {
+
+/* চ্যাট সাইডবার (বাম পাশ) */
+.ai-chat-sidebar {
+    width: 280px;
+    background: var(--sidebar-bg);
+    backdrop-filter: blur(25px);
+    border-right: 1px solid var(--glass-border);
+    padding: 20px 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 10;
+    transition: transform 0.3s ease;
+}
+@media (max-width: 768px) {
+    .ai-chat-sidebar {
+        position: absolute;
+        height: 100%;
+        transform: translateX(-100%);
+    }
+    .ai-chat-sidebar.mobile-open {
+        transform: translateX(0);
+    }
+}
+.ai-sidebar-title {
+    font-size: 1.05rem;
+    background: linear-gradient(90deg, #06b6d4, #3b82f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+}
+.ai-new-chat-btn {
     background: linear-gradient(135deg, #06b6d4, #3b82f6);
     color: white;
-    padding: 12px 15px;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 10px;
     font-weight: bold;
-    font-size: 0.95rem;
+    font-size: 0.85rem;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+.ai-new-chat-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+.ai-history-list {
+    flex-grow: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 10px;
+}
+.ai-history-item {
+    background: var(--glass-card);
+    border: 1px solid var(--glass-border);
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: var(--text-sub);
+    cursor: pointer;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+.ai-history-item:hover, .ai-history-item.active {
+    background: linear-gradient(135deg, rgba(6, 182, 212, 0.25), rgba(59, 130, 246, 0.25));
+    color: var(--text-main);
+    border-color: #06b6d4;
+}
+
+/* চ্যাট মূল প্যানেল (ডান পাশ) */
+.ai-chat-main-panel {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    height: 100%;
+}
+.ai-chat-topbar {
+    padding: 15px 20px;
+    background: var(--glass-card);
+    border-bottom: 1px solid var(--glass-border);
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-.ai-chat-messages {
-    padding: 12px;
+.ai-chat-topbar h3 {
+    font-size: 1.1rem;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.ai-close-interface-btn {
+    background: var(--glass-card);
+    border: 1px solid var(--glass-border);
+    color: var(--text-main);
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+.ai-close-interface-btn:hover {
+    background: rgba(236, 72, 153, 0.4);
+    transform: rotate(90deg);
+}
+
+/* চ্যাট মেসেজ এরিয়া ও ডায়নামিক ব্যাকগ্রাউন্ড অ্যানিমেশন */
+.ai-chat-messages-area {
+    padding: 20px;
     overflow-y: auto;
     flex-grow: 1;
-    max-height: 300px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    font-size: 0.85rem;
+    gap: 12px;
+    font-size: 0.92rem;
+    background: linear-gradient(-45deg, rgba(6, 182, 212, 0.05), rgba(59, 130, 246, 0.05), rgba(99, 102, 241, 0.08), rgba(236, 72, 153, 0.05));
+    background-size: 400% 400%;
+    animation: chatBgAnimation 12s ease infinite;
 }
+@keyframes chatBgAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
 .ai-msg {
-    padding: 8px 12px;
-    border-radius: 10px;
-    max-width: 85%;
-    line-height: 1.4;
+    padding: 10px 14px;
+    border-radius: 12px;
+    max-width: 80%;
+    line-height: 1.5;
     word-break: break-word;
+    animation: fadeInMsg 0.3s ease forwards;
+}
+@keyframes fadeInMsg {
+    0% { opacity: 0; transform: translateY(10px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+@media (max-width: 768px) {
+    .ai-msg { max-width: 90%; }
 }
 .ai-msg.bot {
     background: var(--glass-card);
     color: var(--text-main);
     align-self: flex-start;
-    border-left: 3px solid #06b6d4;
+    border-left: 4px solid #06b6d4;
+    border: 1px solid var(--glass-border);
 }
 .ai-msg.user {
     background: linear-gradient(135deg, #6366f1, #ec4899);
     color: white;
     align-self: flex-end;
 }
-.ai-chat-input-area {
-    display: flex;
-    padding: 10px;
+
+.ai-chat-input-box {
+    padding: 15px 20px;
     border-top: 1px solid var(--glass-border);
     background: var(--glass-card);
-    gap: 8px;
+    display: flex;
+    gap: 10px;
 }
-.ai-chat-input {
+.ai-chat-input-field {
     flex-grow: 1;
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
-    padding: 8px 10px;
-    border-radius: 8px;
+    padding: 12px 15px;
+    border-radius: 10px;
     color: var(--text-main);
-    font-size: 0.85rem;
+    font-size: 0.92rem;
     outline: none;
+    transition: all 0.3s ease;
 }
-.ai-send-btn {
-    background: #06b6d4;
+.ai-chat-input-field:focus {
+    border-color: #06b6d4;
+    box-shadow: 0 0 12px rgba(6, 182, 212, 0.3);
+}
+.ai-send-action-btn {
+    background: linear-gradient(135deg, #06b6d4, #3b82f6);
     color: white;
     border: none;
-    padding: 8px 12px;
-    border-radius: 8px;
+    padding: 0 20px;
+    border-radius: 10px;
     font-weight: bold;
+    font-size: 0.95rem;
     cursor: pointer;
+    transition: all 0.3s ease;
+}
+.ai-send-action-btn:hover {
+    opacity: 0.9;
+    transform: scale(1.03);
 }
 </style>
 </head>
@@ -838,20 +987,46 @@ h1 {
 <!-- অডিও ও সাউন্ড ইফেক্ট এলিমেন্ট -->
 <audio id="clickSound" src="click.mp3" preload="auto"></audio>
 
-<!-- NM AI চ্যাটবট উইজেট -->
+<!-- চ্যাটবট উইজেট (ফ্লোটিং বাটন) -->
 <div class="ai-chatbot-widget">
-    <button class="ai-toggle-btn" onclick="toggleAIChat()" title="NM AI অ্যাসিস্ট্যান্ট">🤖</button>
-    <div class="ai-chat-box" id="aiChatBox">
-        <div class="ai-chat-header">
-            <span>NM AI অ্যাসিস্ট্যান্ট</span>
-            <button onclick="toggleAIChat()" style="background:none; border:none; color:white; font-size:1rem; cursor:pointer;">×</button>
+    <button class="ai-toggle-btn" onclick="toggleAIChatInterface()" title="এআই অ্যাসিস্ট্যান্ট">
+        🤖
+        <span>AI</span>
+    </button>
+</div>
+
+<!-- ফুল-স্ক্রিন চ্যাট ইন্টারফেস (জেমিনি স্টাইল সাইডবারসহ) -->
+<div class="ai-chat-interface-overlay" id="aiChatInterfaceOverlay">
+    <div class="ai-chat-app-container">
+        <!-- চ্যাট সাইডবার (বাম পাশ - জেমিনি স্টাইল হিস্ট্রি) -->
+        <div class="ai-chat-sidebar" id="aiChatSidebar">
+            <div class="ai-sidebar-title">🤖 চ্যাট ইতিহাস</div>
+            <button class="ai-new-chat-btn" onclick="startNewAIChatSession()">+ নতুন চ্যাট</button>
+            <div class="ai-history-list" id="aiHistoryList">
+                <!-- আগের চ্যাটগুলোর লিস্ট এখানে সেভ হয়ে থাকবে -->
+            </div>
+            <div style="font-size: 0.75rem; color: var(--text-sub); border-top: 1px solid var(--glass-border); padding-top: 10px;">
+                জেমিনি স্টাইল চ্যাট হিস্ট্রি
+            </div>
         </div>
-        <div class="ai-chat-messages" id="aiChatMessages">
-            <div class="ai-msg bot">নমস্কার! আমি NM AI। ইতিহাস, বিজ্ঞান কিংবা পৃথিবীর যেকোনো অদ্ভুত প্রশ্ন করতে পারো, আমি শুদ্ধ বাংলায় উত্তর দেব।</div>
-        </div>
-        <div class="ai-chat-input-area">
-            <input type="text" id="aiUserInput" class="ai-chat-input" placeholder="এখানে কিছু লিখুন..." onkeypress="handleAIChatKey(event)">
-            <button class="ai-send-btn" onclick="sendNM_AIChatMessage()">পাঠাও</button>
+
+        <!-- মূল চ্যাট প্যানেল -->
+        <div class="ai-chat-main-panel">
+            <div class="ai-chat-topbar">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <button class="menu-toggle" onclick="toggleMobileAISidebar()" style="padding: 6px 10px;" id="aiMobileMenuBtn">হিস্ট্রি</button>
+                    <h3>🤖 এআই অ্যাসিস্ট্যান্ট</h3>
+                </div>
+                <button class="ai-close-interface-btn" onclick="toggleAIChatInterface()" title="বন্ধ করুন">×</button>
+            </div>
+            <div class="ai-chat-messages-area" id="aiChatMessages">
+                <!-- শুরুর প্রাথমিক ওয়েলকাম মেসেজ -->
+                <div class="ai-msg bot">হ্যালো! আমি তোমার এআই অ্যাসিস্ট্যান্ট। বলো, তোমাকে কীভাবে সাহায্য করতে পারি?</div>
+            </div>
+            <div class="ai-chat-input-box">
+                <input type="text" id="aiUserInput" class="ai-chat-input-field" placeholder="এখানে তোমার প্রশ্ন লিখুন..." onkeypress="handleAIChatKey(event)">
+                <button class="ai-send-action-btn" onclick="sendNM_AIChatMessage()">পাঠাও</button>
+            </div>
         </div>
     </div>
 </div>
@@ -1519,8 +1694,8 @@ h1 {
 
 <!-- জাভাস্ক্রিপ্ট লজিক -->
 <script>
-// তোর জেমিনি এপিআই কি (API Key) এখানে বসিয়ে দিবি
-const GEMINI_API_KEY = "YOUR_GEMINI_API_KEY"; 
+// জেমিনি এপিআই কি (API Key)
+const GEMINI_API_KEY = ""; 
 
 function playSound() {
     const sound = document.getElementById('clickSound');
@@ -1561,6 +1736,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     document.documentElement.setAttribute('data-theme', themes[currentThemeIndex]);
     document.getElementById('themeToggleBtn').innerText = themeNames[themes[currentThemeIndex]];
+    loadAllChatSessions();
 });
 
 function toggleSidebar() {
@@ -1570,18 +1746,102 @@ function toggleSidebar() {
     overlay.style.display = sidebar.classList.contains('open') ? 'block' : 'none';
 }
 
-function toggleAIChat() {
-    document.getElementById('aiChatBox').classList.toggle('open');
+function toggleAIChatInterface() {
+    const overlayElem = document.getElementById('aiChatInterfaceOverlay');
+    overlayElem.classList.toggle('open');
+    if (overlayElem.classList.contains('open')) {
+        // ওয়েবসাইট খুললে বা নতুন ওপেন করলে একদম নতুন সেশন তৈরি হবে (খালি সেশন হিস্ট্রিতে সেভ হবে না)
+        startNewUnsavedChatSession();
+    }
+}
+
+function toggleMobileAISidebar() {
+    document.getElementById('aiChatSidebar').classList.toggle('mobile-open');
+}
+
+// চ্যাট ম্যানেজমেন্ট ও জেমিনি স্টাইল হিস্ট্রি সিস্টেম
+let chatSessions = JSON.parse(localStorage.getItem('gemini_style_sessions')) || [];
+let activeSessionId = null;
+
+function saveChatSessionsToStorage() {
+    localStorage.setItem('gemini_style_sessions', JSON.stringify(chatSessions));
+}
+
+function loadAllChatSessions() {
+    const historyListElem = document.getElementById('aiHistoryList');
+    historyListElem.innerHTML = "";
+    
+    // যে সেশনগুলোতে মেসেজ বা কথাবার্তা হয়েছে শুধুমাত্র সেগুলোর লিস্ট ফিল্টার করে দেখানো হবে
+    const activeChats = chatSessions.filter(s => s.messages && s.messages.length > 1);
+
+    activeChats.forEach(session => {
+        const item = document.createElement('div');
+        item.className = 'ai-history-item' + (session.id === activeSessionId ? ' active' : '');
+        item.innerText = session.title || "নতুন চ্যাট";
+        item.onclick = () => switchChatSession(session.id);
+        historyListElem.appendChild(item);
+    });
+
+    renderActiveSessionMessages();
+}
+
+function startNewUnsavedChatSession() {
+    // অস্থায়ী সেশন তৈরি যা মেসেজ না পাঠানো পর্যন্ত হিস্ট্রিতে যুক্ত হবে না
+    const newSession = {
+        id: 'session_' + Date.now(),
+        title: 'নতুন চ্যাট',
+        messages: [
+            { sender: 'bot', text: 'হ্যালো! আমি তোমার এআই অ্যাসিস্ট্যান্ট। বলো, তোমাকে কীভাবে সাহায্য করতে পারি?' }
+        ]
+    };
+    activeSessionId = newSession.id;
+    // বর্তমান সেশনটি মেমোরিতে রাখা হলো, তবে লোকাল স্টোরেজে সেভ করা হবে না যতক্ষণ না ইউজার মেসেজ দেয়
+    let existingIndex = chatSessions.findIndex(s => s.id === activeSessionId);
+    if (existingIndex === -1) {
+        chatSessions.unshift(newSession);
+    }
+    loadAllChatSessions();
+}
+
+function startNewAIChatSession() {
+    startNewUnsavedChatSession();
+    renderActiveSessionMessages();
+    if (window.innerWidth <= 768) {
+        document.getElementById('aiChatSidebar').classList.remove('mobile-open');
+    }
+}
+
+function switchChatSession(sessionId) {
+    activeSessionId = sessionId;
+    loadAllChatSessions();
+    if (window.innerWidth <= 768) {
+        document.getElementById('aiChatSidebar').classList.remove('mobile-open');
+    }
+}
+
+function renderActiveSessionMessages() {
+    const msgContainer = document.getElementById('aiChatMessages');
+    msgContainer.innerHTML = "";
+    
+    const currentSession = chatSessions.find(s => s.id === activeSessionId);
+    if (!currentSession || !currentSession.messages) return;
+
+    currentSession.messages.forEach(msg => {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = 'ai-msg ' + msg.sender;
+        msgDiv.innerText = msg.text;
+        msgContainer.appendChild(msgDiv);
+    });
+    msgContainer.scrollTop = msgContainer.scrollHeight;
 }
 
 function handleAIChatKey(event) {
     if (event.key === 'Enter') { sendNM_AIChatMessage(); }
 }
 
-// রিয়েল জেমিনি এআই এপিআই কল ফাংশন - পৃথিবীর যেকোনো প্রশ্নের উত্তর দিতে সক্ষম
+// এআই চ্যাটবট লজিক
 async function sendNM_AIChatMessage() {
     const inputField = document.getElementById('aiUserInput');
-    const msgContainer = document.getElementById('aiChatMessages');
     const userText = inputField.value.trim();
 
     if (!userText) return;
@@ -1591,14 +1851,25 @@ async function sendNM_AIChatMessage() {
         return;
     }
 
-    const userMsgDiv = document.createElement('div');
-    userMsgDiv.className = 'ai-msg user';
-    userMsgDiv.innerText = userText;
-    msgContainer.appendChild(userMsgDiv);
+    let currentSession = chatSessions.find(s => s.id === activeSessionId);
+    if (!currentSession) {
+        startNewUnsavedChatSession();
+        currentSession = chatSessions.find(s => s.id === activeSessionId);
+    }
+
+    // ইউজার প্রথম প্রশ্ন করার পর চ্যাটের নাম বা টাইটেল ইউজারের প্রথম প্রশ্ন অনুযায়ী সেট হবে
+    if (currentSession.title === 'নতুন চ্যাট') {
+        currentSession.title = userText.length > 22 ? userText.substring(0, 22) + '...' : userText;
+    }
+
+    currentSession.messages.push({ sender: 'user', text: userText });
+    // ইউজার মেসেজ পাঠানোর পরেই কেবল চ্যাটটি পার্মানেন্টলি হিস্ট্রিতে সেভ হবে
+    saveChatSessionsToStorage();
+    loadAllChatSessions();
 
     inputField.value = '';
-    msgContainer.scrollTop = msgContainer.scrollHeight;
 
+    const msgContainer = document.getElementById('aiChatMessages');
     const loadingDiv = document.createElement('div');
     loadingDiv.className = 'ai-msg bot';
     loadingDiv.innerText = 'উত্তর তৈরি হচ্ছে...';
@@ -1606,25 +1877,31 @@ async function sendNM_AIChatMessage() {
     msgContainer.scrollTop = msgContainer.scrollHeight;
 
     try {
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+        const systemInstruction = "তুমি একজন সহায়ক এআই অ্যাসিস্ট্যান্ট। ব্যবহারকারীর যেকোনো প্রশ্নের উত্তর খুব সুন্দর ও বন্ধুসুলভভাবে দেবে। সবসময় শুদ্ধ বাংলায় উত্তর দেবে।";
+
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${GEMINI_API_KEY}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 contents: [{
-                    parts: [{
-                        text: "তুমি একজন অত্যন্ত বুদ্ধিমান এবং জ্ঞানী এআই সহকারী (NM AI)। ব্যবহারকারী পৃথিবীর যেকোনো কঠিন, সহজ বা আবল-তাবল প্রশ্নই করুক না কেন, তুমি অত্যন্ত সুন্দর, নির্ভুল এবং শুদ্ধ বাংলায় তার উত্তর দেবে। প্রশ্ন: " + userText
-                    }]
+                    parts: [
+                        { text: systemInstruction },
+                        { text: "ব্যবহারকারীর মেসেজ: " + userText }
+                    ]
                 }]
             })
         });
 
         const data = await response.json();
+        let botReply = "দুঃখিত, উত্তর পাওয়া যায়নি। আবার চেষ্টা করুন।";
         
         if (data.candidates && data.candidates[0].content.parts[0].text) {
-            loadingDiv.innerText = data.candidates[0].content.parts[0].text;
-        } else {
-            loadingDiv.innerText = "দুঃখিত, উত্তর পাওয়া যায়নি। আবার চেষ্টা করুন।";
+            botReply = data.candidates[0].content.parts[0].text;
         }
+
+        loadingDiv.innerText = botReply;
+        currentSession.messages.push({ sender: 'bot', text: botReply });
+        saveChatSessionsToStorage();
     } catch (error) {
         loadingDiv.innerText = "সংযোগ স্থাপন করতে সমস্যা হচ্ছে। ইন্টারনেট সংযোগ পরীক্ষা করুন।";
     }
